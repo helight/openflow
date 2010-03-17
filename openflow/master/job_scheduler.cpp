@@ -101,9 +101,23 @@ int32_t CJobScheduler::report_task_state(const openflow::task_state &state)
 int32_t CJobScheduler::report_agent_state(const openflow::agent_state &state)
 {
     std::cout << "receive ok" <<std::endl;
-    _agent_state.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
+
+    boost::mutex::scoped_lock lock(_agent_mutex);
+    _agent_state[state.ipaddr] = state;
 
     return 0;
+}
+
+int32_t CJobScheduler::get_agent_state(std::vector<openflow::agent_state>& agent_state)
+{
+    boost::mutex::scoped_lock lock(_agent_mutex);
+    std::map<std::string, openflow::agent_state>::iterator it = _agent_state.begin();
+    for (; it != _agent_state.end(); ++it)
+    {
+        agent_state.push_back(it->second);
+    }
+
+    return _agent_state.size();
 }
 
 }} //enf namespace openflow::master

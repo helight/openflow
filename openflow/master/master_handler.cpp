@@ -43,17 +43,6 @@ int32_t CMasterHandler::kill_job(const int32_t id)
     return 0;
 }
 
-void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return)
-{
-
-    _return.current_jobnum = 1;
-    _return.failure_jobnum = 1;
-    _return.done_jobnum = 1;
-    _return.success_jobnum = 1;
-    LOG(INFO) << "exexute...............";
-    return;
-}
-
 int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state)
 {
     CJobScheduler& job_scheduler =
@@ -69,6 +58,24 @@ int32_t CMasterHandler::report_task_state(const openflow::task_state &state)
         boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
     return job_scheduler.report_task_state(state);
+}
+
+void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return)
+{
+    _return.current_jobnum = 1;
+    _return.failure_jobnum = 1;
+    _return.done_jobnum = 1;
+    _return.success_jobnum = 1;
+    LOG(INFO) << "exexute...............";
+}
+
+void CMasterHandler::get_agent_info(std::vector<openflow::agent_state>& _return)
+{
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
+    int32_t ret = job_scheduler.get_agent_state(_return);
+
+    LOG(INFO) << "agent num: " << ret;
 }
 
 }} // end openflow::master

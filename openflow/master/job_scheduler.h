@@ -28,12 +28,16 @@ public:
     int32_t report_task_state(const openflow::task_state &state);
     int32_t report_agent_state(const openflow::agent_state &state);
 
+public:
+    int32_t get_agent_state(std::vector<openflow::agent_state>& agent_state);
+
 private:
     mutable boost::mutex _mutex;
     common::CBlockingQueue<int32_t> _wait_jobs_queue;  //job id queue.
     std::map<int32_t, CTaskScheduler*> _run_jobs_queue;
 
 private:
+    mutable boost::mutex _agent_mutex;
     std::map<std::string, openflow::agent_state> _agent_state;
 };
 }} //end namespace openflow::master

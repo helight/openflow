@@ -22,41 +22,8 @@ namespace openflow { namespace tools { namespace master_client{
 
 using namespace apache::thrift;
 
-class CMainHelper : public common::IMainHelper
+void submit_job()
 {
-private:
-    bool init(int argc, char* argv[]);
-    bool run();
-    void fini();
-
-private:
-    common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper;
-};
-
-bool CMainHelper::init(int argc, char* argv[])
-{
-
-    thrift_client_helper = new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
-    if (NULL == thrift_client_helper)
-    {
-        LOG(ERROR) << "Fail to create master client.";
-        return false;
-    }
-    return true;
-}
-
-bool CMainHelper::run()
-{
-    try
-    {
-        thrift_client_helper->connect();
-    }
-    catch (TException& exn)
-    {
-        LOG(ERROR) << exn.what();
-        return false;
-    }
-
     openflow::job_info info;
     info.job_name = "testor";
 
@@ -68,32 +35,40 @@ bool CMainHelper::run()
 
     //store job into databse
     job.set_xml("demo.xml");
-    int ret = job.store("openflow.db", info);
+    int32_t ret = job.store("openflow.db", info);
     if (ret < 0)
     {
         LOG(ERROR) << "Fail to store job into database.";
-        return false;
+        return;
     }
 
     //submit job to master server
     LOG(INFO) << "submit job...";
+    common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper =
+        new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
     try
     {
+        thrift_client_helper->connect();
         ret = thrift_client_helper->get()->submit_job(info.job_id);
         if (ret < 0) {
             LOG(ERROR) << "fail to submit job.";
-            return false;
         }
-
+        else
+        {
+            LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
+        }
     }
     catch (TException& exn)
     {
         LOG(ERROR) <<  exn.what();
-        return false;
     }
 
-    LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
+    thrift_client_helper->close();
+    delete thrift_client_helper;
+}
 
+void report_agent_state()
+{
     //AddMe ZhangYiFei 2014/10/30 test master side reporte_agent_sate interface
     openflow::agent_state state;
     state.remain_mem = "600MB";
@@ -102,36 +77,54 @@ bool CMainHelper::run()
     state.cpu_load = "1.2 4.3 5.6";
     state.ipaddr = "192.168.0.1";
     state.swap_use_percent = "0%";
+    common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper =
+        new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
     try
     {
-        ret = thrift_client_helper->get()->report_agent_state(state);
+        thrift_client_helper->connect();
+        int32_t ret = thrift_client_helper->get()->report_agent_state(state);
         if (ret < 0)
         {
             LOG(INFO) << ret;
-            return false;
         }
     }
     catch (TException& exn)
     {
         LOG(ERROR) << exn.what();
-        return false;
     }
 
     thrift_client_helper->close();
-
-    return true;
+    delete thrift_client_helper;
 }
 
-void CMainHelper::fini()
+void get_agent_state()
 {
-    if(!thrift_client_helper)
+    common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper =
+        new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
+    try
     {
-        delete thrift_client_helper;
+        std::vector<openflow::agent_state> agent_state;
+        thrift_client_helper->connect();
+        thrift_client_helper->get()->get_agent_info(agent_state);
+        LOG(INFO) << "agent num: " << agent_state.size();
     }
+    catch (TException& exn)
+    {
+        LOG(ERROR) << exn.what();
+    }
+
+    thrift_client_helper->close();
+    delete thrift_client_helper;
 }
 
 extern "C" int main(int argc, char* argv[])
 {
+    if (argc < 2)
+    {
+        std::cout << "params not enought: ./master cmd" << std::endl;
+        std::cout << "./master submit_job/report_agent/get_agent" << std::endl;
+        return -1;
+    }
     // init glog,gflags
     FLAGS_logbufsecs = 0;           // write log no cache
     FLAGS_max_log_size = 300;       // max log size for each log file
@@ -139,9 +132,29 @@ extern "C" int main(int argc, char* argv[])
     google::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging("master_client");
 
-    CMainHelper main_helper;
+    std::string cmd = argv[1];
+    std::cout << "CMD: " << cmd << std::endl;
 
-    return main_template(&main_helper, argc, argv);
+    if (0 == strcmp(cmd.c_str(), "submit_job"))
+    {
+        submit_job();
+    }
+    else if (0 == strcmp(cmd.c_str(), "report_agent"))
+    {
+        report_agent_state();
+    }
+    else if (0 == strcmp(cmd.c_str(), "get_agent"))
+    {
+        get_agent_state();
+    }
+    else
+    {
+        std::cout << "params not enought: ./master cmd" << std::endl;
+        std::cout << "./master submit_job/report_agent/get_agent" << std::endl;
+        return -1;
+    }
+
+    return 0;
 }
 
 }}} //namespace openflow::tools::master_client
