@@ -1,0 +1,14 @@
+namespace cpp openflow.master
+namespace php openflow.master
+
+include "common.thirft"
+
+service MasterService
+{
+    i32 submit_job();
+    i32 stop_job();
+    i32 kill_job();
+
+    i32 report_task_state(1:i32 state);
+}
+

@@ -1,0 +1,10 @@
+namespace cpp openflow.agent
+namespace php openflow.agent
+
+include "common.thirft"
+
+service AgentService
+{
+    i32 submit_task();
+    i32 kill_task();
+}

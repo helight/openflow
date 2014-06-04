@@ -1,0 +1,11 @@
+namespace cpp openflow
+namespace php openflow
+
+
+struct job_info
+{
+    1:i32 job_id
+    2:i32 job_type;
+    3:string job_name;
+    4:string owner;
+}
