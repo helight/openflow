@@ -47,7 +47,11 @@ function install_tar_gz_package()
     fi
     printf "\n\033[1;33m installing $package_basename \033[m\n"
     cd $package_basename
-    ./configure --prefix=$THIRD_PARTY_HOME/$install_dir $config_args
+    if [ "$install_dir" = "openssl" ];then
+        ./config --prefix=$THIRD_PARTY_HOME/$install_dir $config_args
+    else
+        ./configure --prefix=$THIRD_PARTY_HOME/$install_dir $config_args
+    fi
     if test $? -ne 0; then
         exit 1
     fi
@@ -87,92 +91,78 @@ function install_gtest()
 
 function install_boost()
 {
-# 如果目录已经存在，而且不是全新安装
-if [ -d $THIRD_PARTY_HOME/boost -a "$INSTALL_ALL" = "" ];then
-    printf "\n\033[1;33mboost is installed, no need to install again\033[m\n"
-    return
-fi
+    install_dir=$1
+    package_name=$2
+    # 如果目录已经存在，而且不是全新安装
+    if [ -d $THIRD_PARTY_HOME/boost -a "$INSTALL_ALL" = "" ];then
+        printf "\n\033[1;33mboost is installed, no need to install again\033[m\n"
+        return
+    fi
 
-printf "\n\033[1;33minstalling boost\033[m\n"
-tar xzf $boost.tar.gz
-cd $boost
-#./bootstrap.sh --show-libraries
-./bootstrap.sh --without-icu --without-libraries=python,graph,graph_parallel,mpi,wave
-if test $? -ne 0; then
-    exit 1
-fi
-./b2 install threading=multi --prefix=$THIRD_PARTY_HOME/boost --without-python --without-graph --without-graph_parallel --without-mpi --without-wave
-printf "\n\033[1;33m./b2 install return $?\033[m\n"
-cd -
+    printf "\n\033[1;33m installing $package_basename \033[m\n"
+    tar xzf $package_name
+    package_basename=`basename $package_name .tar.gz`
+    cd $package_basename
+
+    #./bootstrap.sh --show-libraries
+    ./bootstrap.sh --without-icu --without-libraries=python,graph,graph_parallel,mpi,wave
+    if test $? -ne 0; then
+        exit 1
+    fi
+    ./b2 install threading=multi --prefix=$THIRD_PARTY_HOME/boost --without-python --without-graph --without-graph_parallel --without-mpi --without-wave
+    printf "\n\033[1;33m./b2 install return $?\033[m\n"
+    cd -
 }
 
-#{
-# 如果目录已经存在，而且不是全新安装
-# if [ -d $THIRD_PARTY_HOME/thrift -a "$INSTALL_ALL" = "" ];then
-# printf "\n\033[1;33m thrift is installed, no need to install again\033[m\n"
-# return
-# fi
-#
-# printf "\n\033[1;33minstalling thrift\033[m\n"
-# tar xzf $thrift.tar.gz
-# cd $thrift
-# ./configure --prefix=$THIRD_PARTY_HOME/thrift \
-# --with-boost=$THIRD_PARTY_HOME/boost \
-# --with-libevent=$THIRD_PARTY_HOMEbevent \
-# CPPFLAGS="-I$THIRD_PARTY_HOME/openssl/include" \
-# LDFLAGS="-ldl -L$THIRD_PARTY_HOME/opensslb" \
-# --with-qt4=no --with-c_glib=no --with-csharp=no \
-# --with-java=no --with-erlang=no --with-python=no \
-# --with-perl=no --with-ruby=no --with-haskell=no \
-# --with-go=no --with-d=no
-# if test $? -ne 0; then
-# exit 1
-# fi
-# sed -i -e 's!#define HAVE_MALLOC 0!#define HAVE_MALLOC 1!' config.h
-# sed -i -e 's!#define HAVE_REALLOC 0!#define HAVE_REALLOC 1!' config.h
-# sed -i -e 's!#define malloc rpl_malloc!/*#define malloc rpl_malloc*/!' config.h
-# sed -i -e 's!#define realloc rpl_realloc!/*#define realloc rpl_realloc*/!' config.h
-# make
-# if test $? -ne 0; then
-# exit 1
-# fi
-# make install
-# cd -
-# }
+function install_thirft()
+{
+    install_dir=$1
+    package_name=$2
+    #如果目录已经存在，而且不是全新安装
+    if [ -d $THIRD_PARTY_HOME/thrift -a "$INSTALL_ALL" = "" ];then
+        printf "\n\033[1;33m thrift is installed, no need to install again\033[m\n"
+        return
+    fi
 
-#
-# # install openssl
-# #
-# function install_openssl()
-# {
-# # 如果目录已经存在，而且不是全新安装
-# if [ -d $THIRD_PARTY_HOME/openssl -a "$INSTALL_ALL" = "" ];then
-# printf "\n\033[1;33mopenssl is installed, no need to install again\033[m\n"
-# return
-# fi
-#
-# printf "\n\033[1;33minstalling openssl\033[m\n"
-# tar xzf $openssl.tar.gz
-# cd $openssl
-# ./config --prefix=$THIRD_PARTY_HOME/openssl shared threads
-# if test $? -ne 0; then
-# exit 1
-# fi
-# make
-# if test $? -ne 0; then
-# exit 1
-# fi
-# make install
-# cd -
-# }
+    printf "\n\033[1;33m installing $package_basename \033[m\n"
+    tar xzf $package_name
+    package_basename=`basename $package_name .tar.gz`
+    cd $package_basename
+    ./bootstrap.sh
+    ./configure --prefix=$THIRD_PARTY_HOME/thrift \
+        --with-boost=$THIRD_PARTY_HOME/boost \
+        --with-libevent=$THIRD_PARTY_HOME/libevent \
+        CPPFLAGS="-I$THIRD_PARTY_HOME/openssl/include" \
+        LDFLAGS="-ldl -L$THIRD_PARTY_HOME/openssl" \
+        --with-qt4=no --with-c_glib=no --with-csharp=no \
+        --with-java=no --with-erlang=no --with-python=no \
+        --with-perl=no --with-ruby=no --with-haskell=no \
+        --with-go=no --with-d=no
+    if test $? -ne 0; then
+        exit 1
+    fi
+#    sed -i -e 's!#define HAVE_MALLOC 0!#define HAVE_MALLOC 1!' config.h
+#    sed -i -e 's!#define HAVE_REALLOC 0!#define HAVE_REALLOC 1!' config.h
+#    sed -i -e 's!#define malloc rpl_malloc!/*#define malloc rpl_malloc*/!' config.h
+#    sed -i -e 's!#define realloc rpl_realloc!/*#define realloc rpl_realloc*/!' config.h
+    make
+    if test $? -ne 0; then
+        exit 1
+    fi
+    make install
+    cd -
+}
 
 function install_all()
 {
     echo "Begin to install......"
-    install_tar_gz_package thrift thrift-0.9.1.tar.gz
+    install_boost boost boost_1_55_0.tar.gz
+    install_tar_gz_package openssl openssl-1.0.1g.tar.gz "shared threads"
+    install_tar_gz_package libevent libevent-2.0.21-stable.tar.gz
     install_tar_gz_package libev libev-4.15.tar.gz
     install_tar_gz_package gflags gflags-2.0.tar.gz
     install_tar_gz_package glog glog-0.3.3.tar.gz
+    install_thirft thirft thrift-0.9.1.tar.gz
     install_gtest
 }
 
