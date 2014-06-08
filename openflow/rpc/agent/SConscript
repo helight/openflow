@@ -1,0 +1,17 @@
+import os
+
+Import('env')
+
+thrift_bin="../../../thirdparty/thrift/bin/thrift"
+
+os.system(thrift_bin + " -r --gen cpp -out ./ agent.thirft" )
+os.system("rm *.skeleton.cpp")
+
+env.StaticLibrary(
+    target = "agent",
+    source = Glob("*.cpp")
+)
+
+if GetOption('clean'):
+    os.system("rm *.cpp")
+    os.system("rm *.h")

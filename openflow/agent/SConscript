@@ -1,0 +1,8 @@
+Import('env')
+
+env.Prepend(LIBS = ['agent'])
+
+env.Program(
+    target = "openflow_agent",
+    source = Glob("*.cpp")
+)

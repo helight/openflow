@@ -1,7 +1,7 @@
 namespace cpp openflow.master
 namespace php openflow.master
 
-include "common.thirft"
+include "../common.thirft"
 
 service MasterService
 {

@@ -1,0 +1,8 @@
+Import('env')
+
+env.Prepend(LIBS = ['master', 'agent'])
+
+env.Program(
+    target = "deque_test",
+    source = ['deque_test.cpp']
+)

@@ -1,7 +1,7 @@
 namespace cpp openflow.agent
 namespace php openflow.agent
 
-include "common.thirft"
+include "../common.thirft"
 
 service AgentService
 {
