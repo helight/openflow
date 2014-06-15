@@ -1,0 +1,49 @@
+﻿/*菜单*/
+.jm_menu{
+    position:absolute;
+    display:none;
+     box-shadow: 2px 2px 10px black; 
+    -webkit-box-shadow: 2px 2px 10px black; 
+    -moz-box-shadow: 2px 2px 10px black;
+    z-index:1000000;
+}
+
+/*菜单项*/
+.jm_menu ul
+{
+    list-style: none;  
+    min-width:90px;  
+    margin:0;
+    padding:0;
+    padding:4px 4px;    
+    border:1px solid #fff; 
+    background-color:#fff;
+    filter:alpha(opacity=90);-moz-opacity:0.9;opacity: 0.9; 
+    border-radius:4px;
+    -moz-border-radius: 4px; 
+-webkit-border-radius: 4px;
+ box-shadow: inset 0 0 1px #000;
+     -webkit-box-shadow: inset 0 0 1px #000;
+    -moz-box-shadow: inset 0 0 1px #000;
+}
+
+.jm_menu ul li
+{
+    text-decoration: none;
+    padding: 1px;
+    font-size:12px;
+    color: #2452ac;
+    cursor:pointer;    
+    display:block;
+    line-height:20px;
+    height:20px;    
+    border-top:1px solid #e2e2e2;
+}
+.jm_menu ul li:first-child
+{
+    border-top:none;
+}
+.jm_menu ul li:hover
+{
+    background-color:#ccc;
+}

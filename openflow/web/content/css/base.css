@@ -1,0 +1,304 @@
+﻿html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  outline: none;
+}
+html { height: 101%; }
+body { font-size: 62.5%; line-height: 1; font-family: Arial, Tahoma, sans-serif; }
+ 
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+ol, ul { list-style: none; }
+ 
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+strong { font-weight: bold; } 
+ 
+table { border-collapse: collapse; border-spacing: 0; }
+img { border: 0; max-width: 100%; }
+ 
+p { font-size: 1.2em; line-height: 1.0em; color: #333; }
+
+.clear
+{
+clear:both;
+display: inline-block;
+}
+
+.clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+.clearfix { display: inline-block; }
+html[xmlns] .clearfix { display: block; }
+* html .clearfix { height: 1%; }
+
+.left
+{
+    float:left;
+}
+
+/**
+    消息框
+*/
+.alert
+{
+    display: block;
+    padding:10px 10px 10px 35px; 
+   font-size:14px;
+    font-weight:bold;    
+    color:#000;    
+    position:absolute;
+    margin:0 auto;   
+    z-index:20000;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.msg_tip_info {
+    color:red;
+}
+button,input[type=button],input[type=submit],a.button {
+    padding:4px 10px;
+    font-size: 16px;
+    background-color: #00B1EB; 
+    line-height:25px; 
+    cursor:pointer; 
+    border:none; 
+    color:#FFF;
+    box-shadow: 0 0 6px #406771;
+    text-decoration: none;
+}
+button:hover,a.button:hover,input[type=button]:hover,input[type=submit]:hover {
+    color:green;
+}
+
+/*errorinput*/
+input.error
+{
+    background:url("../images/errInput.gif") 0 100% repeat-x;
+}
+
+/* Alerts */
+
+.alert .close {
+    color:blue;
+    margin-left:8px;
+}
+.alert_info {
+background: #B5E5EF url(../images/icn_alert_info.png) 10px 50% no-repeat;
+border: 2px solid #77BACE;
+color: #082B33;
+}
+
+.alert_warning {
+background: #F5F3BA url(../images/icn_alert_warning.png) 10px 50% no-repeat;
+border: 2px solid #C7A20D;
+color: #796616;
+}
+
+.alert_error {
+background: #F3D9D9 url(../images/icn_alert_error.png) 10px 50% no-repeat;
+border: 2px solid #D20009;
+color: #7B040F;
+}
+
+.alert_success 
+{
+background: #E2F6C5 url(../images/icn_alert_success.png) 10px 50% no-repeat;
+border: 2px solid #79C20D;
+color: #32510F;
+}
+
+#searchwhere
+{
+margin:4px;
+display:inline-block;
+}
+#searchwhere > div
+{  
+    float:left;          
+    margin:2px 4px;
+}
+#searchwhere input
+{
+    width:160px;
+}
+#pager
+{
+margin:6px 0 2px 2px;
+text-align:center;
+}
+
+/* 页面说明区域 */
+div.page-tip 
+{
+    background-color: #D6EDF5;
+    border:1px solid #679BAA;
+    width:90%;
+    margin:10px auto;
+    padding:10px;
+}
+div.page-tip h3 
+{
+    display:block;
+}
+div.page-tip ol
+{
+    margin: 10px 40px;
+    color:green;
+}
+
+
+table.editor
+{
+    width:100%; 
+    padding:10px;
+    cellspacing:0;
+    cellpadding:0;   
+}
+table.editor tr
+{
+margin:2px 0;    
+}
+table.editor td
+{
+    padding:2px;
+}
+table.editor td.label
+{
+/*background-color:#7EB4A0;*/
+width:60px;
+text-align:right;
+}
+table.editor td input, table.editor td textarea
+{
+width:90%;
+}
+/*模式窗口*/
+div.modal
+{
+    background-color:#AAA;
+    filter:alpha(opacity=60);
+    -moz-opacity:0.6;
+    opacity: 0.6;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    z-index:10000;
+}
+
+/*表格中复制某项s*/
+table td a.cell_op 
+{
+    display: inline-block;
+    text-decoration: none;
+    padding: 0 6px;
+    width: :16px;
+    height: :16px;
+    cursor: pointer;
+}
+table td a.cell_copy 
+{
+    background: url(../images/icon07.png) 50% 50% no-repeat;
+}
+table td a.cell_del 
+{
+    background: url(../images/icon08.png) 50% 50% no-repeat;
+}
+table td a.cell_del_g 
+{
+    cursor: default;
+    background: url(../images/icon14.png) 50% 50% no-repeat;
+}
+table td a.cell_restore 
+{
+    background: url(../images/reback.png) 50% 50% no-repeat;
+}
+table td a.cell_stop
+{
+    background: url(../images/stop.png) 50% 50% no-repeat;
+}
+table td a.cell_setstate
+{
+    background: url(../images/dot.gif) 50% 50% no-repeat;
+}
+table td a.cell_clock
+{
+    background: url(../images/clock.png) 50% 50% no-repeat;
+}
+.icon-clock
+{
+    background: url(../images/clock.png) 50% 50% no-repeat;
+}
+table td a.cell_plus
+{
+    background: url(../images/bullet_toggle_plus.png) 50% 50% no-repeat;
+}
+table td a.cell_minus
+{
+    background: url(../images/bullet_toggle_minus.png) 50% 50% no-repeat;
+}
+
+/*easy-ui
+.panel-tool a {
+    margin:0;
+}*/
+
+.datagrid-cell{
+    font-size:14px;
+    padding:4px;
+}
+.datagrid-header span {
+    font-size:20px;
+    font-weight: bold;
+}
+
+table.datagrid-htable td {
+    border-right:1px solid #d5d5d5; 
+    border-bottom:1px solid #d5d5d5; 
+    line-height:40px;     
+    font-size: 20px;   
+}
+
+table tr.datagrid-header-row td {
+    background: url(../images/inside_rightBg02.png);
+}
+
+table.datagrid-btable a {
+    color:blue;
+}
+
+
+/*编辑框样式*/
+ul.edit-container {
+    width:100%;
+    padding:0;
+    display:block;
+    list-style: none;
+}
+ul.edit-container li {
+    vertical-align: top;
+    margin:4px 10px;
+}
+ul.edit-container li span {
+    margin:2px;
+    width:50px;
+    text-align: right;
+    vertical-align:top;
+}
+
+ul.edit-container li input {
+    width:80%;
+    display: inline-block;
+}
+ul.edit-container li textarea {
+    width:80%;
+    height:70px;
+    display: inline-block;
+}
+
+

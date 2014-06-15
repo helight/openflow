@@ -1,0 +1,71 @@
+<%
+    master="../../master/detail.html";
+%>
+
+<view1>
+	<script type="text/javascript">
+	$(function() {
+		$('#tbComponents').datagrid({
+                columns:[[{field:'Name',title:'名称',sortable:true},{field:'Description',title:'说明',align:'left'},{field:'CreateOn',title:'创建时间'}]],
+                singleSelect:true,
+                onSortColumn:function(sort,order) {
+                    search(0,sort + ' ' + order);
+                }
+            });
+		$('#pager').paging({
+                showCount: 6, //当前页附近显示多少页码，比如，4或5表示前后显二个页码，6表示前后显示三个,都会除以2
+                change: function (p) {
+                    search(p);
+                }
+            });
+		search(0);
+	});
+	function search(p,order) {
+        p = Number(p) || 1;
+        order = order || '';//templateTB.sort?templateTB.sort.toString():'';
+        openflow.request('post', {
+            url:'/servers/componentServer.js?cmd=search',
+            page: p,
+            count:20,
+            type:1,
+            orderby:order,
+            creater:openflow.user
+        }, function (data,err) {
+            if (data) {
+                createTable(data.data);
+                $('#pager').paging({ index: data.page, count: data.pageCount });
+            }
+            else if(err){
+                $('#tbComponents').html(err.toString());
+            }
+            //重置父页高度
+            resetParentHeight();
+        });
+    }
+
+    //生成表格
+    function createTable(data) {
+
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                var namecell = '<a href="/editor.js?mode=4&id='+data[i].Id+'"  target="_blank" data-template="'+data[i].Id+'">('+ +data[i].Id+ ')&nbsp;' + data[i].Name +'</a>';
+                data[i].Name = namecell;
+                data[i].CreateOn =$jm.formatDate($jm.parseDate(data[i].CreateOn),'yyyy-MM-dd HH:mm:ss');
+            }
+        }
+
+        $('#tbComponents').datagrid({data:data});
+    }
+	</script>
+	</view1>
+
+<view2>
+	 <div>
+         <a href="<%=rootUrl %>/editor.js?mode=4" class="button" target="_blank">新建组件</a>
+     </div>
+	<div>
+		<table id="tbComponents"></table>
+
+	</div>
+	<div id="pager"></div>
+</view2>

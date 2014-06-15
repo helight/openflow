@@ -1,0 +1,81 @@
+<%
+    master="../../master/detail.html";
+%>
+<view1>
+<style tyle="text/css">
+div.config {
+	display:block;
+	margin:2px 0 20px 0;
+}
+div.config>span {
+	margin-bottom: 20px; 
+}
+div.config  ul {
+	list-style: none;
+}
+div.config  ul li {
+	margin: 4px;
+	text-align: left;
+}
+div.config  ul li label {
+	display: inline-block;
+	text-align: right;
+	width:120px;
+}
+</style>
+</view1>
+<view2>
+<form method="post">
+<div class="config">
+	<span>数据库配置</span>
+	<hr />
+	<ul>
+		<li><label for="dbAddr">地址：</label>
+			<input type="text" value="<%=config.dbConfig.host %>" id="dbaddress" name="dbAddr" />
+			<select type="text" name="dbAddrList" onchange="document.getElementById('dbaddress').value=this.value;">
+				<#
+					<%
+						if(config.dbConfig.addresses) {
+							for(var i in config.dbConfig.addresses) {
+								var ip = config.dbConfig.addresses[i];
+								if(ip == config.dbConfig.host) {
+									%>
+									<option value="<%=ip %>" selected="selected" ><%=ip %></option>
+									<%
+								}
+								else {
+									%>
+									<option value="<%=ip %>" ><%=ip %></option>
+									<%
+								}
+							}
+						}
+						else {
+							%>
+							<option value="<%=config.dbConfig.host %>" selected="selected" ><%=config.dbConfig.host %></option>
+							<%
+						}
+					%>
+				#>
+			</select>
+		</li>
+		<li><label for="dbPort">端口：</label><input type="text" name="dbPort" value="<%=config.dbConfig.port%>"/></li>
+		<li><label for="dbName">数据库名：</label><input type="text" name="dbName" value="<%=config.dbConfig.database%>"/></li>
+		<li><label for="dbUser">用户名：</label><input type="text" name="dbUser" value="<%=config.dbConfig.user%>"/></li>
+		<li><label for="dbPwd">密码：</label><input type="password" name="dbPwd" value="<%=config.dbConfig.password%>" /></li>
+	</ul>
+</div>
+
+<div class="config">
+	<span>RPC配置</span>
+	<hr />
+	<ul>
+		<li><label for="tfDriver">驱动器地址：</label><input type="text" name="tfDriver" value="<%=config.thriftConfig.driver%>"/>&nbsp;&nbsp;<font color="red">（如果为空，则直接使用第一个容器）</font></li>
+		<li><label for="tfDriverPort">驱动器端口：</label><input type="text" name="tfDriverPort" value="<%=config.thriftConfig.driverPort%>"/></li>
+		<li><label for="tfContainerPort">容器端口：</label><input type="text" name="tfContainerPort" value="<%=config.thriftConfig.containerPort%>"/></li>
+		<li><label for="tfExecutorPort">执行器端口：</label><input type="text" name="tfExecutorPort" value="<%=config.thriftConfig.executorPort%>"/></li>
+	</ul>
+</div>
+<div><input id="btnSave" type="submit" value="保存" /></div>
+</form>
+</view2>

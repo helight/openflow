@@ -1,0 +1,35 @@
+﻿
+/**
+表格样式
+**/
+.jm-table
+{
+    border-collapse:collapse;
+    width:100%;
+}
+.jm-table thead tr
+{
+    background :url("images/table_sorter_header.png")
+}
+.jm-table th
+{
+   border:solid 1px #ccc;  
+    /*background-color:#E9F1FA;*/
+    padding:6px 0; 
+}
+    
+.jm-table tr
+{
+  background-color:#F8F8F8;
+}
+
+.jm-table tr.even
+{
+  background-color:#fff;
+}  
+    
+.jm-table tr td
+{
+  border:solid 1px #ccc;      
+  padding:4px 4px 4px 8px;
+}  

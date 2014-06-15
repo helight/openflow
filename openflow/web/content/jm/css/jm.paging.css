@@ -1,0 +1,35 @@
+﻿
+/*分页样式*/
+.jm_paging
+{
+    font-size:16px;
+    padding:4px 4px;
+}
+.jm_paging a
+{
+    padding: 4px 8px;
+    background: #fff;
+    border: 1px solid transparent;   
+    color: #2452ac;
+    margin:10px 4px; 
+   
+}
+.jm_paging a:hover
+{
+    border: 1px solid #2452ac;
+    color: black;    
+    cursor: pointer;
+}
+.jm_paging a.jm_curPage
+{
+    background-color: #009ACE;   
+    color: #fff;   
+}
+/*转向输入框*/
+.jm_paging input
+{
+    margin-top:16px 4px; 
+    margin-bottom:auto;
+    width:20px;
+    height:20px;
+}

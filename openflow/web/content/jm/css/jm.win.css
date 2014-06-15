@@ -1,0 +1,209 @@
+﻿
+/*窗口样式*/
+.jm_win
+{
+    position:absolute;
+    min-width:200px;
+    min-height:60px;
+    font-size:12px;
+    font-family:微软雅黑;
+    border:1px solid #ccc;    
+    background:url(images/win_bg.png);
+    background-color:#9BB7D3;
+    padding:4px 4px;
+    overflow:hidden;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 0 0 16px black; 
+    -webkit-box-shadow: 0 0 16px black; 
+    -moz-box-shadow: 0 0 16px black;
+     /*filter:alpha(opacity=98);-moz-opacity:0.9;opacity: 0.9;*/
+}
+
+/*窗口标题栏*/
+.jm_win .jm_win_head
+{
+    cursor:move;
+    width:100%;
+}
+
+/*标题*/
+.jm_win .jm_win_title
+{
+    color:#fff;
+     font-weight:bolder;
+     font-size:14px;     
+     float:left;
+     padding-left:4px;    
+     text-shadow: 2px 2px 3px #000;
+    -webkit-text-shadow: 2px 2px 3px #000;
+    -moz-text-shadow: 2px 2px 3px #000;
+    cursor:move;
+}
+
+/*失去焦点样式*/
+.jm_win_sub
+{
+    position:absolute;
+    border:1px solid #ccc;
+    /*background-color:transparent;*/
+    filter:alpha(opacity=80);
+    -moz-opacity:0.8;
+    opacity: 0.8;
+}
+
+  /*标题*/
+.jm_win_sub .jm_win_title
+{
+    color:#ccc;   
+}
+
+.jm_win .jm_win_ico
+{
+    width:16px;
+    height:16px;
+    border:0;
+    float:left;
+    margin-left:2px;
+    background:url(images/ico.png) 0 0 no-repeat;
+}
+
+.jm_win .jm_win_body
+{
+    position:relative;
+    word-wrap:break-word;    
+    cursor:default;
+    background-color:#E8E8E8;      
+    border:1px outset #DDDDDD;
+    height:94%;
+    width:100%;
+    display: inline-block;
+    overflow: auto;
+}
+
+/*窗口遮板*/
+.jm_win .jm_win_body_model
+{
+    position:absolute; 
+    left:0;
+    top:0;
+    z-index:10000000;
+    width:100%;
+    height:100%;
+}
+
+.jm_win_sub .jm_win_body
+{
+    background-color:#CECEC9; 
+    border:1px solid #999;
+}
+    
+.jm_win .jm_win_bottom
+{
+    width:100%;
+    text-align:center;
+    vertical-align:middle;
+    padding:4px;
+}
+
+/*底部按钮样式*/
+.jm_win .jm_win_button
+{
+  height:25px; 
+  border: solid 1px #b6b6b6;
+  background-color:#395DB2; 
+  width:65px;
+  margin-left:8px; 
+  text-decoration:none; 
+  cursor:pointer;
+  color:#000;
+}
+.jm_win .jm_win_button:hover
+{
+  color:#fff; 
+  background-color:#4D6479;
+}
+
+/*窗口功能区域*/
+.jm_win .jm_win_cmdarea
+{
+    /*background:url(images/cmdbutton.gif);*/
+    width:80px;
+    height:20px;
+    float:right;
+    }
+    
+.jm_win a.cmdbtn
+{
+   background-color:#13c383;
+   color:Black;
+   padding:1px 1px;
+   width:16px;
+    height:16px; 
+    float:right;
+    text-align:center;
+    font-weight:bold; 
+    font-size:12px;
+    cursor:pointer;
+    margin-right:1px;
+    text-decoration:none;    
+    border-radius:2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px; 
+    box-shadow: 0 0 2px black; 
+    -webkit-box-shadow: 0 0 2px black; 
+    -moz-box-shadow: 0 0 2px black;
+    }
+    
+ .jm_win a.cmdbtn:hover{background-color:rgb(251,96,112);}
+ /*关闭按钮*/
+ .jm_win a.close
+{
+    background-color:rgb(176,4,21); 
+    margin-right:6px;   
+    color:#FFF;    
+}
+
+.jm_win a.close:hover
+{
+    background-color:rgb(251,96,112);
+    }
+
+ /*最大化*/   
+.jm_win a.max
+{
+ } 
+ 
+ /*最小化*/
+ .jm_win a.min
+ {
+}
+
+.jm_win_full_div
+{
+    background-color:#AAA;
+    filter:alpha(opacity=60);
+    -moz-opacity:0.6;
+    opacity: 0.6;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    }
+    
+.jm_win_tooltip
+{
+    border: solid 1px #9D952C; 
+    background-color:#FFEA03;
+    }
+ /*等待*/ 
+ .jm_wait
+    {
+     text-align:center;
+     padding:10px;
+    background:url(images/waitinfo.gif) 50% 50% no-repeat; 
+    width:100px;
+    height:100px;
+}

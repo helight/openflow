@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="/content/css/base.css" rel="stylesheet" />
+    <style type="text/css">
+        h1
+        {
+            margin:40px auto;
+        }
+    </style>
+    <script type="text/javascript">
+    var wins = {};
+    function redirect(url) {
+    	var win = window.open(url);
+    }
+    function close(url) {
+    	var win = wins[url];
+    	if(win) win.close();
+    }
+
+    </script>
+</head>
+<body>
+    <h1>欢迎使用OpenFlow流程编辑器</h1>
+</body>
+</html>

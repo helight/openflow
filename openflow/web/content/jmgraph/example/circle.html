@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<script type="text/javascript" src="../loadJMGraph.js" ></script>
+		<script type="text/javascript">
+
+			function load() {
+				
+				var canvas = document.getElementById('mycanvas');
+				var graph = new jmGraph(canvas);				
+				var style = {
+					stroke:'rgb(120,20,80)',					
+					lineWidth:2,
+					fill:'transparent',
+					close:true
+				};
+				style.shadow = new jmShadow(0,0,6,'rgb(39,40,34)');
+				
+				var arc = graph.createShape('arc',{style:style,center:{x:80,y:80},radius:60,start: Math.PI / 3,end:Math.PI,anticlockwise:true});
+				//arc.canMove(true);
+				arc.bind('mouseover',function(evt) {
+					this.style.stroke = 'rgba(39,72,188,0.5)';
+					graph.refresh();
+				});
+				arc.bind('mouseleave',function(evt) {
+					this.style.stroke = 'rgb(120,20,80)';
+					graph.refresh();
+				});
+				//arc.width(300);
+				//arc.height(200);
+				graph.children.add(arc);
+				arc.canMove(true);
+
+				style = jmUtils.clone(style);
+				style.fill = 'rgb(120,20,80)';
+				var arc2 = graph.createShape('circle',{style:style,center:{x:'50%',y:'50%'},width:60,height:80});
+				//arc.canMove(true);
+				arc2.bind('mouseover',function(evt) {
+					this.style.stroke = 'rgba(39,72,188,0.5)';
+					graph.refresh();
+				});
+				arc2.bind('mouseleave',function(evt) {
+					this.style.stroke = 'rgb(120,20,80)';
+					graph.refresh();
+				});				
+				arc.children.add(arc2);
+				arc2.canMove(true);
+				
+				graph.refresh();			
+			}
+
+			function keydonw (evt) {
+				window.console.log(evt.keyCode);
+			}
+		</script>
+	</head>
+	<body onload="loadJMGraph(load)" style="width:800px;margin:10px auto;border:1px solid blue;" >	
+		<canvas id="mycanvas" width="500" height="400" style="border:1px solid red;margin:10px;">不支持canvas
+		</canvas>	
+		
+	</body>
+</html>

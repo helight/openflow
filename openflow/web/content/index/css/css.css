@@ -1,0 +1,53 @@
+@charset "utf-8";
+/* CSS Document */
+body { margin:0; padding:0; font-size:12px; color:#fff; line-height:22px;  background:url(../images/Index_bg.png);}
+body,input,select,textarea{ font: 12px/1.5 tahoma,'微软雅黑', Srial, helvetica, sans-serif; }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, xmp, code, form, fieldset, legend, input, select, textarea, p, blockquote, th, td {margin: 0; padding: 0;}
+img{ border:none;}
+li,img{border:0;vertical-align:middle}
+ul,ol{ list-style-type: none; } 
+.clear{ clear:both; height:0px; margin:0; padding:0; width:0; border:none; overflow:hidden;}
+a{ color:#fff; text-decoration:none; hide-focus: expression(this.hideFocus=true); outline: none; }
+a:hover{ text-decoration:underline;  text-decoration:none}
+.yellow{ color:#ffff00}
+.blue{ color:#009dc8}
+.red{ color:#f00}
+.orang{ color:#ff8040}
+.balck{ color:#333; font-size:16px ;}
+	
+
+.Container{ width:1200px; height:auto; overflow:hidden; margin:0 auto }
+.Top{ padding-top:20px; height:auto; overflow:hidden}
+.logo{ float:left; padding-left:30px}
+.QQ{ float:right; padding-right:30px; line-height:24px; padding-top:30px }
+.zhux{  background:url(../images/QQ_img.png) no-repeat; padding-left:25px;}
+.zhux a{ color:#ffbf04}
+.link{ padding-top:5px}
+
+.center{ margin-top:10px;}
+.Banner{ margin-top:20px;}
+
+
+.Buttonimg{ width:1070px; height:104px; padding-top:30px; padding-left:130px}
+.Button01{ width:183px; height:104px; background:url(../images/Index_button01.png) no-repeat;}
+.Buttonimg li{ float:left;  display:inline; padding-right:55px}
+.Buttonimg li a.Button01{ width:183px; height:104px; display:block; background:url(../images/Index_button01hover.png) no-repeat;}
+.Buttonimg li a.Button01:hover{ width:183px; height:104px; display:block; background:url(../images/Index_button01hover.png) no-repeat 0 -104px;}
+
+.Button02{ width:183px; height:104px; background:url(../images/Index_button02hover.png) no-repeat;}
+.Buttonimg li a.Button02{ width:183px; height:104px; display:block; background:url(../images/Index_button02.png) no-repeat}
+.Buttonimg li a.Button02:hover{ width:183px; height:104px; display:block; background:url(../images/Index_button02.png) no-repeat -183px -104px;}
+
+.Button03{ width:183px; height:104px; background:url(../images/Index_button03hover.png) no-repeat;}
+.Buttonimg li a.Button03{ width:183px; height:104px; display:block; background:url(../images/Index_button03.png) no-repeat}
+.Buttonimg li a.Button03:hover{ width:183px; height:104px; display:block; background:url(../images/Index_button03.png) no-repeat -366px -104px;}
+
+.Button04{ width:183px; height:104px; background:url(../images/Index_button04hover.png) no-repeat;}
+.Buttonimg li a.Button04{ width:183px; height:104px; display:block; background:url(../images/Index_button04.png) no-repeat}
+.Buttonimg li a.Button04:hover{ width:183px; height:104px; display:block; background:url(../images/Index_button04.png) no-repeat -549px -104px;}
+
+
+.Footer{ background:url(../images/footer_bg.png) no-repeat center 0; height:100px; margin-top:60px; line-height:24px;}
+.Footer p{ padding-top:20px; text-align:center}
+
+

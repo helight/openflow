@@ -1,0 +1,583 @@
+﻿html, body
+{            
+    overflow: hidden; 
+}
+
+
+#editor-body
+{
+    width: 100%;
+    height:100%;
+    overflow:hidden;
+    position:relative; 
+}
+#editor-body-left
+{
+    float: left;
+    height: 100%;
+    width: 160px;
+    display: inline-block;
+    position: relative;
+    padding-right: 4px;
+    /*background: #E0E0E3 url(../images/sidebar.png) repeat;*/
+}
+#editor-body-left div.right_shadow
+{
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+   background: #fff url(../images/sidebar_shadow.png) 0 0 repeat-y;
+}
+#editor-body-right
+{
+    float: left;  
+    width: 100%; 
+    display: inline-block;
+}
+#editor-parent
+{
+    width:100%;
+    display: relative;
+    overflow: hidden;
+}
+
+#editor-parent .notsupported 
+{
+    color:red;
+    font-size: 25px;
+    padding:20px;
+    margin: 20px auto;
+}
+#editor-parent .notsupported  span
+{
+    color:#000;
+}
+#editor
+{
+    background:url(../primitive/grid.png);
+    width:100%;
+    height:99%;    
+    display:inline-block;
+    position:relative;
+    overflow: auto;
+}
+
+#editor-component,.mycomponent
+{
+    overflow: hidden;
+    padding: 2px;
+    margin: 6px 1px;
+    left: 0;
+    top: 0;
+}
+/*组件*/
+#editor-component li,.mycomponent li
+{
+    padding: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    height:32px;
+    line-height: 32px;
+    vertical-align: middle;
+}
+
+#editor-component li div,.mycomponent li div
+{
+    width:32px;
+    height:32px;
+    line-height: 32px; 
+    float:left;
+    display: inline-block;
+}
+
+#editor-component li div.name,.mycomponent li div.name
+{
+    display: inline-block;
+    margin: 0px 8px;
+    width: 100px;
+    height:32px;
+    line-height: 32px;
+    overflow: hidden;
+}
+
+#editor-component li:hover,.mycomponent li:hover
+{
+    background-color: #A7B271;
+}
+
+/*编辑器工具栏*/
+#editor-toolbar
+{
+    width:100%;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding: 4px 74px 2px 22px;
+    vertical-align: middle;
+    margin: 0;
+    background: rgb(0,0,0);
+    /* url(../images/header_bg.png) repeat;background: -moz-linear-gradient(top, #292929, #242424);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#292929), color-stop(100%,#242424));
+    background: -webkit-linear-gradient(top, #292929,#242424);
+    background: -o-linear-gradient(top, #292929,#242424);
+    background: -ms-linear-gradient(top, #292929,#242424);
+    background: linear-gradient(top, #292929,#242424);*/
+    box-shadow: 0 1px 0 0 #353535 inset;
+    border: 1px solid black;
+    border-left: 0;
+    border-right: 0;
+}
+#editor-toolbar ul.toolbar_container,#editor-toolbar ul.operation_Toolbar
+{
+    list-style: none;
+    display: inline-block;
+}
+#editor-toolbar ul.operation_Toolbar
+{
+    margin-left: 40px; 
+    border-left: 2px solid #ccc;    
+}
+#editor-toolbar ul.toolbar_container li ,#editor-toolbar ul.operation_Toolbar li
+{
+    float: left;
+    cursor: pointer;
+    padding: 3px 2px;
+    margin: 0 4px;
+    font-size: 14px;
+    border: 1px solid transparent;
+    border-radius:5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+#editor-toolbar ul.toolbar_container li:hover ,#editor-toolbar ul.operation_Toolbar li:hover
+{
+    border: 1px solid #557E55;
+    background: #4B5D50;
+}
+#editor-toolbar ul.toolbar_container li img,#editor-toolbar ul.operation_Toolbar li img
+{
+    margin: 2px 1px 0 0;
+    float: left;
+    width: 16px;
+    height: 16px;
+}
+#editor-toolbar ul.toolbar_container li a,#editor-toolbar ul.operation_Toolbar li a
+{
+    float: left;
+    text-decoration: none;
+    color: #C1C1BF;
+}
+
+/*
+    全局视图
+    */
+.sizeview
+{    
+    width: 140px;
+    height: 150px;
+    margin: 10px 10px 10px 1px;
+    border: 1px solid black;
+    background: #ccc;
+    overflow:hidden;
+}
+/*标题*/
+div.flow-title
+{
+position:absolute;
+text-align:center;
+margin:0 auto;
+top:4px;
+left:calc(50%-width / 2);
+font-weight:bold;
+font-size:16px;
+}
+
+/*属性显示框*/
+div.property
+{
+    /*height:100%; */  
+    text-align:center; 
+    margin:0 auto;
+    display:inline-block;
+    z-index:20000;  
+    overflow:hidden; 
+    overflow-y:auto;     
+}
+
+/*属性输入框*/
+div.property .inputTR
+{
+    display:block;
+    margin:6px 0;
+    width:98%;
+}
+div.property input, .property label
+{
+    display:block;
+}
+.property textarea
+{
+    width:97%;
+}
+
+div.property .disabled
+{
+    border:0;
+    background-color:#fff;
+}
+
+/*代码编辑器*/
+div.property div.code
+{    
+    width:98%;
+    overflow:auto;
+    text-align:left;
+}
+div.property div.code-editor{
+   border:1px solid black;
+   background-color: #fff;
+}
+
+/*属性表格*/
+div.property table
+{
+    width:100%;
+    
+}
+div.property table td
+{
+    text-align:left;
+}
+div.property table td.label
+{
+    text-align:right;
+    background-color:#B7EDC9;
+    width:90px;
+    padding:2px;
+}
+div.property table th.add,div.property table td.add
+{
+    text-align:center;
+    width:10px;
+}
+
+div.property table td a.add
+{
+    text-decoration:none;
+}
+
+
+/**节点属性标头**/
+div.property div.cellPropertyHead
+{
+    border:1px solid #B2B2B2;
+    border-bottom: 0;
+    margin: 10px 0 0;
+}
+
+.split-border-left
+{
+    border-left: 3px solid #9BA0AF !important;
+}
+.split-border-right
+{
+    border-right: 3px solid #9BA0AF;
+}
+
+/* Modules */
+
+.module {
+border: 1px solid #9BA0AF;
+width: 100%;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+background: #ffffff;
+vertical-align: top;
+}
+
+.module .header {
+height: 38px;
+width: 100%;
+overflow: hidden;
+font-weight: bold;
+line-height: 36px;
+vertical-align: middle;
+padding-left: 10px;
+background: #F1F1F4 url(../images/secondary_bar.png) 0 100% repeat-x;
+-webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px;
+-moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px;
+border-top-left-radius: 5px; border-top-right-radius: 5px;
+}
+
+.module footer {
+height: 32px;
+width: 100%;
+border-top: 1px solid #9CA1B0;
+background: #F1F1F4 url(../images/module_footer_bg.png) repeat-x;
+-webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px;
+-moz-border-radius-bottomleft: 5px; -moz-border-radius-bottomright: 5px;
+-webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px;
+}
+
+.module_content {
+margin: 0;
+color: #666;
+}
+
+
+/*高亮代码*/
+.CodeMirror {
+    border: 1px inset #dee;
+    text-align:left;
+    background-color: :#fff;
+}
+.CodeMirror-scroll {
+  overflow: hidden;
+  overflow-x:auto;
+  padding:0;
+  margin: 0;
+}
+
+
+
+/* 展开或收缩栏*/
+div.expand_banner
+{
+    position: relative;
+    text-align: left;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #B2B2B2;
+    height: 23px;
+    padding: 3px 0 0;
+    margin: 0;
+    cursor: pointer;
+    filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#eff1f4', endColorstr='#eff1f4');
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#eff1f4', endColorstr='#e6e8eb')";
+    background: -webkit-gradient(linear, left top, left bottom, from(#EFF1F4), color-stop(1, #E6E8EB));
+    background: -moz-linear-gradient(center bottom, #E6E8EB 0%, #EFF1F4 100%) repeat scroll 0 0 transparent; 
+}
+
+div.expand_banner_title
+{
+    color: #5D6774;
+    font-size: 11px;
+    font-family: Arial;
+    font-weight: bold;
+    position: absolute;
+    display: inline-block;
+    margin-top: 4px;
+    text-shadow: rgba(255, 255, 255, 1) 0px 1px 0px;
+}
+
+/**展开或收缩箭头项*/
+div.expand_item
+{
+    width: 9px;
+    height: 10px;
+    margin: 4px 5px 0;
+    display: inline-block;
+}
+/**
+* 已展开标签,箭头向右
+*/
+div.expand_expanded
+{
+    background: url(../images/open_close.png) no-repeat 0 -10px;
+}
+/**
+* 已关闭标签,箭头向下
+*/
+div.expand_closed
+{
+    background: url(../images/open_close.png) no-repeat 0 0;
+}
+
+/**
+*/
+div.expand_content
+{
+    border-bottom: 1px solid #B2B2B2;
+}
+
+/**
+右健菜单
+*/
+div.editor-menu {
+    position:absolute;
+    padding: 4px;
+    background-color: #fff;
+    width:auto;
+    height:auto;
+    display: inline;
+    min-width: 80px;
+    border: solid 1px #bbd6ec;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: inset 0 0 2px #fff;
+     -webkit-box-shadow: inset 0 0 2px #fff;
+    -moz-box-shadow: inset 0 0 2px #fff;
+}
+div.editor-menu ul {
+    list-style: none;   
+    padding:0;
+    margin:0;       
+}
+div.editor-menu ul li {
+    cursor:pointer; 
+    color:blue; 
+    padding: 2px;   
+}
+div.editor-menu ul li:hover {
+    color:green;
+    background-color: #ccc;
+}
+
+/* 任务服务器状态样式 */
+div.task-server-container {
+
+}
+div.task-server-container #task-servers {
+    border-top:1px solid #ccc;
+}
+div.task-server-container ul.statusMark {
+    list-style: none;  
+    height:38px;  
+}
+div.task-server-container ul.statusMark li {
+    margin: 8px;
+    padding:2px;
+    float:left;
+}
+
+div.task-server-container ul#task-servers {
+    list-style: none;
+    padding:0;
+    margin:0;
+    display: inline-block;
+}
+div.task-server-container ul#task-servers li {
+    float:left;
+    padding:4px 6px;
+    margin:4px;
+}
+div.task-server-container li:hover {
+    color:green;
+}
+div.task-server-container li.stoped {
+    background-color:#99CCFF;
+}
+div.task-server-container li.suspend {
+    background-color:#FFCC99;
+}
+div.task-server-container li.success {
+    background-color:#FFFF99;
+}
+div.task-server-container li.failed {
+    background-color:#FF0000;
+}
+/* end-任务服务器状态样式 */
+
+/* 权限修改弹出框*/
+div.updatePermission {
+    margin: 0px auto;
+    padding:10px 10px;
+}
+div.updatePermission label {
+    display: block;
+    color:#000;
+}
+div.updatePermission label span {
+    color:#ccc;
+}
+
+div.updatePermission textarea {
+    height:80px;
+    width:98%;
+    display: block;
+}
+/* end-权限修改弹出框*/
+
+/*实例参数*/
+div.instance-editor-container {    
+    margin:10px 10px 20px 10px;
+}
+div.instance-editor-container>div>span {
+    display:block;
+}
+div.instance-editor-container input[type=text],div.instance-editor-container textarea,div.instance-editor-params input[type=text] {
+    width:80%;
+}
+div.instance-editor-container input[type=checkbox],div.instance-editor-container input[type=checkbox] ~ span {
+    float:left;    
+}
+
+div.instance-editor-params {
+    margin:0;
+    padding:0;
+    max-height:100px;
+    overflow:auto;
+}
+
+div.instance-editor-params > h3 {
+    margin:0;
+    padding:0 10px;
+    background-color: #ccc;
+}
+
+div.instance-editor-params>div {
+    margin:5px 10px;
+}
+
+/*end-实例参数*/
+
+/*元素参数*/
+div.cell-property-item {
+    display:block;
+    margin-top:10px;
+    padding:2px;
+}
+
+div.cell-property-item .label {
+    border-bottom:1px solid #ccc;
+    padding:4px; 
+    background-color:#ccc;    
+}
+
+div.cell-property-item .label span {
+    color:red;
+}
+
+div.cell-property-item .input {
+    margin-top:4px;
+}
+
+div.cell-property-item .container {
+    vertical-align: middle;
+}
+div.cell-property-item .container>.element,
+div.cell-property-item .container>span,
+div.cell-property-item .container>b {
+    float:left;
+    width:auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin:1px;
+}
+
+div.cell-property-item div.cell-nodes {
+    padding: 6px;
+}
+div.cell-property-item div.cell-nodes>div>label,
+div.cell-property-item div.cell-nodes>div>input {
+    display: inline-block;
+}
+div.cell-property-item div.cell-nodes>div>label {
+    width:60px;
+    text-align: right;
+    padding-right: 2px;
+}
+/*end-元素参数*/

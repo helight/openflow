@@ -1,0 +1,75 @@
+<%
+    master="../../master/detail.html";
+%>
+
+<view1>
+    <script type="text/javascript">
+        $(function () {
+            $('#pager').paging({
+                showCount: 6, //当前页附近显示多少页码，比如，4或5表示前后显二个页码，6表示前后显示三个,都会除以2
+                change: function (p) {
+                    search(p);
+                }
+            });
+
+            $('#tbUserLogs').datagrid({
+                columns:[[{field:'User',title:'用户名',sortable:true},{field:'Action',title:'动作类型',sortable:true,width:100},{field:'Ip',title:'Ip',sortable:true},{field:'OnDate',title:'发生时间'}]],
+                singleSelect:true,
+                onSortColumn:function(sort,order) {
+                    search(0,sort,order);
+                }
+            });
+
+            $('#btnsearch').click(function() {
+                search(0);
+            });
+            search(0);
+            resetParentHeight();
+        });
+        function search(p,sort,order) {
+                p = Number(p) || 1;
+                var wait = openflow.message.showWaiting('查询中...');
+                var orderby = sort || '';//instanceTB.sort?instanceTB.sort.toString():'';
+                if(sort && order) orderby = sort + ' ' + order;
+                openflow.request('post', {
+                    page: p,
+                    count: 20,
+                    orderby:orderby,
+                    url: openflow.root + 'servers/userLogServer.js?cmd=search'
+                }, function (data,err) {
+                    wait.close();
+                    if (data) {
+                        createTable(data.data,sort,order);
+
+                        $('#pager').paging({ index: data.page, count: data.pageCount });
+                    }
+                    else if(err) {
+                        $('#tbUserLogs').html(err.toString());
+                    }
+                    //重置父页高度
+                    resetParentHeight();
+                });
+            }
+
+            //生成模板表格
+            function createTable(data,sort,order) {
+                for(var i in data) {
+                    var d = data[i]
+                    d.OnDate = $jm.formatDate(d.OnDate,'yyyy-MM-dd HH:mm:ss');
+                }
+                $('#tbUserLogs').datagrid({data:data,sortName:sort,sortOrder:order});
+            }
+    </script>
+</view1>
+<view2>
+    <div id="searchwhere">
+        <div>
+            <button value="查询" id="btnsearch" >查询</button>
+            </div>
+        <div class="clear"></div>
+    </div>
+    <div id="clocks">
+        <table id="tbUserLogs"></table>
+    </div>
+    <div id="pager"></div>
+</view2>

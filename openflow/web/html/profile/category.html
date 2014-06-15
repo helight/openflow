@@ -1,0 +1,222 @@
+<%
+    master="../../master/detail.html";
+%>
+
+<view1>
+    <style>
+    div.container {
+        margin: 6px 10px;
+        min-width: 200px;
+        border: solid 1px #ccc;
+        padding: 10px;
+        box-shadow:0 2px 10px #ccc;
+        margin-top:10px;
+        float:left;
+        width:50%;
+        max-width: 400px;
+    }
+    div.tree {
+        overflow: auto;
+    }
+    </style>
+    <script src="<%=rootUrl %>/content/js/openflow.category.js"></script>
+</view1>
+<view2>
+    <div class="tree container">
+        <ul id="treeCategory"></ul>
+    </div>
+    <div class="container">
+        <input type="text" id="txtName" maxlength="16" />
+        <button id="btnUpdate" onclick="updateCategory($('#txtName').attr('data-id'),$('#txtName').val())">保存</button>
+    </div>
+    <div id="categoryMenu" class="easyui-menu" style="width:120px;display:none;">
+            <div class="menu-add" onclick="addCategory()" data-options="iconCls:'icon-add'">添加</div>
+            <div class="menu-remove" onclick="removeCategory()" data-options="iconCls:'icon-remove'">移除</div>
+    </div>
+    <div class="clear" style="min-height: 300px;"></div>
+    <div class="page-tip">
+        <h3>"右健"操作说明：</h3>
+        <ol>
+            <li>右健分类项可以弹出操作菜单</li>
+            <li>选中分类，在右边区域修改并保存</li>
+        </ol>
+    <div>
+        <script type="text/javascript">
+
+            $('#treeCategory').tree({
+                dnd:true,
+                onContextMenu:function(e,node) {
+                    e.preventDefault();
+                    var data = openflow.category.get(node.id);
+                    //深度超过则不能添加子分类
+                    if(data) {
+                        $('#categoryMenu>div').show();
+                        if(data.deep > 2) {
+                            $('#categoryMenu>div.menu-add').hide();
+                        }
+                    }
+                    else {
+                        $('#categoryMenu>div.menu-remove').hide();
+                    }
+
+                    $('#treeCategory').tree('select',node.target);
+                    $('#categoryMenu').menu('show',{
+                        left:e.pageX,
+                        top:e.pageY
+                    });
+                },
+                onBeforeDrag : function(node) {
+                    if(node.id == 0) {
+                        return false;
+                    }
+                },
+                onBeforeDrop:function(target,source,point) {
+                    //根节点不可放置
+                    var id = $(target).attr('node-id');
+                    if(id == 0) {
+                        return point != 'top' && point != 'bottom';
+                    }
+
+                },
+                onDrop : function(target,source,point) {
+                    var parent = $(target).attr('node-id');
+                    //移除节点的位置
+                    updateCategory(source.id,'',parent);
+                },
+                onSelect : function(node) {
+                    var cat = openflow.category.get(node.id);
+                    cat = cat || {Name:''};
+                    $('#txtName').val(cat.Name);
+                    $('#txtName').attr('data-id',node.id);
+                }
+            });
+
+        function refreshCategory() {
+            //获取当前用户分类
+            openflow.category.search(function(data) {
+                if(data) {
+                    openflow.category.data = data;
+                    createTree(data);
+                }
+            });
+        }
+
+        refreshCategory();
+
+        //生成模板表格
+        function createTree(data) {
+            var d = [{
+                'id':0,
+                'text':openflow.user,
+                'children':openflow.category.createDataTree(data,0)
+            }];
+            //var d = createDataTree(data,0);
+            $('#treeCategory').tree({
+                data:d
+            });
+            resetParentHeight();
+        }
+
+        //添加新节点
+        function addCategory() {
+            var parent = $('#treeCategory').tree('getSelected');
+            if(!parent) {
+                openflow.message.warning('请选择一个分类');
+            }
+            else {
+                 var win =  $('<div />');
+                var winbody = $('<ul class="edit-container" />').appendTo(win);
+                var lblname = $('<span for="txtname"></span>');
+                lblname.html('名称');
+                var txtname = $('<input type="text" maxlength="16" name="txtname" />');
+                var namediv = $('<li></li>');
+
+                lblname.appendTo(namediv);
+                txtname.appendTo(namediv);
+                namediv.appendTo(winbody);
+
+                var top = event.pageY ||
+                        (event.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+                 var left = event.pageX ||
+                        (event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
+               win.dialog({
+                    title:'添加分类',
+                    closable:true,
+                    minimizable:false,
+                    modal:true,
+                    iconCls:'icon-edit',
+                    width:250,
+                    height:120,
+                    left:left||200,
+                    top:top || 200,
+                    buttons: [{
+                        text: '确定', handler: function () {
+                            var nv = $.trim(txtname.val());
+                            if (nv == '') {
+                                openflow.message.warning('分类名称不可为空');
+                                txtname.focus();
+                                return;
+                            }
+                            var es = openflow.category.checkName(nv);
+                            if(es) {
+                                openflow.message.warning('分类名:' + nv + '已经存在,请更换！');
+                                txtname.focus();
+                                return;
+                            }
+                            var wait = openflow.message.showWaiting('添加中...');
+                            openflow.category.add(nv,parent.id,function(r) {
+                                wait.close();
+                                if(r) {
+                                    win.dialog('close');
+                                    refreshCategory();//刷新
+                                    openflow.message.success('添加成功');
+                                }
+                                else {
+                                    openflow.message.error('添加失败');
+                                }
+                            });
+                        }
+                    }, {
+                        text: '取消', handler: function () {
+                            win.dialog('close');
+                        }
+                    }]
+                });
+                txtname.focus();
+            }
+        }
+        //修改分类
+        function updateCategory(id,name,parent) {
+            if(!id || id == 0) {
+                openflow.message.warning('请选择一个分类进行修改!');
+                return;
+            }
+            openflow.category.update(id,name,parent,function(d) {
+                if(d) {
+                    refreshCategory();//刷新
+                    openflow.message.success('保存成功');
+                }
+                else {
+                    openflow.message.error('修改失败');
+                }
+            });
+        }
+        //移除节点
+        function removeCategory() {
+            var node = $('#treeCategory').tree('getSelected');
+            if(!node) {
+                openflow.message.warning('请选择一个分类');
+            }
+            else {
+                if(confirm('确定删除当前分类?')) {
+                    openflow.category.remove(node.id,function(d) {
+                        if(d) {
+                            openflow.message.success('删除成功');
+                            refreshCategory();//刷新
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</view2>

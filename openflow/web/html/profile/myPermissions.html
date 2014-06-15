@@ -1,0 +1,112 @@
+<%
+    master="../../master/detail.html";
+%>
+
+<view1>
+	<script type="text/javascript">
+
+	/*8
+	* 载入所有权限项
+	*/
+	function loadPermissions(callback) {
+		openflow.request('post', {
+                url: openflow.root + 'servers/permissionServer.js?cmd=getAllPermissionsWithUser'
+            }, function (data,err) {
+                if (data) {
+                   showPermissions(data);
+                }
+                else if(err) {
+                    $('#tbPermissions').html(err.toString());
+                }
+                if(callback) callback();
+            });
+	}
+
+	/**
+ 	 * 显示用户所有权限
+	 */
+	function showPermissions(data) {
+		for(var i=0;i<data.length;i++) {
+			var d = data[i];
+			switch(d.Flag) {
+				case 0: {
+					d.FlagName='等待审核';
+					d.Operation='<a href="#" onclick="javascript:retractUserPermission('+d.Id+');return false">撤回<a/>';
+					break;
+				}
+				case 1: {
+					d.FlagName='有效';
+					break;
+				}
+				case 2: {
+					d.FlagName='禁用';
+					d.Operation='<a href="#" onclick="javascript:applyPermission(\''+d.Mark+'\');return false;">申请<a/>';
+					break;
+				}
+				case 3: {
+					d.FlagName='已撤回';
+					d.Operation='<a href="#" onclick="javascript:applyPermission(\''+d.Mark+'\');return false;">申请<a/>';
+					break;
+				}
+				case 4: {
+					d.FlagName='被拒绝';
+					d.Operation='<a href="#" onclick="javascript:applyPermission(\''+d.Mark+'\');return false;">申请<a/>';
+					break;
+				}
+				default: {
+					d.FlagName='未申请';
+					d.Operation='<a href="#" onclick="javascript:applyPermission(\''+d.Mark+'\');return false;">申请<a/>';
+					break;
+				}
+			}
+		}
+		$('#tbPermissions').datagrid({data:data});
+	}
+
+	/**
+	 * 申请权限
+	 */
+	function applyPermission(mark) {
+		openflow.request('post', {
+			mark:mark,
+                url: openflow.root + 'servers/permissionServer.js?cmd=applyUserPermission'
+            }, function (data,err) {
+                if (data) {
+                	loadPermissions();//刷新列表
+                   openflow.message.success('申请成功,等待审核');
+                }
+            });
+		return false;
+	}
+
+	/**
+	 * 撤回申请
+	 */
+	function retractUserPermission(id) {
+		openflow.request('post', {
+			id:id,
+                url: openflow.root + 'servers/permissionServer.js?cmd=retractUserPermission'
+            }, function (data,err) {
+                if (data) {
+                   openflow.message.success('已撤回');
+                   loadPermissions();//刷新列表
+                }
+            });
+		return false;
+	}
+
+	$(function() {
+		$('#tbPermissions').datagrid({
+                columns:[[{field:'Operation',title:''},{field:'Name',title:'名称'},{field:'FlagName',title:'状态',align:'left'},{field:'ApplyOn',title:'申请时间'},{field:'CheckOn',title:'处理时间'},{field:'Checker',title:'处理人'}]],
+                singleSelect:true
+            });
+		loadPermissions();
+	})
+	</script>
+</view1>
+
+<view2>
+	<div>
+		<table id="tbPermissions"></table>
+	</div>
+</view2>

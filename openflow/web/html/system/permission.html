@@ -1,0 +1,381 @@
+<%
+    master="../../master/detail.html";
+%>
+<view1>
+	<style type="text/css">
+	.container
+	{
+		float: left;
+		margin: 6px 10px;
+		min-width: 200px;
+	}
+	.container ul
+	{
+		list-style: none;
+		border: solid 1px #ccc;
+		padding: 4px;
+		box-shadow:0 2px 10px #ccc;
+		margin-top:10px;
+		height:400px;
+		overflow: auto;
+	}
+	.container ul li
+	{
+		display:block;
+		margin: 2px;
+		padding: 2px;
+	}
+
+	.container ul li.user
+	{
+		color: #000;
+		cursor: pointer;
+	}
+	.container ul li.user:hover
+	{
+		background-color: #ccc;
+	}
+	.container ul li.user.selected
+	{
+		background-color: green;
+	}
+
+	#addpermisstion {
+		width:90%;
+	}
+	#addpermisstion div
+	{
+		display: block;
+		margin: 2px;
+	}
+	</style>
+	<script type="text/javascript">
+		var currentSelectedUser;
+		var allusers = {};
+		/*8
+		* 载入所有权限项
+		*/
+		function loadPermissions(callback) {
+			openflow.request('post', {
+                    url: openflow.root + 'servers/permissionServer.js?cmd=getpermissions'
+                }, function (data,err) {
+                    if (data) {
+                       for(var i in data) {
+                       		showPermissionItem(data[i].Mark, data[i].Name);
+                       }
+                    }
+                    else if(err) {
+                        $('#lstPermissions').html(err.toString());
+                    }
+                    if(callback) callback();
+                });
+		}
+
+		function showPermissionItem(mark,name) {
+			$('<li data-mark="' + mark + '"><input type="checkbox" /><span>' + name + '</span></li>').appendTo('#lstPermissions');
+		}
+
+		/**
+		* 加载用户列表
+		*/
+		function loadUsers(callback) {
+			openflow.request('post', {
+                    url: openflow.root + 'servers/permissionServer.js?cmd=getusers'
+                }, function (data,err) {
+                    if (data) {
+                            bindUsers(data);
+                    }
+                    else if(err) {
+                        $('#lstUsers').html(err.toString());
+                    }
+                    if(callback) callback();
+                });
+		}
+
+		/**
+		* 绑定用户列表
+		*/
+		function bindUsers(users) {
+			$('#lstUsers').html('');
+			var curuser = currentSelectedUser;
+			currentSelectedUser = '';
+			for(var i in users) {
+                addUser(users[i].User,curuser == users[i].User || users.length == 1);
+            }
+		}
+
+		//增加用户到列表中
+		function addUser(user,select) {
+		if(!user) {
+
+		}
+			$('<li class="user" data-user="'+user+'">' +user + '</li>').appendTo('#lstUsers')
+           		//选择当前用户
+           		.click(function() {
+           			var acc = $(this).attr('data-user');
+           			selectUser(acc);
+           		});
+           	if(!allusers[user]) allusers[user] = user;
+           	if(select || !currentSelectedUser) {
+           		selectUser(user);//选择
+           	}
+		}
+
+		/**
+		* 过滤列表中的用户名
+		*/
+		function userFilter() {
+			var name = $.trim($('#txtUser').val());
+			var users = [];
+			for(var user in allusers) {
+				if(!name || user.indexOf(name) >= 0) {
+					users.push({User:user});
+				}
+			}
+			bindUsers(users);
+		}
+
+		/**
+		* 选择指定的用户
+		*/
+		function selectUser(user) {
+			//if(currentSelectedUser == user) return;
+			$('#lstUsers li').toggleClass('selected',false);
+            $('#lstUsers li[data-user='+user+']').toggleClass('selected',true);
+            loadUserPermission(user);//加载其权限
+            currentSelectedUser= user;
+		}
+
+		/**
+		* 加载指定用户的权限信息
+		*/
+		function loadUserPermission(user) {
+			if(!user) return;
+			//表明已加载过的权限。则直接显示
+			if(allusers[user] != user) {
+				showUserPermission(allusers[user]);
+				return;
+			}
+			var wait= openflow.message.showWaiting('加载...');
+			openflow.request('post', {
+				user:user,
+                    url: openflow.root + 'servers/permissionServer.js?cmd=getuserpermissions'
+                }, function (data,err) {
+                	wait.close();
+                    if (data) {
+                    	allusers[user] = data;
+                       	showUserPermission(data);
+                    }
+                    else if(err) {
+                        $('#lstUsers').html(err.toString());
+                    }
+                });
+		}
+
+		/**
+		* 显示指定用户的权限
+		*/
+		function showUserPermission(permissions) {
+			$('#lstPermissions li input[type=checkbox]').attr('checked',false);
+			for(var k in permissions) {
+				var p=permissions[k];
+				var chk = $('#lstPermissions li[data-mark='+p.Mark+'] input[type=checkbox]');
+				chk[0].checked=true;
+	       		//chk.attr('checked',true);
+       		}
+		}
+
+		/*8
+		* 弹出添加权限项页
+		*/
+		function showAddPermission() {
+			var win = new $jm.win({
+	            title: '添加权限项', //标题
+	            body:$('#addpermisstion'),
+	            modal: true,
+	            canMax: true, //禁止最大化
+	            canMin: false,
+	            resizeable: false,
+	            top: 40,
+	            left:125,
+	            width: 220,
+	            height: 115,
+	            bounds: { left: true, top: true, right: true, bottom: true },
+	            button:[{text:'添加',click:function() {
+	            	var mark = $.trim($('#pmark').val());
+	            	var name = $.trim($('#pname').val());
+	            	if(!mark) {
+	            		openflow.message.warning('权限标识不可为空！');
+	            		return;
+	            	}
+	            	if(!name) {
+	            		openflow.message.warning('权限名称不可为空！');
+	            		return;
+	            	}
+	            	openflow.request('post', {
+						mark:mark,
+						name:name,
+		                    url: openflow.root + 'servers/permissionServer.js?cmd=addpermission'
+		                }, function (data,err) {
+		                    if (data) {
+		                    	showPermissionItem(mark,name);
+		                    	win.close();
+		                    }
+		                    else if(err) {
+		                        openflow.message.error(err);
+		                    }
+		                });
+
+	            }},{text:'取消',click:function(){
+	            	win.close();
+	            }}]
+	        });
+        	win.show();
+		}
+
+		/**
+		 * 加载用户的权限申请
+		 */
+		function loadApplications() {
+			openflow.request('post', {
+                    url: openflow.root + 'servers/permissionServer.js?cmd=getApplications'
+                }, function (data,err) {
+                	for(var i=0;i<data.length;i++) {
+						var d = data[i];
+						d.Operation ='<a href="#" style="padding:4px;" onclick="javascript:passApplications(\''+d.Id+'\');return false;">通过<a/>';
+						d.Operation +='<a href="#" style="padding:4px;" onclick="javascript:refuseApplications(\''+d.Id+'\');return false;">拒绝<a/>';
+					}
+					$('#tbPermissions').datagrid({data:data});
+                });
+		}
+
+		/**
+		 * 通过权限申请
+		 *
+		 */
+		function passApplications(id) {
+			openflow.request('post', {
+					id:id,
+                    url: openflow.root + 'servers/permissionServer.js?cmd=passApplications'
+                }, function (data,err) {
+                    if (data) {
+                    	loadApplications();
+                    	openflow.message.success('操作成功');
+                    }
+                    else {
+                        openflow.message.error(err?err.toString():'操作失败');
+                    }
+                });
+		}
+
+		/**
+		 * 拒绝权限申请
+		 *
+		 */
+		function refuseApplications(id) {
+			openflow.request('post', {
+					id:id,
+                    url: openflow.root + 'servers/permissionServer.js?cmd=refuseApplications'
+                }, function (data,err) {
+                    if (data) {
+                    	loadApplications();
+                    	openflow.message.success('操作成功');
+                    }
+                    else {
+                        openflow.message.error(err?err.toString():'操作失败');
+                    }
+                });
+		}
+
+		$(function() {
+			//加载权限再加载用户
+			loadPermissions(function() {
+				loadUsers();//加载用户
+			});
+
+			/**
+			* 添加用户
+			*/
+			$('#btnAdd').click(function() {
+				$('#txtUser').toggleClass('error',false);
+				var user = $.trim($('#txtUser').val());
+				if(allusers[user]) {
+					selectUser(user);
+				}
+				else {
+					if(!user) {
+						$('#txtUser').toggleClass('error',true);
+						$('#txtUser').attr('title','请输入用户名');
+						return;
+					}
+					addUser(user,true);//添加并选择
+				}
+			});
+
+			/*
+			* 保存当前权限
+			*/
+			$('#btnSave').click(function() {
+				if(!currentSelectedUser) {
+					openflow.message.warning('请选择或添加一个用户！');
+					return;
+				}
+				var permissions='';
+				$('#lstPermissions li input[type=checkbox]:checked').each(function(i,c) {
+					permissions += $(c).parent().attr('data-mark') + ';';
+				});
+				var wait= openflow.message.showWaiting('保存中...');
+				openflow.request('post', {
+						user:currentSelectedUser,
+						permissions:permissions,
+	                    url: openflow.root + 'servers/permissionServer.js?cmd=updateuserpermissions'
+	                }, function (data,err) {
+	                	wait.close();
+	                    if (data) {
+	                    	allusers[currentSelectedUser] = currentSelectedUser;//清空当前用户权限缓存
+	                    	openflow.message.success('保存成功');
+	                    }
+	                    else {
+	                        openflow.message.error(err?err.toString():'保存失败');
+	                    }
+	                });
+				});
+
+			$('#txtUser').keyup(userFilter);
+
+			$('#tbPermissions').datagrid({
+                columns:[[{field:'Operation',title:''},{field:'Name',title:'名称'},{field:'User',title:'申请人',align:'left'},{field:'ApplyOn',title:'申请时间'},{field:'CheckOn',title:'处理时间'},{field:'Checker',title:'处理人'}]],
+                singleSelect:true
+            });
+            loadApplications();//加载权限申请
+		});
+	</script>
+</view1>
+
+<view2>
+			<div>
+				<div class="userContainer container">
+					<div>
+						<input type="text" id="txtUser" />
+						<button id="btnAdd">添加用户</button>
+					</div>
+					<ul id="lstUsers"></ul>
+				</div>
+
+				<div class="permissionContainer container">
+					<div>
+						<button id="btnAddPermission" onclick="showAddPermission();">添加权限项</button>
+						<button id="btnSave">保存</button>
+					</div>
+					<ul id="lstPermissions"></ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div>
+				<table id="tbPermissions"></table>
+			</div>
+	<div id="addpermisstion" style="display:none;">
+		<div><label for="pmark">标识</label><input type="text" name="pmark" id="pmark" maxlength="16" /></div>
+		<div><label for="pname">名称</label><input type="text" name="pname" id="pname" maxlength="32" /></div>
+	</div>
+</view2>
