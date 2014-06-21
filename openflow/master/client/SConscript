@@ -3,8 +3,6 @@ Import('env')
 env.Prepend(LIBS = ['master'])
 
 env.Program(
-    target = "openflow_master",
+    target = "client",
     source = Glob("*.cpp")
 )
-
-SConscript(['client/SConscript'], exports = 'env')
