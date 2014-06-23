@@ -1,7 +1,6 @@
 namespace cpp openflow
 namespace php openflow
 
-
 struct job_info
 {
     1:i32 job_id

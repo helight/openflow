@@ -1,0 +1,100 @@
+Code Style For C++ On This Code
+=================
+This doc just for this project, desc the C++ code style
+
+### Tabs:
+ No tabs, all tabs should replace by space
+ 4 space for one tabs
+
+### Head desc
+ // Copyright (c) 2014, HelightXu
+ // Author: Zhwen Xu<HelightXu@gmail.com>
+ // Created: 2014-01-01
+ // Description:
+ //
+
+### Head define
+ #ifndef OPENFLOW_MASTER_MASTER_HANDLER_H
+ #define OPENFLOW_MASTER_MASTER_HANDLER_H
+
+ ...
+
+ #endif  // OPENFLOW_MASTER_MASTER_HANDLER_H
+
+### Head include Order
+ 1. C system files.
+ 2. C++ system files.
+ 3. Other libraries .h files.
+ 4. Your project .h files.
+
+### Class struct enum define
+ 1. class name begin captal lettel, like Cxxx, NameServer
+ 2. struct begin with St, like Stxxx, StFileInfo
+ 3. enum begin with En, like Enxxx, EnTreeCode
+ 4. all members for class start with _, like _size, _len
+ 5. members for struct don't start with _
+ 6. member of enum all capital letter
+ 7. method for class are not capital letter with '_' like get_file_info()
+
+ class BaseThread
+ {
+ public:
+     BaseThread();
+     ~BaseThread();
+
+ private:
+     bool _alive;
+     uint8_t _thread_count;
+ };
+
+ struct StFileInfo
+ {
+     std::string _name;
+     uint32_t _size;
+ };
+
+ enum EnFileOpCode
+ {
+     OPRET_OK = 0,
+     OPRET_NOT_EXIST = 1000,
+     OPRET_EXIST = 1001
+ };
+
+### for while if else switch
+ 1.Has space between key words and "(" , between operator and val
+ 2.{} has single line
+
+ for (uint8_t i = 0; i < 10; ++i)
+ {
+     ......
+ }
+
+ while (_stop)
+ {
+     ......
+ };
+
+ if (_test)
+ {
+     ......
+ }
+ else
+ {
+     ......
+ }
+
+ switch (a)
+ {
+ case 5：
+     ......
+     break;
+ case 7:
+     ......
+     break;
+ }
+
+### Function define
+ 1.For short
+
+### vimrc for vim edit
+ https://github.com/helight/helight_code/tree/master/tools/vim
