@@ -28,7 +28,7 @@ This doc just for this project, desc the C++ code style
  4. Your project .h files.
 
 ### Class struct enum define
- 1. class name begin captal lettel, like Cxxx, NameServer
+ 1. class name begin captal lettel with C, like Cxxx, CNameServer
  2. struct begin with St, like Stxxx, StFileInfo
  3. enum begin with En, like Enxxx, EnTreeCode
  4. all members for class start with _, like _size, _len
