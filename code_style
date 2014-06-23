@@ -36,11 +36,11 @@ This doc just for this project, desc the C++ code style
  6. member of enum all capital letter
  7. method for class are not capital letter with '_' like get_file_info()
 
- class BaseThread
+ class CBaseThread
  {
  public:
-     BaseThread();
-     ~BaseThread();
+     CBaseThread();
+     ~CBaseThread();
 
  private:
      bool _alive;
