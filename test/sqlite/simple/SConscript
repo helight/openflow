@@ -1,0 +1,9 @@
+Import('env')
+
+env.Append(LIBS = 'sqlite3')
+
+env.Program(
+    target = 'simple',
+    source = 'simple.cpp'
+)
+

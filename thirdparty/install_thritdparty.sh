@@ -156,11 +156,12 @@ function install_thirft()
 function install_all()
 {
     echo "Begin to install......"
-    install_boost boost boost_1_55_0.tar.gz
-    install_tar_gz_package openssl openssl-1.0.1g.tar.gz "shared threads"
-    install_tar_gz_package libevent libevent-2.0.21-stable.tar.gz
     install_tar_gz_package gflags gflags-2.0.tar.gz
     install_tar_gz_package glog glog-0.3.3.tar.gz
+    install_tar_gz_package sqlite sqlite-autoconf-3080500.tar.gz
+    install_tar_gz_package openssl openssl-1.0.1g.tar.gz "shared threads"
+    install_tar_gz_package libevent libevent-2.0.21-stable.tar.gz
+    install_boost boost boost_1_55_0.tar.gz
     install_thirft thirft thrift-0.9.1.tar.gz
     install_gtest
 }

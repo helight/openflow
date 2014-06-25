@@ -1,0 +1,32 @@
+import os
+env = Environment()  # Initialize the environment
+
+root_path = os.getcwd()
+thirdparty = str(root_path) + "/../thirdparty/"
+
+env.Append(CPPPATH = [root_path, thirdparty,
+           thirdparty + '/boost/include/',
+           thirdparty + '/glog/include/',
+           thirdparty + '/gflags/include/',
+           thirdparty + '/gtest/include/',
+           thirdparty + '/sqlite/include/',
+           ])
+
+env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+           thirdparty + '/glog/lib',
+           thirdparty + '/gflags/lib',
+           thirdparty + '/gtest/lib',
+           thirdparty + '/sqlite/lib/',
+           ])
+
+env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'sqlite3'])
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
+env.Append(LINKFLAGS = ['-static'])
+
+env.Library(
+    target = "common",
+    source = [
+    "db_help.cpp",
+    ],
+)
+
