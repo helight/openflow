@@ -49,8 +49,8 @@ This doc just for this project, desc the C++ code style
 
  struct StFileInfo
  {
-     std::string _name;
-     uint32_t _size;
+     std::string name;
+     uint32_t size;
  };
 
  enum EnFileOpCode
