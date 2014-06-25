@@ -1,0 +1,31 @@
+import os
+env = Environment()  # Initialize the environment
+
+root_path = os.getcwd()
+thirdparty = str(root_path) + "../../thirdparty/"
+
+env.Append(CPPPATH = [root_path, thirdparty,
+           thirdparty + '/boost/include/',
+           thirdparty + '/thrift/include/',
+           thirdparty + '/glog/include/',
+           thirdparty + '/gflags/include/',
+           thirdparty + '/gtest/include/',
+           ])
+
+env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+           thirdparty + '/thrift/lib',
+           thirdparty + '/glog/lib',
+           thirdparty + '/gflags/lib',
+           thirdparty + '/gtest/lib',
+           root_path + "/rpc/master",
+           root_path + "/rpc/agent",
+           ])
+
+env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest'])
+
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
+Export('env')
+
+SConscript(['boost/simple/SConscript'], exports = 'env')
+SConscript(['boost/parseXML/SConscript'], exports = 'env')
+SConscript(['mysql/SConscript'], exports = 'env')
