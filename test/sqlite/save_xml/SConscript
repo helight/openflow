@@ -1,0 +1,7 @@
+Import('env')
+
+env.Program(
+    target = 'save_xml',
+    source = 'save_xml.cpp'
+)
+
