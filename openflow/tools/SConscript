@@ -6,3 +6,5 @@ env.Program(
     target = "deque_test",
     source = ['deque_test.cpp']
 )
+
+SConscript(['master_client/SConscript'], exports = 'env')

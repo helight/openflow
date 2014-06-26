@@ -1,0 +1,6 @@
+#temporary files
+*~
+*.o
+.*
+
+#directory
