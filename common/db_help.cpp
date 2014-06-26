@@ -14,6 +14,8 @@ DEFINE_string(sqlitedb, "openflow.db", "sqlite db name for meta node");
 DEFINE_string(tb_jobs, "tbJobs", "tbname for jobs table");
 DEFINE_string(jobs_items, "job_id, job_name, xml_desc, time", "item for table tb_jobs");
 
+namespace common {
+
 CSqliteHelp::CSqliteHelp(const std::string& db_name) :
     _sqlite(NULL), _db_name(db_name)
 {}
@@ -143,3 +145,5 @@ uint32_t CSqliteHelp::get_count(const std::string& tbname, const std::string& co
 
     return count;
 }
+
+} // end namespace common

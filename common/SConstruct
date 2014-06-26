@@ -27,6 +27,7 @@ env.Library(
     target = "common",
     source = [
     "db_help.cpp",
+    "main_template.cpp",
     ],
 )
 

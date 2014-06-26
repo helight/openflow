@@ -12,6 +12,8 @@
 struct sqlite3;
 typedef struct sqlite3_stmt sqlite3_stmt;
 
+namespace common {
+
 class CSqliteHelp
 {
 public:
@@ -33,4 +35,5 @@ private:
     std::string _db_name;
 };
 
+} // end namespace common
 #endif // COMMON_DB_HELP_H
