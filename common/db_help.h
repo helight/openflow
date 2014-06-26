@@ -1,3 +1,8 @@
+// Copyright (c) 2014, HelightXu
+// Author: Zhwen Xu<HelightXu@gmail.com>
+// Created: 2014-06-25
+// Description:
+//
 #ifndef COMMON_DB_HELP_H
 #define COMMON_DB_HELP_H
 #pragma once
@@ -6,6 +11,8 @@
 
 struct sqlite3;
 typedef struct sqlite3_stmt sqlite3_stmt;
+
+namespace common {
 
 class CSqliteHelp
 {
@@ -28,4 +35,5 @@ private:
     std::string _db_name;
 };
 
+} // end namespace common
 #endif // COMMON_DB_HELP_H
