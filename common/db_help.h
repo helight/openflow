@@ -1,3 +1,8 @@
+// Copyright (c) 2014, HelightXu
+// Author: Zhwen Xu<HelightXu@gmail.com>
+// Created: 2014-06-25
+// Description:
+//
 #ifndef COMMON_DB_HELP_H
 #define COMMON_DB_HELP_H
 #pragma once
