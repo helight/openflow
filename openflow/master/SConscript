@@ -6,5 +6,3 @@ env.Program(
     target = "openflow_master",
     source = Glob("*.cpp")
 )
-
-SConscript(['client/SConscript'], exports = 'env')

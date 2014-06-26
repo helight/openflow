@@ -21,10 +21,10 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            root_path + "/rpc/agent",
            ])
 
-env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest'])
+env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest', 'pthread'])
 
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
-#env.Append(LINKFLAGS = ['-static'])
+env.Append(LINKFLAGS = ['-static'])
 Export('env')
 
 SConscript(['rpc/SConscript'], exports = 'env')

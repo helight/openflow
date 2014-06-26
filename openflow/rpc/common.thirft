@@ -5,7 +5,7 @@ namespace php openflow
  * job types
  */
 enum job_types {
-  CMD = 1  //simple shell command
+  JOB_SHELL_CMD = 1  //simple shell command
 }
 
 struct job_info

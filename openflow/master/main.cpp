@@ -4,36 +4,35 @@
 // Description:
 //
 
-#include "master_handler.h"
+#include <iostream>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
+#include <glog/logging.h>
+#include "master_handler.h"
 
-#include <iostream>
 
-using namespace ::apache::thrift;
-using namespace ::apache::thrift::protocol;
-using namespace ::apache::thrift::transport;
-using namespace ::apache::thrift::server;
+using namespace apache::thrift;
+using namespace apache::thrift::protocol;
+using namespace apache::thrift::transport;
+using namespace apache::thrift::server;
 
-using boost::shared_ptr;
-
-using namespace  ::openflow::master;
+using namespace  openflow::master;
 
 int main(int argc, char **argv) {
   int port = 9090;
-  shared_ptr<CMasterHandler> handler(new CMasterHandler());
-  shared_ptr<TProcessor> processor(new MasterServiceProcessor(handler));
-  shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
-  shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
-  shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+  boost::shared_ptr<CMasterHandler> handler(new CMasterHandler());
+  boost::shared_ptr<TProcessor> processor(new MasterServiceProcessor(handler));
+  boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
+  boost::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
+  boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
 
-  printf("Starting the server...\n");
+  LOG(INFO) << "Starting the server...";
   server.serve();
-  printf("done.\n");
+  LOG(INFO) << "done.";
 
   return 0;
 }
