@@ -232,7 +232,7 @@ bool parent_process(IMainHelper* main_helper, pid_t child_pid, int& child_exit_c
                         , child_pid, strsignal(signo));
 
                 // 延迟一秒，避免极端情况下拉起即coredump带来的死循环问题
-                millisleep(main_helper->get_restart_milliseconds());
+                sleep(1);
             }
         }
         else

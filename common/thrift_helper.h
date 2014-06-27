@@ -13,12 +13,17 @@
 #include <thrift/concurrency/PosixThreadFactory.h>
 #include <thrift/concurrency/ThreadManager.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/serrver/TNonblockingServer.h>
+#include <thrift/server/TNonblockingServer.h>
 #include <thrift/transport/TSocketPool.h>
 #include <thrift/transport/TTransportException.h>
 #include <thrift/async/TAsyncChannel.h>
 
 namespace common {
+
+enum
+{
+    RPC_TIMEOUT     = 2000      // rpc timeout time 2s
+};
 
 using namespace apache;
 

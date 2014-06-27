@@ -3,25 +3,32 @@ env = Environment()  # Initialize the environment
 
 root_path = os.getcwd()
 thirdparty = str(root_path) + "/../thirdparty/"
+common = str(root_path) + "/../common/"
 
-env.Append(CPPPATH = [root_path, thirdparty,
+env.Append(CPPPATH = [root_path, thirdparty, common,
            thirdparty + '/boost/include/',
            thirdparty + '/thrift/include/',
            thirdparty + '/glog/include/',
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
+           thirdparty + '/libevent/include/',
+           thirdparty + '/libunwind/include/',
            ])
 
-env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+env.Append(LIBPATH = [thirdparty + '/boost/lib/', common,
            thirdparty + '/thrift/lib',
            thirdparty + '/glog/lib',
            thirdparty + '/gflags/lib',
            thirdparty + '/gtest/lib',
+           thirdparty + '/libevent/lib',
+           thirdparty + '/libunwind/lib',
            root_path + "/rpc/master",
            root_path + "/rpc/agent",
            ])
 
-env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest'])
+env.Append(LIBS = ['thrift', 'gflags', 'gtest', 'event', 'glog'
+           , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
+           , 'common', 'pthread', 'rt', 'z', 'unwind', 'lzma'])
 
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
 env.Append(LINKFLAGS = ['-static'])

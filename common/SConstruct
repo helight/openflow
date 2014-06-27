@@ -19,7 +19,8 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            thirdparty + '/sqlite/lib/',
            ])
 
-env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'sqlite3'])
+env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'sqlite3'
+           , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'])
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
 env.Append(LINKFLAGS = ['-static'])
 
