@@ -10,6 +10,7 @@
 #include <glog/logging.h>
 #include <main_template.h>
 #include <thrift_helper.h>
+#include <utils.h>
 #include "master_handler.h"
 #include "../config.h"
 
@@ -35,7 +36,7 @@ bool CMainHelper::init(int argc, char* argv[])
     // init glog,gflags
     FLAGS_logbufsecs = 0;           // write log no cache
     FLAGS_max_log_size = 300;       // max log size for each log file
-    // FLAGS_log_dir = boost::str(boost::format("%s/../log") % utils::get_program_path());
+    FLAGS_log_dir = boost::str(boost::format("%s/") % common::CUtils::get_program_path());
     google::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging("openflow_master");
     return true;

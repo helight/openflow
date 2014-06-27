@@ -30,7 +30,8 @@ env.Append(LIBS = ['thriftnb', 'thrift', 'gflags', 'gtest', 'event', 'glog'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
            , 'common', 'pthread', 'rt', 'z', 'unwind', 'lzma'])
 
-env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
+           , '-Wno-unused-local-typedefs'])
 env.Append(LINKFLAGS = ['-static'])
 Export('env')
 
