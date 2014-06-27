@@ -153,6 +153,39 @@ function install_thirft()
     cd -
 }
 
+function install_tinyxml()
+{
+    install_dir=$1
+    package_name=$2
+    #如果目录已经存在，而且不是全新安装
+    if [ -d $THIRD_PARTY_HOME/tinyxml -a "$INSTALL_ALL" = "" ];then
+        printf "\n\033[1;33m tinyxml is installed, no need to install again\033[m\n"
+        return
+    fi
+
+    printf "\n\033[1;33m installing $package_basename \033[m\n"
+    unzip -qq  $package_name
+    cd tinyxml
+    if test $? -ne 0; then
+        exit 1
+    fi
+    ls | grep -v -E "*\.h$|*\.cpp$|*\.xml|Makefile" | xargs rm -rf;
+    if test $? -ne 0; then
+        exit 1
+    fi
+    echo "StaticLibrary(" >> SConstruct;
+    echo '    target = "tinyxml",' >> SConstruct;
+    echo '    source = Glob("*.cpp"),' >> SConstruct;
+    echo "    "CPPFLAGS = \'-DTIXML_USE_STL\' >> SConstruct;
+    echo ")" >> SConstruct;
+    scons;
+    if test $? -ne 0; then
+        exit 1
+    fi
+    rm -rf *.o
+    cd -
+}
+
 function install_all()
 {
     echo "Begin to install......"
@@ -165,6 +198,7 @@ function install_all()
     install_boost boost boost_1_55_0.tar.gz
     install_thirft thirft thrift-0.9.1.tar.gz
     install_gtest
+    install_tinyxml tinyxml tinyxml_2_6_2.zip
 }
 
 install_all

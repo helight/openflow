@@ -26,7 +26,7 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/', common,
            root_path + "/rpc/agent",
            ])
 
-env.Append(LIBS = ['thrift', 'gflags', 'gtest', 'event', 'glog'
+env.Append(LIBS = ['thriftnb', 'thrift', 'gflags', 'gtest', 'event', 'glog'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
            , 'common', 'pthread', 'rt', 'z', 'unwind', 'lzma'])
 

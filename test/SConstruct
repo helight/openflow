@@ -1,0 +1,39 @@
+import os
+env = Environment()  # Initialize the environment
+
+root_path = os.getcwd()
+thirdparty = str(root_path) + "../../thirdparty/"
+
+env.Append(CPPPATH = [root_path, thirdparty,
+           thirdparty + '/boost/include/',
+           thirdparty + '/thrift/include/',
+           thirdparty + '/glog/include/',
+           thirdparty + '/gflags/include/',
+           thirdparty + '/gtest/include/',
+           thirdparty + '/sqlite/include/',
+           thirdparty + '/tinyxml/'
+           ])
+
+env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+           thirdparty + '/thrift/lib',
+           thirdparty + '/glog/lib',
+           thirdparty + '/gflags/lib',
+           thirdparty + '/gtest/lib',
+           thirdparty + '/sqlite/lib',
+           thirdparty + '/tinyxml',
+           root_path + "/rpc/master",
+           root_path + "/rpc/agent",
+           ])
+
+env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest',
+           'sqlite3', 'tinyxml'])
+#env.Append(LINKFLAGS = ['-static'])
+
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-DTIXML_USE_STL'])
+Export('env')
+
+SConscript(['boost/simple/SConscript'], exports = 'env')
+SConscript(['boost/parseXML/SConscript'], exports = 'env')
+SConscript(['mysql/SConscript'], exports = 'env')
+SConscript(['sqlite/simple/SConscript'], exports = 'env')
+SConscript(['sqlite/save_xml/SConscript'], exports = 'env')

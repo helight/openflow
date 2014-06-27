@@ -5,10 +5,12 @@ include "../common.thirft"
 
 service MasterService
 {
-    i32 submit_job();
-    i32 stop_job();
-    i32 kill_job();
-
-    i32 report_task_state(1:i32 state);
+    /* serve for web client */
+    i32 submit_job(1: common.job_info job),
+    i32 stop_job(1: i32 id),
+    i32 kill_job(1: i32 id),
+    
+    /* serve for agent client */
+    i32 report_task_state(1:i32 state)
 }
 

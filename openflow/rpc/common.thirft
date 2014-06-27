@@ -1,10 +1,18 @@
 namespace cpp openflow
 namespace php openflow
 
+/**
+ * job types
+ */
+enum job_types {
+  JOB_SHELL_CMD = 1  //simple shell command
+}
+
 struct job_info
 {
-    1:i32 job_id
-    2:i32 job_type;
-    3:string job_name;
-    4:string owner;
+    1: i32 job_id,
+    2: job_types job_type,
+    3: string job_name,
+    4: string cmd,
+    5: string owner,
 }
