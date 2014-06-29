@@ -13,12 +13,17 @@
 #include <thrift/concurrency/PosixThreadFactory.h>
 #include <thrift/concurrency/ThreadManager.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/serrver/TNonblockingServer.h>
+#include <thrift/server/TNonblockingServer.h>
 #include <thrift/transport/TSocketPool.h>
 #include <thrift/transport/TTransportException.h>
 #include <thrift/async/TAsyncChannel.h>
 
 namespace common {
+
+enum
+{
+    RPC_TIMEOUT     = 2000      // rpc timeout time 2s
+};
 
 using namespace apache;
 
@@ -31,7 +36,6 @@ inline bool thrift_not_connected(
     return (thrift::transport::TTransportException::NOT_OPEN == type)
         || (thrift::transport::TTransportException::END_OF_FILE == type);
 }
-
 // 封装对thrift服务端的公共操作
 template <class ThriftHandler, class ServiceProcessor>
 class CThriftServerHelper
@@ -40,14 +44,14 @@ public:
     // 启动rpc服务，请注意该调用是同步阻塞的，所以需放最后调用
     bool serve(uint16_t port);
     bool serve(uint16_t port, uint8_t num_threads);
-    bool serve(const std::string& ip, uint16_t port, uint8_t num_threads);
     void stop();
 
 private:
     boost::shared_ptr<ThriftHandler> _handler;
     boost::shared_ptr<thrift::TProcessor> _processor;
     boost::shared_ptr<thrift::protocol::TProtocolFactory> _protocol_factory;
-    boost::shared_ptr<thrift::server::ThreadManager> _thread_manager;
+    boost::shared_ptr<thrift::concurrency::ThreadManager> _thread_manager;
+
     boost::shared_ptr<thrift::concurrency::PosixThreadFactory> _thread_factory;
     boost::shared_ptr<thrift::server::TServer> _server;
 };

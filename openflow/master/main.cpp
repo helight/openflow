@@ -5,34 +5,62 @@
 //
 
 #include <iostream>
-#include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TSimpleServer.h>
-#include <thrift/transport/TServerSocket.h>
-#include <thrift/transport/TBufferTransports.h>
+#include <boost/format.hpp>
+#include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <main_template.h>
+#include <thrift_helper.h>
+#include <utils.h>
 #include "master_handler.h"
+#include "../config.h"
 
+DEFINE_int32(thread_num, 4, "thead num for rpc server");
 
-using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::server;
+namespace openflow { namespace master {
 
-using namespace  openflow::master;
+using namespace apache;
 
-int main(int argc, char **argv) {
-  int port = 9090;
-  boost::shared_ptr<CMasterHandler> handler(new CMasterHandler());
-  boost::shared_ptr<TProcessor> processor(new MasterServiceProcessor(handler));
-  boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
-  boost::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
-  boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+class CMainHelper : public common::IMainHelper
+{
+private:
+    bool init(int argc, char* argv[]);
+    bool run();
+    void fini();
 
-  TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+private:
+    common::CThriftServerHelper<CMasterHandler, MasterServiceProcessor> _openflow_master;
+};
 
-  LOG(INFO) << "Starting the server...";
-  server.serve();
-  LOG(INFO) << "done.";
-
-  return 0;
+bool CMainHelper::init(int argc, char* argv[])
+{
+    // init glog,gflags
+    FLAGS_logbufsecs = 0;           // write log no cache
+    FLAGS_max_log_size = 300;       // max log size for each log file
+    FLAGS_log_dir = boost::str(boost::format("%s/") % common::CUtils::get_program_path());
+    google::ParseCommandLineFlags(&argc, &argv, true);
+    google::InitGoogleLogging("openflow_master");
+    return true;
 }
+
+bool CMainHelper::run()
+{
+    LOG(INFO) << "openflow master start ...";
+    LOG(INFO) << "thread num: " << FLAGS_thread_num ;
+
+    _openflow_master.serve(OPENFLOW_MASTER_HANDLER_PORT, FLAGS_thread_num);
+
+    return true;
+}
+
+void CMainHelper::fini()
+{
+}
+
+extern "C" int main(int argc, char* argv[])
+{
+    CMainHelper main_helper;
+
+    return main_template(&main_helper, argc, argv);
+}
+
+}} // end openflow::master
