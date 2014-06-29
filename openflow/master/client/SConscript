@@ -1,8 +1,0 @@
-Import('env')
-
-env.Prepend(LIBS = ['master'])
-
-env.Program(
-    target = "client",
-    source = Glob("*.cpp")
-)

@@ -10,6 +10,8 @@ env.Append(CPPPATH = [root_path, thirdparty,
            thirdparty + '/glog/include/',
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
+           thirdparty + 'sqlite/include/',
+           thirdparty + '/tinyxml/'
            ])
 
 env.Append(LIBPATH = [thirdparty + '/boost/lib/',
@@ -17,13 +19,16 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            thirdparty + '/glog/lib',
            thirdparty + '/gflags/lib',
            thirdparty + '/gtest/lib',
+           thirdparty + '/sqlite/lib',
+           thirdparty + '/tinyxml',
            root_path + "/rpc/master",
-           root_path + "/rpc/agent",
+           root_path + "/rpc/agent"
            ])
 
-env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest', 'pthread'])
+env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest', 'sqlite3', 'tinyxml',
+        'pthread','dl'])
 
-env.Append(CCFLAGS = ['-Wall', '-O2', '-g'])
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-DTIXML_USE_STL'])
 env.Append(LINKFLAGS = ['-static'])
 Export('env')
 

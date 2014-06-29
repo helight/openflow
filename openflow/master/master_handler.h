@@ -16,7 +16,7 @@ class CMasterHandler : public MasterServiceIf
 public:
   CMasterHandler();
 
-  int32_t submit_job(const  ::openflow::job_info& job);
+  int32_t submit_job(const  int32_t job_id);
 
   int32_t stop_job(const int32_t id);
 

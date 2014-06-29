@@ -10,14 +10,16 @@ namespace openflow { namespace master {
 
 CMasterHandler::CMasterHandler() {}
 
-int32_t CMasterHandler::submit_job(const  openflow::job_info& job) {
+int32_t CMasterHandler::submit_job(const int32_t job_id) {
   // Your implementation goes here
   LOG(INFO) << "received a job.";
-  LOG(INFO) << "job id: " << job.job_id;
-  LOG(INFO) << "job type: " << job.job_type;
+  LOG(INFO) << "job id: " << job_id;
+
+  /*
   LOG(INFO) << "job name: " << job.job_name.c_str();
-  LOG(INFO) << "job command: " << job.cmd.c_str();
-  LOG(INFO) << "job owner: " << job.owner.c_str();
+  LOG(INFO) << "job xml desc: " << job.xml_desc.c_str();
+  LOG(INFO) << "job time: " << job.time.c_str();
+  */
 
   return 0;
 }
