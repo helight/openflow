@@ -12,7 +12,7 @@ env.Append(CPPPATH = [root_path, thirdparty, common,
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
            thirdparty + 'sqlite/include/',
-           thirdparty + '/tinyxml/'
+           thirdparty + '/tinyxml/',
            thirdparty + '/libevent/include/',
            thirdparty + '/libunwind/include/',
            ])
@@ -32,7 +32,9 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/', common,
 
 env.Append(LIBS = ['thriftnb', 'thrift', 'gflags', 'gtest', 'event', 'glog'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
-           , 'sqlite3', 'tinyxml','common', 'pthread','dl', 'z', 'unwind', 'lzma']
+           , 'sqlite3', 'tinyxml','common', 'pthread','dl', 'z'])
+
+#'unwind', 'lzma', do not work for me(renzhen).
 
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
            , '-Wno-unused-local-typedefs','-DTIXML_USE_STL'])
