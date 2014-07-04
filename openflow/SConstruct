@@ -11,6 +11,8 @@ env.Append(CPPPATH = [root_path, thirdparty, common,
            thirdparty + '/glog/include/',
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
+           thirdparty + 'sqlite/include/',
+           thirdparty + '/tinyxml/',
            thirdparty + '/libevent/include/',
            thirdparty + '/libunwind/include/',
            ])
@@ -20,18 +22,23 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/', common,
            thirdparty + '/glog/lib',
            thirdparty + '/gflags/lib',
            thirdparty + '/gtest/lib',
+           thirdparty + '/sqlite/lib',
+           thirdparty + '/tinyxml',
            thirdparty + '/libevent/lib',
            thirdparty + '/libunwind/lib',
            root_path + "/rpc/master",
-           root_path + "/rpc/agent",
+           root_path + "/rpc/agent"
            ])
 
 env.Append(LIBS = ['thriftnb', 'thrift', 'gflags', 'gtest', 'event', 'glog'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
-           , 'common', 'pthread', 'rt', 'z', 'unwind', 'lzma'])
+           , 'sqlite3', 'tinyxml','common', 'pthread','dl', 'z'])
+
+#'unwind', 'lzma', do not work for me(renzhen).
 
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
-           , '-Wno-unused-local-typedefs'])
+           , '-Wno-unused-local-typedefs','-DTIXML_USE_STL'])
+
 env.Append(LINKFLAGS = ['-static'])
 Export('env')
 
