@@ -5,6 +5,6 @@ include "../common.thirft"
 
 service AgentService
 {
-    i32 submit_task();
+    i32 submit_task(1: i32 t_id);
     i32 kill_task();
 }

@@ -8,3 +8,4 @@ env.Program(
 )
 
 SConscript(['master_client/SConscript'], exports = 'env')
+SConscript(['agent_client/SConscript'], exports = 'env')
