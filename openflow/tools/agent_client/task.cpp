@@ -10,8 +10,8 @@
 
 namespace tools { namespace agent_client {
     
-    int CTask::receive_task()
-    {
-        return 0;
-    }
+int CTask::receive_task()
+{
+    return 0;
+}
 } }
