@@ -1,0 +1,12 @@
+env = Environment()  # Initialize the environment
+
+env.Append(CCFLAGS = ['-g','-O3'])
+env.Append(LINKFLAGS = ['-static'])
+env.Append(LIBS = ['event'])
+env.Append(LIBPATH = ['../../thirdparty/libevent/lib/'])
+env.Append(CPPPATH = ['../../thirdparty/libevent/include/'])
+
+env.Program(
+    target = 'event_httpd',
+    source = ['event_httpd.cpp'],
+)
