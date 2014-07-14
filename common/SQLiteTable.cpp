@@ -1,4 +1,5 @@
-// Copyright (c) 2014, HelightXu
+// Copyright (c) 2014, OpenFlow
+// Copyright (c) 2014, OpenFlow
 // Author: Zhwen Xu<HelightXu@gmail.com>
 // Created: 2014-06-25
 // Description:
@@ -17,8 +18,8 @@ DEFINE_string(jobs_items, "job_id, job_name, xml_desc, time", "item for table tb
 
 namespace common {
 
-CSQLiteTable::CSQLiteTable(const CDatabase *db, const std::string& tbname,
-    const std::string& tbitem) :
+CSQLiteTable::CSQLiteTable(const CDatabase *db, const std::string& tbname
+    ,const std::string& tbitem) :
     CTable(db, tbname, tbitem), _stmt(NULL)
 {}
 

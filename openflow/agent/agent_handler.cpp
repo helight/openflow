@@ -1,4 +1,5 @@
-// Copyright (c) 2014, HelightXu
+// Copyright (c) 2014, OpenFlow
+// Copyright (c) 2014, OpenFlow
 // Author: kobemiller<kobemiller@126.com>
 // Created: 2014-07-03
 // Description:
