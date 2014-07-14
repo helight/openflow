@@ -1,5 +1,4 @@
 // Copyright (c) 2014, OpenFlow
-// Copyright (c) 2014, OpenFlow
 // Author: RenZhen<renzhen@163.com>
 // Created: 2014-06-27
 // Description:
