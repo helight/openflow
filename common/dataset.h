@@ -3,7 +3,8 @@
 #pragma once
 
 #include <string>
-#include "common_config.h"
+#include "db_config.h"
+#include "database.h"
 
 namespace common {
 /**
@@ -12,13 +13,16 @@ namespace common {
 class CDataSet
 {
 public:
+    virtual ~CDataSet()
+    {}
     CDatabase *new_database(DB_TYPE dbtype, const std::string &dbname);
     //get sigleton instance
-    static CDataSet *GetInstance();
+    static CDataSet *get_instance();
 
 private:
     //prevent from creating instance in other place
-    CDataSet();
+    CDataSet()
+    {}
     CDataSet(const CDataSet &);
     const CDataSet &operator =(const CDataSet &);
 };

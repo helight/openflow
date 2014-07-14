@@ -3,7 +3,8 @@
 #pragma once
 
 #include <iostream>
-#include "common_config.h"
+#include "db_config.h"
+#include "database.h"
 
 namespace common {
 /**
@@ -13,16 +14,21 @@ namespace common {
 class CSQLiteDatabase : public CDatabase
 {
 public:
+    ~CSQLiteDatabase()
+    {}
     CSQLiteDatabase(DB_TYPE dbtype, const std::string &dbname) :
         CDatabase(dbtype, dbname)
     {}
 
-    CTable *new_table(const std::string &tbname, const std::string &tbitem=NULL);
+    CTable *new_table(const std::string &tbname, const std::string &tbitem="");
+    void set_connect_str(const std::string &conn_str);
     bool open();
+    bool close();
 
 private:
     //not allowed create instance by default constructor.
-    CSQLiteDatabase();
+    CSQLiteDatabase()
+    {}
 };
 
 } //namespace of common

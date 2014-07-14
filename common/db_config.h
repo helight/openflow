@@ -1,13 +1,15 @@
-#ifndef COMMON_CONFIG_H
-#define COMMON_CONFIG_H
+#ifndef DB_CONFIG_H
+#define DB_CONFIG_H
 #pragma once
+
+#include <sqlite3.h>
 
 namespace common {
 
 /**
  * for database
  */
-#define USING_SQLITE_DB
+#define USING_SQLITE_DB 1
 
 #if USING_SQLITE_DB
     typedef sqlite3 db_id_t;
@@ -22,4 +24,4 @@ enum DB_TYPE {
 
 } // end namespace common
 
-#endif // COMMON_CONFIG_H
+#endif // DB_CONFIG_H

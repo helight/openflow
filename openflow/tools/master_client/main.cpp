@@ -34,8 +34,8 @@ int main(int argc, char** argv) {
 
     //store job into databse
     job.set_xml("demo.xml");
-    int ret = job.store("../../web/database/openflow.db", info);
-    if (ret != 0) {
+    int ret = job.store("openflow.db", info);
+    if (ret < 0) {
         LOG(ERROR) << "Fail to store job into database.";
         return -1;
     }
@@ -43,8 +43,9 @@ int main(int argc, char** argv) {
     //submit job to master server
     LOG(INFO) << "submit job...";
     ret = thrift_client_helper->submit_job(info.job_id);
-    if (ret != 0) {
+    if (ret < 0) {
         LOG(ERROR) << "fail to submit job.";
+        return -1;
     }
 
     LOG(INFO) << "submit job(" << info.job_id << ") successfully.";

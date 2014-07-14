@@ -3,7 +3,7 @@
 // Created: 2014-07-12
 // Description:
 //
-#include <string>
+#include <cstring>
 #include <glog/logging.h>
 #include <sqlite3.h>
 #include "SQLiteTable.h"
@@ -26,16 +26,34 @@ CTable *CSQLiteDatabase::new_table(const std::string &tbname, const std::string 
     return table;
 }
 
+void CSQLiteDatabase::set_connect_str(const std::string &conn_str)
+{
+    _conn_str = conn_str;
+}
+
 bool CSQLiteDatabase::open()
 {
-    if (sqlite3_open(_dbname.c_str(), &_db_id) != SQLITE_OK)
+    if (sqlite3_open_v2(_conn_str.c_str(), &_db_id, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
         int errcode = sqlite3_errcode(_db_id);
-        LOG(ERROR) << "opened " << _db_name << " ERROR("
+        LOG(ERROR) << "opened " << _dbname << " ERROR("
             << errcode << "): " << sqlite3_errmsg(_db_id);
 
         return false;
     }
+
+    return true;
+}
+
+bool CSQLiteDatabase::close()
+{
+    if (_db_id)
+    {
+        sqlite3_close(_db_id);
+        _db_id = NULL;
+    }
+
+    return 0;
 }
 
 } //namespace of common

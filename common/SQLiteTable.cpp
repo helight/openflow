@@ -17,29 +17,30 @@ DEFINE_string(jobs_items, "job_id, job_name, xml_desc, time", "item for table tb
 
 namespace common {
 
-CSqliteTable::CSqliteTable(const CDatabase *db, const std::string& tbname,
-    const std::string& tbitem = NULL) :
+CSQLiteTable::CSQLiteTable(const CDatabase *db, const std::string& tbname,
+    const std::string& tbitem) :
     CTable(db, tbname, tbitem), _stmt(NULL)
 {}
 
-CSqliteTable::~CSqliteTable()
+CSQLiteTable::~CSQLiteTable()
 {
     if (_stmt)
     {
-        sqlite3_finalize(stmt);
+        sqlite3_finalize(_stmt);
         _stmt = NULL;
     }
 }
 
-bool CSqliteTable::init()
+bool CSQLiteTable::init()
 {
     //FIXME: should take the job of creating table?
-    check_create_table();
+    //I think it's CSQLiteDatabase responsibility to check if a table exits.
+    //check_create_table();
 
     return true;
 }
 
-bool CSqliteTable::check_table_by_name()
+bool CSQLiteTable::check_table_by_name()
 {
     int num_rows = 0;
     int num_cols = 0;
@@ -47,11 +48,11 @@ bool CSqliteTable::check_table_by_name()
     char** result = NULL;
 
     std::string check_sql = boost::str(boost::format("select * from %s limit 1;") % _tbname);
-    int ret = sqlite3_get_table(_db._db_id, check_sql.c_str(), &result,
+    int ret = sqlite3_get_table(_db->_db_id, check_sql.c_str(), &result,
                                 &num_rows, &num_cols, &errmsg);
     if (ret != SQLITE_OK)
     {
-        LOG(ERROR) << check_sql << " sqlite db:" << _db._db_id << " ERROR: " << errmsg;
+        LOG(ERROR) << check_sql << " sqlite db:" << _db->_db_id << " ERROR: " << errmsg;
         sqlite3_free(errmsg);
     }
     sqlite3_free_table(result);
@@ -61,20 +62,20 @@ bool CSqliteTable::check_table_by_name()
 
 // std::string tbname = "tbErrorDataNode";
 // ip, disk, timestamp
-bool CSqliteTable::check_create_table()
+bool CSQLiteTable::check_create_table()
 {
     bool is_ok = true;
 
-    if (!check_table_by_name(_tbname))
+    if (!check_table_by_name())
     {
         std::string sql = boost::str(boost::format(
                 "drop table if exists %s; create table %s (%s);")
             % _tbname % _tbname % _tbitem);
         char* errmsg = NULL;
-        int ret = sqlite3_exec(_db._db_id, sql.c_str(), 0, 0, &errmsg);
+        int ret = sqlite3_exec(_db->_db_id, sql.c_str(), 0, 0, &errmsg);
         if (ret != SQLITE_OK)
         {
-            LOG(ERROR) << sql << " sqlite db:" << _db._db_id << " ERROR: " << errmsg;
+            LOG(ERROR) << sql << " sqlite db:" << _db->_db_id << " ERROR: " << errmsg;
             sqlite3_free(errmsg);
             is_ok = false;
         }
@@ -83,10 +84,10 @@ bool CSqliteTable::check_create_table()
     return is_ok;
 }
 
-bool CSqliteTable::update(const std::string& sql)
+bool CSQLiteTable::non_query(const std::string& sql)
 {
     char* errmsg = NULL;
-    int ret = sqlite3_exec(_db._db_id, sql.c_str(), 0, 0, &errmsg);
+    int ret = sqlite3_exec(_db->_db_id, sql.c_str(), 0, 0, &errmsg);
     if (ret != SQLITE_OK)
     {
         LOG(ERROR) << sql << " ERROR: " << errmsg;
@@ -97,48 +98,63 @@ bool CSqliteTable::update(const std::string& sql)
     return true;
 }
 
-bool CSqliteTable::query(const std::string& sql)
-{
-    impl_query(sql, &_stmt);
-}
-
 // call sqlite3_finalize(stmt) to free memery after stmt used
-bool CSqliteTable::impl_query(const std::string& sql, sqlite3_stmt** stmt)
+bool CSQLiteTable::query(const std::string& sql)
 {
     sqlite3_stmt *stmt_tmp = NULL;
     const char *errmsg = NULL;
     int nret = 0;
 
-    nret = sqlite3_prepare(_db._db_id, sql.c_str(), sql.size(), &stmt_tmp, &errmsg);
+    nret = sqlite3_prepare(_db->_db_id, sql.c_str(), sql.size(), &stmt_tmp, &errmsg);
     if(SQLITE_OK == nret)
     {
-        *stmt = stmt_tmp;
+        _stmt = stmt_tmp;
     }
     else
     {
         LOG(ERROR) << sql << " ERROR: " << errmsg;
         sqlite3_finalize(stmt_tmp);
     }
-    // sqlite3_finalize(stmt); free memery after stmt used
-    //
+
     return (SQLITE_OK == nret);
 }
 
-uint32_t CSqliteTable::get_count(const std::string& filter)
+bool CSQLiteTable::read(std::vector<std::string> &row)
+{
+    int col_count = sqlite3_column_count(_stmt);
+
+    if (SQLITE_ROW == sqlite3_step(_stmt))
+    {
+        for (int i = 0; i < col_count; i++)
+        {
+           std::string tmp = (const char*)sqlite3_column_text(_stmt, i);
+           row.push_back(tmp);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+uint32_t CSQLiteTable::get_count(const std::string& filter)
 {
     uint32_t count = 0;
     std::string sql = boost::str(boost::format("select count(*) from %s %s") % _tbname % filter);
-    sqlite3_stmt *stmt = NULL;
-    if(impl_query(sql, &stmt))
+
+    if(query(sql))
     {
-        if (sqlite3_step(stmt) == SQLITE_ROW)
+        if (sqlite3_step(_stmt) == SQLITE_ROW)
         {
-            count = sqlite3_column_int(stmt, 0);
+            count = sqlite3_column_int(_stmt, 0);
         }
     }
-    sqlite3_finalize(stmt);
 
     return count;
+}
+
+uint32_t CSQLiteTable::get_lastinsert_rowid(void)
+{
+    return sqlite3_last_insert_rowid(_db->_db_id);
 }
 
 } // end namespace common

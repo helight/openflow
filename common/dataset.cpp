@@ -6,13 +6,14 @@
 
 #include <iostream>
 #include <string>
-#include "common_config.h"
+#include "db_config.h"
 #include "dataset.h"
+#include "SQLiteDatabase.h"
 
 namespace common {
 CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
 {
-    CDatabase *db;
+    CDatabase *db = NULL;
 
     switch (dbtype)
     {
@@ -31,7 +32,7 @@ CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
     return db;
 }
 
-CDataSet *CDataSet::GetInstance()
+CDataSet *CDataSet::get_instance()
 {
     static CDataSet instance;
     return &instance;
