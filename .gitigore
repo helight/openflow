@@ -4,3 +4,7 @@
 .*
 
 #directory
+
+
+#files
+openflow/web/database/openflow.db

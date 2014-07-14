@@ -21,6 +21,7 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
 
 env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'sqlite3'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'])
+
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
            , '-Wno-unused-parameter', '-Wno-unused-local-typedefs'
            , '-Wno-missing-field-initializers'])
@@ -30,7 +31,9 @@ env.Append(LINKFLAGS = ['-static'])
 env.Library(
     target = "common",
     source = [
-    "db_help.cpp",
+    "SQLiteTable.cpp",
+    "SQLiteDatabase.cpp",
+    "dataset.cpp",
     "main_template.cpp",
     "utils.cpp",
     ],

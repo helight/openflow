@@ -8,7 +8,10 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <tinyxml.h>
-#include <sqlite3.h>
+#include "../../common/table.h"
+#include "../../common/database.h"
+#include "../../common/dataset.h"
+#include "../../common/db_config.h"
 #include "job.h"
 
 namespace tools{ namespace master_client{
@@ -40,50 +43,39 @@ namespace tools{ namespace master_client{
         std::string xml =  printer.Str();
 
         //store job into database
-        sqlite3 *db;
-        int rc = sqlite3_open_v2(db_name.c_str(), &db, SQLITE_OPEN_READWRITE, NULL);
-        if( rc != SQLITE_OK){
-            LOG(ERROR) << "Can't open database: " << sqlite3_errmsg(db);
+        common::CDatabase *db = common::CDataSet::get_instance()->new_database(common::DB_SQLITE,
+            db_name);
+
+        //SQLite database file path just like connect string.
+        db->set_connect_str("../../web/database/openflow.db");
+        //open connect handler
+        db->open();
+
+        //FIXME: table name should not be fixed.
+        common::CTable *table = db->new_table("tbJobs");
+
+        std::string sql = boost::str(boost::format("INSERT INTO tbJobs(job_name, xml_desc, time) \
+             VALUES( '%s', '%s', '%s');") % info.job_name % xml % info.time);
+        if ( !table->non_query(sql))
+        {
+            LOG(ERROR) << "Non-Query error.";
+            //FIXME: ugly design.
+            db->close();        //close database connection.
+            delete table;
+            delete db;
             return -1;
-        }
-
-        std::string sql;
-        sql = "INSERT INTO tbJobs(job_name, xml_desc, time) VALUES(\"" + info.job_name + "\",:xml,\""
-            + info.time + "\");";
-
-        sqlite3_stmt *stmt;
-        sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
-        if (!stmt){
-            LOG(ERROR) << "SQL compiler error:" << sqlite3_errmsg(db);
-            sqlite3_close(db);
-            return -1;
-        }
-
-        //bind xml
-        int index = sqlite3_bind_parameter_index(stmt, ":xml");
-        rc = sqlite3_bind_text(stmt, index, xml.c_str(), xml.length(), NULL);
-        if( rc != SQLITE_OK ){
-            LOG(ERROR) << "Fail to binding parameter xml:" << sqlite3_errmsg(db);
-            sqlite3_close(db);
-            return -1;
-        }
-
-        rc = sqlite3_step(stmt);
-        if( rc != SQLITE_DONE){
-            LOG(INFO) << "SQL Excute: " << sqlite3_errmsg(db);
-            sqlite3_finalize(stmt);
-            sqlite3_close(db);
-            return(1);
         }
         LOG(INFO) << "xml saved to sqlite successfully.";
 
         //retrive this job ID, return it with info
-        info.job_id = sqlite3_last_insert_rowid(db);
+        info.job_id = table->get_lastinsert_rowid();
         LOG(INFO) << "The last insert job ID is " << info.job_id << ".";
 
-        sqlite3_finalize(stmt);
-        sqlite3_close(db);
-        return 0;
+        db->close();        //close database connection.
+        delete table;
+        delete db;
+
+        return info.job_id;
     }
 
 } //END OF NAMESPACE TOOLS

@@ -5,7 +5,6 @@
 #include <vector>
 #include <boost/unordered_map.hpp>
 #include "rpc/master/MasterService.h"
-#include "db_help.h"
 
 namespace openflow { namespace master {
     //FIXME:struct StTask needs to be removed later.
@@ -26,16 +25,9 @@ namespace openflow { namespace master {
     class CMasterCore{
     public:
         CMasterCore()
-        {
-            _db = new common::CSqliteHelp();
-            _db->init();
-        }
-        ~CMasterCore(){
-            //free db help
-            if (NULL != _db) {
-                free(_db);
-            }
-        }
+        {}
+        ~CMasterCore()
+        {}
 
         bool fetch_job(const int32_t job_id);
         //FIXME: Now just print out tasks.
@@ -50,7 +42,6 @@ namespace openflow { namespace master {
         id_job_map _jobs;
         typedef boost::unordered_map<int32_t, std::vector<StTask> > id_tasks_map;
         id_tasks_map _tasks;
-        common::CSqliteHelp *_db;
     };
 }} //end namespace openflow::master
 #endif // MASTER_CORE_H

@@ -3,48 +3,63 @@
 // Created: 2014-06-29
 // Description:
 //
-#include <sqlite3.h>
+#include <boost/format.hpp>
 #include <glog/logging.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/typeof.hpp>
+#include <boost/lexical_cast.hpp>
+#include "../common/table.h"
+#include "../common/database.h"
+#include "../common/dataset.h"
 #include "master_core.h"
 
 namespace openflow { namespace master {
     bool CMasterCore::fetch_job(const int32_t job_id)
     {
-        sqlite3_stmt *stmt;
-        //FIXME(renzhen): how to get table name.
-        std::string sql = "SELECT * FROM tbJobs WHERE job_id=:job_id;";
-        if ( !_db->query(sql, &stmt) )
+        common::CDatabase *db = common::CDataSet::get_instance()->new_database(common::DB_SQLITE, "openflow.db");
+
+        //SQLite database file path just like connect string.
+        db->set_connect_str("../web/database/openflow.db");
+        //open connect handler
+        db->open();
+
+        //FIXME: table name should not be fixed.
+        common::CTable *table = db->new_table("tbJobs");
+
+        std::string sql = boost::str(boost::format("SELECT * FROM tbJobs WHERE job_id=%d;")
+                                      % job_id);
+        if ( !table->query(sql))
         {
             LOG(ERROR) << "Query error.";
+             //FIXME: ugly code.
+            db->close();        //close database connection.
+            delete table;
+            delete db;
             return false;
         }
 
-        int index;
-        index = sqlite3_bind_parameter_index(stmt, ":job_id");
-        if( SQLITE_OK != sqlite3_bind_int(stmt, index, job_id) )
+        std::vector<std::string> row;
+        //I know this result set just has one row if job_id exists.
+        if (true != table->read(row))
         {
-            LOG(ERROR) << "Fail to binding parameter xml.";
+            //FIXME: ugly code.
+            db->close();        //close database connection.
+            delete table;
+            delete db;
             return false;
         }
 
-        if ( SQLITE_ROW == sqlite3_step(stmt) )
-        {
-            openflow::job_info info;
-            info.job_id = (int32_t)sqlite3_column_int(stmt, 0);
-            int bytes = sqlite3_column_bytes(stmt, 1);
-            info.job_name.assign((char *)sqlite3_column_text(stmt, 1), bytes);
+        openflow::job_info info;
+        info.job_id = boost::lexical_cast<int32_t>(row[0]);
+        info.job_name = row[1];
+        info.xml_desc = row[2];
+        info.time = row[3];
+        _jobs.insert(std::pair<int32_t, openflow::job_info>(job_id, info));
 
-            bytes = sqlite3_column_bytes(stmt, 2);
-            info.xml_desc.assign((char *)sqlite3_column_text(stmt, 2), bytes);
-
-            bytes = sqlite3_column_bytes(stmt, 3);
-            info.time.assign((char *)sqlite3_column_text(stmt, 3), bytes);
-
-            _jobs.insert(std::pair<int32_t, openflow::job_info>(job_id, info));
-        }
+        db->close();        //close database connection.
+        delete table;
+        delete db;
 
         return true;
     }
