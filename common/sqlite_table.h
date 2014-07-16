@@ -19,18 +19,15 @@ namespace common {
 class CSQLiteTable : public CTable
 {
 public:
-    CSQLiteTable(const CDatabase *db, const std::string& tbname, const std::string& tbitem = NULL);
+    CSQLiteTable(const CDatabase *db, const std::string& tbname, const std::string& tbitem = "");
     ~CSQLiteTable();
     bool init();
 
 public:
-    bool check_table_by_name();
-    bool check_create_table();
-
-    bool query(const std::string& sql);
-    bool non_query(const std::string& sql);
+    bool set_query(const std::string& sql);
     bool read(std::vector<std::string> &row);
-    uint32_t get_count(const std::string& filter);
+    bool non_query(const std::string& sql);
+    uint32_t get_row_count(void);
     uint32_t get_lastinsert_rowid(void);
 
 protected:

@@ -7,7 +7,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <sqlite3.h>
-#include "SQLiteTable.h"
+#include "sqlite_table.h"
 
 // for sqlite conf
 DEFINE_string(sqlitedb, "openflow.db", "sqlite db name for meta node");
@@ -40,50 +40,6 @@ bool CSQLiteTable::init()
     return true;
 }
 
-bool CSQLiteTable::check_table_by_name()
-{
-    int num_rows = 0;
-    int num_cols = 0;
-    char* errmsg = NULL;
-    char** result = NULL;
-
-    std::string check_sql = boost::str(boost::format("select * from %s limit 1;") % _tbname);
-    int ret = sqlite3_get_table(_db->_db_id, check_sql.c_str(), &result,
-                                &num_rows, &num_cols, &errmsg);
-    if (ret != SQLITE_OK)
-    {
-        LOG(ERROR) << check_sql << " sqlite db:" << _db->_db_id << " ERROR: " << errmsg;
-        sqlite3_free(errmsg);
-    }
-    sqlite3_free_table(result);
-
-    return (SQLITE_OK == ret);
-}
-
-// std::string tbname = "tbErrorDataNode";
-// ip, disk, timestamp
-bool CSQLiteTable::check_create_table()
-{
-    bool is_ok = true;
-
-    if (!check_table_by_name())
-    {
-        std::string sql = boost::str(boost::format(
-                "drop table if exists %s; create table %s (%s);")
-            % _tbname % _tbname % _tbitem);
-        char* errmsg = NULL;
-        int ret = sqlite3_exec(_db->_db_id, sql.c_str(), 0, 0, &errmsg);
-        if (ret != SQLITE_OK)
-        {
-            LOG(ERROR) << sql << " sqlite db:" << _db->_db_id << " ERROR: " << errmsg;
-            sqlite3_free(errmsg);
-            is_ok = false;
-        }
-    }
-
-    return is_ok;
-}
-
 bool CSQLiteTable::non_query(const std::string& sql)
 {
     char* errmsg = NULL;
@@ -99,7 +55,7 @@ bool CSQLiteTable::non_query(const std::string& sql)
 }
 
 // call sqlite3_finalize(stmt) to free memery after stmt used
-bool CSQLiteTable::query(const std::string& sql)
+bool CSQLiteTable::set_query(const std::string& sql)
 {
     sqlite3_stmt *stmt_tmp = NULL;
     const char *errmsg = NULL;
@@ -136,12 +92,12 @@ bool CSQLiteTable::read(std::vector<std::string> &row)
     return false;
 }
 
-uint32_t CSQLiteTable::get_count(const std::string& filter)
+uint32_t CSQLiteTable::get_row_count()
 {
     uint32_t count = 0;
-    std::string sql = boost::str(boost::format("select count(*) from %s %s") % _tbname % filter);
+    std::string sql = boost::str(boost::format("select count(*) from %s;") % _tbname);
 
-    if(query(sql))
+    if(set_query(sql))
     {
         if (sqlite3_step(_stmt) == SQLITE_ROW)
         {

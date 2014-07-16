@@ -29,7 +29,7 @@ bool CMasterCore::fetch_job(const int32_t job_id)
 
     std::string sql = boost::str(boost::format("SELECT * FROM tbJobs WHERE job_id=%d;")
                                   % job_id);
-    if ( !table->query(sql))
+    if ( !table->set_query(sql))
     {
         LOG(ERROR) << "Query error.";
          //FIXME: ugly code.

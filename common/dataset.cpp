@@ -8,7 +8,7 @@
 #include <string>
 #include "db_config.h"
 #include "dataset.h"
-#include "SQLiteDatabase.h"
+#include "sqlite_db.h"
 
 namespace common {
 CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
