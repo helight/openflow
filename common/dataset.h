@@ -16,13 +16,12 @@ public:
     virtual ~CDataSet()
     {}
     CDatabase *new_database(DB_TYPE dbtype, const std::string &dbname);
-    //get sigleton instance
-    static CDataSet *get_instance();
+
+protected:
+    CDataSet() {};
 
 private:
     //prevent from creating instance in other place
-    CDataSet()
-    {}
     CDataSet(const CDataSet &);
     const CDataSet &operator =(const CDataSet &);
 };

@@ -5,6 +5,7 @@
 //
 #include <iostream>
 #include <boost/format.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <tinyxml.h>
@@ -43,7 +44,8 @@ int CJob::store(const std::string &db_name, openflow::job_info &info)
     std::string xml =  printer.Str();
 
     //store job into database
-    common::CDatabase *db = common::CDataSet::get_instance()->new_database(common::DB_SQLITE,
+    common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
+    common::CDatabase *db = ds.new_database(common::DB_SQLITE,
         db_name);
 
     //SQLite database file path just like connect string.

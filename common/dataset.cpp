@@ -32,10 +32,4 @@ CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
     return db;
 }
 
-CDataSet *CDataSet::get_instance()
-{
-    static CDataSet instance;
-    return &instance;
-}
-
 } //end of common

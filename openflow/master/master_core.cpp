@@ -9,6 +9,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/serialization/singleton.hpp>
 #include "../common/table.h"
 #include "../common/database.h"
 #include "../common/dataset.h"
@@ -17,7 +18,8 @@
 namespace openflow { namespace master {
 bool CMasterCore::fetch_job(const int32_t job_id)
 {
-    common::CDatabase *db = common::CDataSet::get_instance()->new_database(common::DB_SQLITE, "openflow.db");
+    common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
+    common::CDatabase *db = ds.new_database(common::DB_SQLITE, "openflow.db");
 
     //SQLite database file path just like connect string.
     db->set_connect_str("../web/database/openflow.db");
