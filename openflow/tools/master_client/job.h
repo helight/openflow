@@ -4,7 +4,7 @@
 #include <iostream>
 #include "rpc/master/MasterService.h"
 
-namespace tools{ namespace master_client {
+namespace openflow { namespace tools{ namespace master_client {
 class CJob
 {
     public:
@@ -23,6 +23,6 @@ class CJob
         int _id; //job id
         std::string _xml; //xml name
 };
-} //end of namespace master_client
-} //end of namespace tools
+
+}}} //namespace openflow::tools::master_client
 #endif // JOB_H
