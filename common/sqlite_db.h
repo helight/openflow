@@ -27,6 +27,7 @@ public:
 private:
     //not allowed create instance by default constructor.
     CSQLiteDatabase() {};
+
     bool check_table_by_name(const std::string& tbname);
 };
 

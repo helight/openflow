@@ -15,15 +15,15 @@ class CDataSet
 public:
     virtual ~CDataSet()
     {}
-    CDatabase *new_database(DB_TYPE dbtype, const std::string &dbname);
+    CDatabase *new_database(const DB_TYPE dbtype, const std::string &dbname);
 
 protected:
     CDataSet() {};
 
 private:
     //prevent from creating instance in other place
-    CDataSet(const CDataSet &);
-    const CDataSet &operator =(const CDataSet &);
+    CDataSet(const CDataSet&);
+    const CDataSet& operator=(const CDataSet &);
 };
 
 } //namespace common

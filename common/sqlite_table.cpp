@@ -4,6 +4,8 @@
 // Description:
 //
 #include <boost/format.hpp>
+#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <sqlite3.h>
@@ -43,6 +45,8 @@ bool CSQLiteTable::init()
 bool CSQLiteTable::non_query(const std::string& sql)
 {
     char* errmsg = NULL;
+
+    boost::mutex::scoped_lock lock(_mutex);
     int ret = sqlite3_exec(_db->_db_id, sql.c_str(), 0, 0, &errmsg);
     if (ret != SQLITE_OK)
     {

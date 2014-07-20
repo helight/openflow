@@ -11,7 +11,8 @@
 #include "sqlite_db.h"
 
 namespace common {
-CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
+
+CDatabase *CDataSet::new_database(const DB_TYPE dbtype, const std::string &dbname)
 {
     CDatabase *db = NULL;
 
@@ -25,6 +26,7 @@ CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
         //db = new CMySQLDatabase(dbtype, dbname);
         break;
     default:
+        //wrong DB type.
         db = NULL;
     }
 
