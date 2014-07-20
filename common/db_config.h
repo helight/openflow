@@ -12,7 +12,7 @@ namespace common {
 #define USING_SQLITE_DB 1
 
 #if USING_SQLITE_DB
-    typedef sqlite3 db_id_t;
+    typedef sqlite3 db_handler_type;
 #elif USING_MYSQL_DB
     //for mysql
 #endif

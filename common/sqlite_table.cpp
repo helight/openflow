@@ -47,7 +47,7 @@ bool CSQLiteTable::non_query(const std::string& sql)
     char* errmsg = NULL;
 
     boost::mutex::scoped_lock lock(_mutex);
-    int ret = sqlite3_exec(_db->_db_id, sql.c_str(), 0, 0, &errmsg);
+    int ret = sqlite3_exec(_db->_db_handler, sql.c_str(), 0, 0, &errmsg);
     if (ret != SQLITE_OK)
     {
         LOG(ERROR) << sql << " ERROR: " << errmsg;
@@ -65,7 +65,7 @@ bool CSQLiteTable::set_query(const std::string& sql)
     const char *errmsg = NULL;
     int nret = 0;
 
-    nret = sqlite3_prepare(_db->_db_id, sql.c_str(), sql.size(), &stmt_tmp, &errmsg);
+    nret = sqlite3_prepare(_db->_db_handler, sql.c_str(), sql.size(), &stmt_tmp, &errmsg);
     if(SQLITE_OK == nret)
     {
         _stmt = stmt_tmp;
@@ -114,7 +114,7 @@ uint32_t CSQLiteTable::get_row_count()
 
 uint32_t CSQLiteTable::get_lastinsert_rowid(void)
 {
-    return sqlite3_last_insert_rowid(_db->_db_id);
+    return sqlite3_last_insert_rowid(_db->_db_handler);
 }
 
 } // end namespace common

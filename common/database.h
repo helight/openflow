@@ -35,7 +35,7 @@ private:
 
 public:
     DB_TYPE _dbtype;
-    db_id_t *_db_id;     //database handler, such as sqlite3 for sqlite.
+    db_handler_type *_db_handler;     //database handler, such as sqlite3 for sqlite.
     std::string _dbname;
     std::string _conn_str;
     //FIXME: better to use table name get table pointer.

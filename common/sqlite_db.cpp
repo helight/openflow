@@ -40,11 +40,11 @@ void CSQLiteDatabase::set_connect_str(const std::string &conn_str)
 
 bool CSQLiteDatabase::open()
 {
-    if (sqlite3_open_v2(_conn_str.c_str(), &_db_id, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
+    if (sqlite3_open_v2(_conn_str.c_str(), &_db_handler, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
-        int errcode = sqlite3_errcode(_db_id);
+        int errcode = sqlite3_errcode(_db_handler);
         LOG(ERROR) << "Fail to open " << _dbname << " ERROR("
-            << errcode << "): " << sqlite3_errmsg(_db_id);
+            << errcode << "): " << sqlite3_errmsg(_db_handler);
 
         return false;
     }
@@ -54,10 +54,10 @@ bool CSQLiteDatabase::open()
 
 bool CSQLiteDatabase::close()
 {
-    if (_db_id)
+    if (_db_handler)
     {
-        sqlite3_close(_db_id);
-        _db_id = NULL;
+        sqlite3_close(_db_handler);
+        _db_handler = NULL;
     }
 
     return 0;
@@ -71,11 +71,11 @@ bool CSQLiteDatabase::check_table_by_name(const std::string &tbname)
     char** result = NULL;
 
     std::string check_sql = boost::str(boost::format("select * from %s limit 1;") % tbname);
-    int ret = sqlite3_get_table(_db_id, check_sql.c_str(), &result,
+    int ret = sqlite3_get_table(_db_handler, check_sql.c_str(), &result,
                                 &num_rows, &num_cols, &errmsg);
     if (ret != SQLITE_OK)
     {
-        LOG(ERROR) << check_sql << " sqlite db:" << _db_id << " ERROR: " << errmsg;
+        LOG(ERROR) << check_sql << " sqlite db:" << _db_handler << " ERROR: " << errmsg;
         sqlite3_free(errmsg);
     }
     sqlite3_free_table(result);
