@@ -41,7 +41,7 @@ private:
     //FIXME: xml_desc double stored in both _jobs and _tasks.
     id_job_map _jobs;
     //FIXME: should keep tasks in orignal sequence.
-    typedef boost::unordered_map<int32_t, std::vector<StTask> > id_tasks_map;
+    typedef std::map<int32_t, std::vector<StTask> > id_tasks_map;
     id_tasks_map _tasks;
 };
 }} //end namespace openflow::master
