@@ -3,8 +3,9 @@ env = Environment()  # Initialize the environment
 
 root_path = os.getcwd()
 thirdparty = str(root_path) + "../../thirdparty/"
+openflow_common = str(root_path) + "/../common/"
 
-env.Append(CPPPATH = [root_path, thirdparty,
+env.Append(CPPPATH = [root_path, openflow_common, thirdparty,
            thirdparty + '/boost/include/',
            thirdparty + '/thrift/include/',
            thirdparty + '/glog/include/',
@@ -14,7 +15,8 @@ env.Append(CPPPATH = [root_path, thirdparty,
            thirdparty + '/tinyxml/'
            ])
 
-env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+env.Append(LIBPATH = [openflow_common,
+           thirdparty + '/boost/lib/',
            thirdparty + '/thrift/lib',
            thirdparty + '/glog/lib',
            thirdparty + '/gflags/lib',
@@ -25,15 +27,20 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            root_path + "/rpc/agent",
            ])
 
-env.Append(LIBS = ['thrift', 'glog', 'gflags', 'gtest',
-           'sqlite3', 'tinyxml'])
-#env.Append(LINKFLAGS = ['-static'])
+env.Append(LIBS = ['common', 'thrift', 'glog', 'gflags', 'gtest'
+           ,'sqlite3', 'tinyxml', 'boost_thread', 'boost_system'
+           ,'pthread', 'dl', 'z'])
 
-env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-DTIXML_USE_STL'])
+env.Append(LINKFLAGS = ['-static'])
+
+env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
+                      ,'-Wno-unused-parameter', '-Wno-unused-local-typedefs'
+                      ,'-Wno-missing-field-initializers','-DTIXML_USE_STL'])
 Export('env')
 
 SConscript(['boost/simple/SConscript'], exports = 'env')
 SConscript(['boost/parseXML/SConscript'], exports = 'env')
+SConscript(['boost/thread/SConscript'], exports = 'env')
 SConscript(['mysql/SConscript'], exports = 'env')
 SConscript(['sqlite/simple/SConscript'], exports = 'env')
 SConscript(['sqlite/save_xml/SConscript'], exports = 'env')

@@ -16,6 +16,7 @@
 #include "master_core.h"
 
 namespace openflow { namespace master {
+
 bool CMasterCore::fetch_job(const int32_t job_id)
 {
     common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
