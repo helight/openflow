@@ -29,6 +29,9 @@ private:
     CSQLiteDatabase() {};
 
     bool check_table_by_name(const std::string& tbname);
+
+public:
+    sqlite3* _db_handler;     //database handler.
 };
 
 } //namespace of common

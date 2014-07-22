@@ -22,8 +22,8 @@ public:
 
 protected:
     CTable() {};
-    CTable(const CDatabase *db, const std::string& tbname, const std::string& tbitem = "") :
-          _db(db), _tbname(tbname), _tbitem(tbitem)
+    CTable(const std::string& tbname, const std::string& tbitem = "") :
+          _tbname(tbname), _tbitem(tbitem)
     {}
 
 public:
@@ -39,9 +39,6 @@ public:
     virtual uint32_t get_row_count(void) = 0;
     //get this table last insert rowid.
     virtual  uint32_t get_lastinsert_rowid(void) = 0;
-
-protected:
-    const CDatabase *_db;         //point to  database that own this table.
 
 public:
     const std::string _tbname;
