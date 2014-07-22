@@ -1,6 +1,9 @@
-// Copyright: Tencent Tech. Co., Ltd.
-// Author: helightxu
-// Date: 2014/7/21
+// Copyright (c) 2014, OpenFlow
+// Author: Zhwen Xu<HelightXu@gmail.com>
+// Created: 2014-07-21
+// Description:
+//
+
 #ifndef COMMON_THREAD_POOL_H
 #define COMMON_THREAD_POOL_H
 
@@ -25,10 +28,8 @@ public:
 
     ~CThreadPool()
     {
-        if (_is_stop)
-        {
-            stop_all();
-        }
+        _is_stop = true;
+        stop_all();
     }
 
     void add_task(const StThreadTask& task)
@@ -64,7 +65,11 @@ private:
         {
             StThreadTask task;
             _task_queue.pop_front(task);
-            task.task_fun();
+
+            if (!task.task_fun.empty())
+            {
+                task.task_fun();
+            }
         }
     }
 
