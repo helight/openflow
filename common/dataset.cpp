@@ -8,10 +8,11 @@
 #include <string>
 #include "db_config.h"
 #include "dataset.h"
-#include "SQLiteDatabase.h"
+#include "sqlite_db.h"
 
 namespace common {
-CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
+
+CDatabase *CDataSet::new_database(const DB_TYPE dbtype, const std::string &dbname)
 {
     CDatabase *db = NULL;
 
@@ -25,17 +26,12 @@ CDatabase *CDataSet::new_database(DB_TYPE dbtype, const std::string &dbname)
         //db = new CMySQLDatabase(dbtype, dbname);
         break;
     default:
+        //wrong DB type.
         db = NULL;
     }
 
     //FIXME: when NULL, shoud throw exception?
     return db;
-}
-
-CDataSet *CDataSet::get_instance()
-{
-    static CDataSet instance;
-    return &instance;
 }
 
 } //end of common

@@ -5,6 +5,7 @@
 //
 #include <iostream>
 #include <boost/format.hpp>
+#include <boost/serialization/singleton.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <tinyxml.h>
@@ -14,7 +15,7 @@
 #include "../../common/db_config.h"
 #include "job.h"
 
-namespace tools{ namespace master_client{
+namespace openflow { namespace tools{ namespace master_client{
 
 void CJob::set_xml(const std::string &filename)
 {
@@ -43,8 +44,8 @@ int CJob::store(const std::string &db_name, openflow::job_info &info)
     std::string xml =  printer.Str();
 
     //store job into database
-    common::CDatabase *db = common::CDataSet::get_instance()->new_database(common::DB_SQLITE,
-        db_name);
+    common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
+    common::CDatabase *db = ds.new_database(common::DB_SQLITE, db_name);
 
     //SQLite database file path just like connect string.
     db->set_connect_str("../../web/database/openflow.db");
@@ -78,5 +79,4 @@ int CJob::store(const std::string &db_name, openflow::job_info &info)
     return info.job_id;
 }
 
-} //END OF NAMESPACE TOOLS
-} //END FO NAMESPACE MASTER_CLIENT
+}}} //namespace openflow::tools::master_client

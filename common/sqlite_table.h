@@ -8,7 +8,7 @@
 #pragma once
 
 #include <boost/thread/mutex.hpp>
-#include "database.h"
+#include "sqlite_db.h"
 #include "table.h"
 
 struct sqlite3_stmt;
@@ -19,18 +19,15 @@ namespace common {
 class CSQLiteTable : public CTable
 {
 public:
-    CSQLiteTable(const CDatabase *db, const std::string& tbname, const std::string& tbitem = NULL);
+    CSQLiteTable(const CSQLiteDatabase* db, const std::string& tbname, const std::string& tbitem = "");
     ~CSQLiteTable();
     bool init();
 
 public:
-    bool check_table_by_name();
-    bool check_create_table();
-
-    bool query(const std::string& sql);
-    bool non_query(const std::string& sql);
+    bool set_query(const std::string& sql);
     bool read(std::vector<std::string> &row);
-    uint32_t get_count(const std::string& filter);
+    bool non_query(const std::string& sql);
+    uint32_t get_row_count(void);
     uint32_t get_lastinsert_rowid(void);
 
 protected:
@@ -40,6 +37,8 @@ protected:
 
 private:
     boost::mutex _mutex;
+
+    const CSQLiteDatabase* _db;   //point to  database that hold this table.
     //FIXME: not used properly this moment.
     sqlite3_stmt* _stmt;
 };

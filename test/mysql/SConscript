@@ -2,7 +2,7 @@ Import('env')
 
 env.Append(CPPPATH = '/usr/include/mysql/')
 env.Append(LIBPATH = '/usr/lib/mysql/')
-env.Append(LIBS = 'mysqlclient')
+env.Prepend(LIBS = 'mysqlclient')
 
 env.Program(
     target = 'play_xml',
