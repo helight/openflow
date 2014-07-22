@@ -46,3 +46,8 @@ env.Program(
     target = "blocking_queue_test",
     source = ['blocking_queue_test.cpp']
     )
+
+env.Program(
+    target = "thread_pool_test",
+    source = ['thread_pool_test.cpp']
+    )
