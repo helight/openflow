@@ -54,6 +54,13 @@ int CJob::store(const std::string &db_name, openflow::job_info &info)
 
     //FIXME: table name should not be fixed.
     common::CTable *table = db->new_table("tbJobs");
+    if (!table)
+    {
+        LOG(ERROR) << "Fail to new table.";
+        db->close();
+        delete db;
+        return -1;
+    }
 
     std::string sql = boost::str(boost::format("INSERT INTO tbJobs(job_name, xml_desc, time) \
          VALUES( '%s', '%s', '%s');") % info.job_name % xml % info.time);

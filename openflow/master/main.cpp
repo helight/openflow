@@ -5,7 +5,9 @@
 //
 
 #include <iostream>
+#include <exception>
 #include <boost/format.hpp>
+#include <boost/thread.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <main_template.h>
@@ -47,7 +49,18 @@ bool CMainHelper::run()
     LOG(INFO) << "openflow master start ...";
     LOG(INFO) << "thread num: " << FLAGS_thread_num ;
 
-    _openflow_master.serve(OPENFLOW_MASTER_HANDLER_PORT, FLAGS_thread_num);
+    try {
+        //FIXME:I know it's ugly code, but where to startup thread?
+        boost::thread process_job_thread(&CMasterHandler::process_job_func
+            ,_openflow_master.get_handler());
+
+        _openflow_master.serve(OPENFLOW_MASTER_HANDLER_PORT, FLAGS_thread_num);
+
+        //FIXME: may be never hit here.
+        process_job_thread.join();
+    } catch (std::exception& exn) {
+        LOG(ERROR) << "CMainHelper::run: " << exn.what();
+    }
 
     return true;
 }

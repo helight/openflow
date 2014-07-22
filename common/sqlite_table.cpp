@@ -21,9 +21,10 @@ DEFINE_string(jobs_items, "job_id, job_name, xml_desc, time", "item for table tb
 namespace common {
 
 CSQLiteTable::CSQLiteTable(const CSQLiteDatabase *db, const std::string& tbname
-    ,const std::string& tbitem) :
-    _db(db), CTable(tbname, tbitem), _stmt(NULL)
-{}
+    ,const std::string& tbitem) : CTable(tbname, tbitem)
+{
+    _db = db, _stmt = NULL;
+}
 
 CSQLiteTable::~CSQLiteTable()
 {

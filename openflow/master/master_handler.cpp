@@ -4,39 +4,21 @@
 // Description:
 //  Using rpc interface to process job.
 #include <glog/logging.h>
+#include <boost/thread.hpp>
 #include "master_handler.h"
 #include "master_core.h"
 
 namespace openflow { namespace master {
 
-CMasterHandler::CMasterHandler() {}
+CMasterHandler::CMasterHandler() {
+}
 
 int32_t CMasterHandler::submit_job(const int32_t job_id) {
-    CMasterCore core;
+    //push job id into blocking queue.
+    int ret;
+    ret = _job_ids.push_front(job_id);
 
-    LOG(INFO) << "received a job.";
-    LOG(INFO) << "job id: " << job_id;
-
-    //fetch job from database by job ID
-    if( false == core.fetch_job(job_id) )
-    {
-        LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-        return -1;
-    }
-
-    LOG(INFO)  << "print job...";
-    core.print_job(job_id);
-
-    //parse job into tasks
-    if( false == core.parse_job(job_id) )
-    {
-        LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-        return -1;
-    }
-    LOG(INFO) << "print tasks...";
-    core.print_tasks(job_id);
-
-    return 0;
+    return ret;
 }
 
 int32_t CMasterHandler::stop_job(const int32_t id) {
@@ -52,6 +34,46 @@ int32_t CMasterHandler::kill_job(const int32_t id) {
 int32_t CMasterHandler::report_task_state(const int32_t state) {
     // Your implementation goes here
     return 0;
+}
+
+//thread function.
+void CMasterHandler::process_job_func(void) {
+    //FIXME: how to destory?
+    CMasterCore core;
+
+    for(;;)
+    {
+        int32_t job_id;
+        //get job id from blocking queue.
+        _job_ids.pop_front(job_id);
+
+        LOG(INFO) << "received a job.";
+        LOG(INFO) << "job id: " << job_id;
+
+        //fetch job from database by job ID
+        if( false == core.fetch_job(job_id) )
+        {
+            LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
+            break;
+        }
+
+        LOG(INFO)  << "print job...";
+        core.print_job(job_id);
+
+        //parse job into tasks
+        if( false == core.parse_job(job_id) )
+        {
+            LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
+            break;
+        }
+
+        LOG(INFO) << "print tasks...";
+        core.print_tasks(job_id);
+    }
+}
+
+void CMasterHandler::dist_tasks_func(void) {
+    //invoke rpc provided by agent.
 }
 
 }} // end openflow::master

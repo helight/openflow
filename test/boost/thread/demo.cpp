@@ -12,7 +12,7 @@
 
 common::CBlockingQueue<std::string> queue;
 
-void worker_func()
+void worker_func(void)
 {
     while (1)
     {
