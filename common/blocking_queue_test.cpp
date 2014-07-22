@@ -11,12 +11,17 @@ TEST(CBlockingQueue, Init)
 {
     common::CBlockingQueue<int> queue;
     queue.push_front(1);
+    ASSERT_EQ(1, queue.size());
     int n;
     queue.pop_front(n);
     ASSERT_EQ(1, n);
     queue.push_back(3);
     queue.pop_back(n);
     ASSERT_EQ(3, n);
+    queue.push_back(3);
+    queue.push_back(3);
+    queue.push_back(3);
+    ASSERT_EQ(3, queue.size());
 }
 
 

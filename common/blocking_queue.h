@@ -117,6 +117,12 @@ public:
         return unlocked_is_full();
     }
 
+    uint32_t size()
+    {
+        boost::mutex::scoped_lock lock(_mutex);
+        return _queue.size();
+    }
+
 private:
     bool unlocked_is_full() const
     {
