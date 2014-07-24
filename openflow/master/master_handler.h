@@ -7,6 +7,7 @@
 #define OPENFLOW_MASTER_HANDLER_H
 #pragma once
 
+#include <boost/shared_ptr.hpp>
 #include "rpc/master/MasterService.h"
 #include "blocking_queue.h"
 
@@ -16,6 +17,7 @@ class CMasterHandler : public MasterServiceIf
 {
 public:
     CMasterHandler();
+    ~CMasterHandler();
 
     int32_t submit_job(const  int32_t job_id);
     int32_t stop_job(const int32_t id);
@@ -30,6 +32,7 @@ public:
 
 private:
     common::CBlockingQueue<int32_t> _job_ids;  //job id queue.
+    boost::shared_ptr<boost::thread> process_job_thread;
 };
 
 }} // end openflow::master

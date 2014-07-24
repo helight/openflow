@@ -41,17 +41,10 @@ template <class ThriftHandler, class ServiceProcessor>
 class CThriftServerHelper
 {
 public:
-    CThriftServerHelper() {
-        _handler.reset(new ThriftHandler);  //Need ThritfHandler before start serve.
-    }
     // 启动rpc服务，请注意该调用是同步阻塞的，所以需放最后调用
     bool serve(uint16_t port);
     bool serve(uint16_t port, uint8_t num_threads);
     void stop();
-
-    inline const boost::shared_ptr<ThriftHandler> get_handler(void) {
-        return _handler;
-    }
 
 private:
     boost::shared_ptr<ThriftHandler> _handler;
@@ -107,6 +100,7 @@ bool CThriftServerHelper<ThriftHandler, ServiceProcessor>::serve(uint16_t port, 
 {
     try
     {
+        _handler.reset(new ThriftHandler);
         _processor.reset(new ServiceProcessor(_handler));
         _protocol_factory.reset(new thrift::protocol::TBinaryProtocolFactory());
         _thread_manager = thrift::server::ThreadManager::newSimpleThreadManager(num_threads);

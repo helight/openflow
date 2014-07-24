@@ -4,13 +4,21 @@
 // Description:
 //  Using rpc interface to process job.
 #include <glog/logging.h>
+#include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/bind.hpp>
 #include "master_handler.h"
 #include "master_core.h"
 
 namespace openflow { namespace master {
 
 CMasterHandler::CMasterHandler() {
+    process_job_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::process_job_func
+        , this)));
+}
+
+CMasterHandler::~CMasterHandler() {
+    process_job_thread->join();
 }
 
 int32_t CMasterHandler::submit_job(const int32_t job_id) {
