@@ -1,3 +1,9 @@
+// Copyright (c) 2014, OpenFlow
+// Author: Zhwen Xu<HelightXu@gmail.com>
+// Created: 2014-07-21
+// Description:
+//
+
 #include <iostream>
 #include "thread_pool.h"
 
@@ -33,7 +39,10 @@ int main(int argc, char* argv[])
 
         task.task_fun = boost::bind(print_task, t_info);
         tp.add_task(task);
+        common::StThreadTask task1;
+        tp.add_task(task1);
     }
+
 
     while (1)
     {
