@@ -29,10 +29,23 @@ bool CMasterCore::fetch_job(const int32_t job_id)
 
     //FIXME: table name should not be fixed.
     common::CTable *table = db->new_table("tbJobs");
+    if (!table)
+    {
+        LOG(ERROR) << "Fail to create table.";
+        //FIXME: ugly code.
+        db->close();        //close database connection.
+        delete table;
+        delete db;
+        return false;
+    }
 
     std::string sql = boost::str(boost::format("SELECT * FROM tbJobs WHERE job_id=%d;")
                                   % job_id);
-    if ( !table->set_query(sql))
+    std::vector<std::string> rows;
+    int num_rows, num_cols;
+
+    num_rows  = table->query(sql, rows, num_cols);
+    if ( num_rows < 0)
     {
         LOG(ERROR) << "Query error.";
          //FIXME: ugly code.
@@ -42,22 +55,11 @@ bool CMasterCore::fetch_job(const int32_t job_id)
         return false;
     }
 
-    std::vector<std::string> row;
-    //I know this result set just has one row if job_id exists.
-    if (true != table->read(row))
-    {
-        //FIXME: ugly code.
-        db->close();        //close database connection.
-        delete table;
-        delete db;
-        return false;
-    }
-
     openflow::job_info info;
-    info.job_id = boost::lexical_cast<int32_t>(row[0]);
-    info.job_name = row[1];
-    info.xml_desc = row[2];
-    info.time = row[3];
+    info.job_id = boost::lexical_cast<int32_t>(rows[num_cols + 0]);
+    info.job_name = rows[num_cols + 1];
+    info.xml_desc = rows[num_cols + 2];
+    info.time = rows[num_cols + 3];
     _jobs.insert(std::pair<int32_t, openflow::job_info>(job_id, info));
 
     db->close();        //close database connection.

@@ -28,9 +28,7 @@ protected:
 
 public:
     //execute query.
-    virtual bool set_query(const std::string &sql) = 0;
-    //get a row, return ture; or get nothing, return false.
-    virtual bool read(std::vector<std::string> &row) = 0;
+    virtual int32_t  query(const std::string &sql, std::vector<std::string> &result, int32_t& columns) = 0;
     //execute non-query.
     virtual bool non_query(const std::string &sql) = 0;
     /**

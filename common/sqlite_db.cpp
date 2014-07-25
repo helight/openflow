@@ -40,7 +40,7 @@ void CSQLiteDatabase::set_connect_str(const std::string &conn_str)
 
 bool CSQLiteDatabase::open()
 {
-    if (sqlite3_open_v2(_conn_str.c_str(), &_db_handler, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
+    if (sqlite3_open_v2(_conn_str.c_str(), &_db_handler, SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
     {
         int errcode = sqlite3_errcode(_db_handler);
         LOG(ERROR) << "Fail to open " << _dbname << " ERROR("

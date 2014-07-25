@@ -21,18 +21,13 @@ DEFINE_string(jobs_items, "job_id, job_name, xml_desc, time", "item for table tb
 namespace common {
 
 CSQLiteTable::CSQLiteTable(const CSQLiteDatabase *db, const std::string& tbname
-    ,const std::string& tbitem) : CTable(tbname, tbitem)
+                           ,const std::string& tbitem) : CTable(tbname, tbitem)
 {
-    _db = db, _stmt = NULL;
+    _db = db;
 }
 
 CSQLiteTable::~CSQLiteTable()
 {
-    if (_stmt)
-    {
-        sqlite3_finalize(_stmt);
-        _stmt = NULL;
-    }
 }
 
 bool CSQLiteTable::init()
@@ -60,57 +55,60 @@ bool CSQLiteTable::non_query(const std::string& sql)
     return true;
 }
 
-// call sqlite3_finalize(stmt) to free memery after stmt used
-bool CSQLiteTable::set_query(const std::string& sql)
+// Use of sqlite3_get_table  is not recommended.
+int32_t CSQLiteTable::query(const std::string& sql, std::vector<std::string> &result
+                         ,int32_t &columns)
 {
-    sqlite3_stmt *stmt_tmp = NULL;
-    const char *errmsg = NULL;
-    int nret = 0;
+    int num_rows = 0;
+    int num_cols = 0;
+    char* errmsg = NULL;
+    char** result_tmp = NULL;
 
-    nret = sqlite3_prepare(_db->_db_handler, sql.c_str(), sql.size(), &stmt_tmp, &errmsg);
-    if(SQLITE_OK == nret)
+    int ret = sqlite3_get_table(_db->_db_handler, sql.c_str(), &result_tmp,
+                                &num_rows, &num_cols, &errmsg);
+    if (ret != SQLITE_OK)
     {
-        _stmt = stmt_tmp;
-    }
-    else
-    {
-        LOG(ERROR) << sql << " ERROR: " << errmsg;
-        sqlite3_finalize(stmt_tmp);
-    }
-
-    return (SQLITE_OK == nret);
-}
-
-bool CSQLiteTable::read(std::vector<std::string> &row)
-{
-    int col_count = sqlite3_column_count(_stmt);
-
-    if (SQLITE_ROW == sqlite3_step(_stmt))
-    {
-        for (int i = 0; i < col_count; i++)
-        {
-           std::string tmp = (const char*)sqlite3_column_text(_stmt, i);
-           row.push_back(tmp);
-        }
-        return true;
+        LOG(ERROR) << sql << " sqlite db:" << _db->_db_handler << " ERROR: " << errmsg;
+        sqlite3_free(errmsg);
+        return -1;
     }
 
-    return false;
+    char **result_start = result_tmp;
+    for(int i=0; i < (num_rows+1)*num_cols; i++)
+    {
+        std::string tmp = *result_tmp++;
+        result.push_back(tmp);
+    }
+
+    columns = num_cols;
+    sqlite3_free_table(result_start);
+
+    return num_rows;
 }
 
 uint32_t CSQLiteTable::get_row_count()
 {
     uint32_t count = 0;
-    std::string sql = boost::str(boost::format("select count(*) from %s;") % _tbname);
+    sqlite3_stmt *stmt = NULL;
+    const char *errmsg = NULL;
+    int nret = 0;
 
-    if(set_query(sql))
+    std::string sql = boost::str(boost::format("select count(*) from %s;") % _tbname);
+    nret = sqlite3_prepare_v2(_db->_db_handler, sql.c_str(), sql.size(), &stmt, &errmsg);
+    if(SQLITE_OK == nret)
     {
-        if (sqlite3_step(_stmt) == SQLITE_ROW)
+        if (sqlite3_step(stmt) == SQLITE_ROW)
         {
-            count = sqlite3_column_int(_stmt, 0);
+            count = sqlite3_column_int(stmt, 0);
         }
     }
+    else
+    {
+        LOG(ERROR) << sql << " ERROR: " << errmsg;
+        count = -1;
+    }
 
+    sqlite3_finalize(stmt);
     return count;
 }
 

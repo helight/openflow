@@ -57,6 +57,7 @@ bool CMainHelper::run()
         thrift_client_helper->connect();
     } catch (TException& exn) {
         LOG(ERROR) << exn.what();
+        return false;
     }
 
     openflow::job_info info;
@@ -73,7 +74,7 @@ bool CMainHelper::run()
     int ret = job.store("openflow.db", info);
     if (ret < 0) {
         LOG(ERROR) << "Fail to store job into database.";
-        return -1;
+        return false;
     }
 
     //submit job to master server
@@ -82,12 +83,13 @@ bool CMainHelper::run()
         ret = thrift_client_helper->get()->submit_job(info.job_id);
         if (ret < 0) {
             LOG(ERROR) << "fail to submit job.";
-            return -1;
+            return false;
         }
 
         thrift_client_helper->close();
     } catch (TException& exn) {
         LOG(ERROR) <<  exn.what();
+        return false;
     }
 
     LOG(INFO) << "submit job(" << info.job_id << ") successfully.";

@@ -62,7 +62,7 @@ void CMasterHandler::process_job_func(void) {
         if( false == core.fetch_job(job_id) )
         {
             LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-            break;
+            continue;
         }
 
         LOG(INFO)  << "print job...";
@@ -71,8 +71,8 @@ void CMasterHandler::process_job_func(void) {
         //parse job into tasks
         if( false == core.parse_job(job_id) )
         {
-            LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-            break;
+            LOG(ERROR) << "Fail to parse job(" << job_id << ") into tasks.";
+            continue;
         }
 
         LOG(INFO) << "print tasks...";

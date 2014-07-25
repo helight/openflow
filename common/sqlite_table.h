@@ -24,8 +24,7 @@ public:
     bool init();
 
 public:
-    bool set_query(const std::string& sql);
-    bool read(std::vector<std::string> &row);
+    int32_t query(const std::string& sql, std::vector<std::string> &result, int32_t& columns);
     bool non_query(const std::string& sql);
     uint32_t get_row_count(void);
     uint32_t get_lastinsert_rowid(void);
@@ -37,10 +36,7 @@ protected:
 
 private:
     boost::mutex _mutex;
-
     const CSQLiteDatabase* _db;   //point to  database that hold this table.
-    //FIXME: not used properly this moment.
-    sqlite3_stmt* _stmt;
 };
 
 } // end namespace common
