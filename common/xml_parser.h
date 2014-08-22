@@ -11,7 +11,7 @@ static const string task_member[]={"name","description","nodes","command"};
 struct StTask
 {
 	std::string name;
-	std::string descroption;
+	std::string description;
 	std::string nodes;
 	std::string cmd;
 };
@@ -47,23 +47,22 @@ vector<StTask> xmlParser::parseXML(string xmlFile)
 			{
 				pt=shell_process.get_child(task_member[i]);
 				val=pt.data();
-				cout<<val<<endl;
-			}
-
-			switch(i)
-			{
-				case 0:
-					task.name=val;
-					break;
-				case 1:
-					task.description=val;
-					break;
-				case 2:
-					task.nodes=val;
-					break;
-				case 3:
-					task.cmd=val;
-					break;
+	
+				switch(i)
+				{
+					case 0:
+						task.name=val;
+						break;
+					case 1:
+						task.description=val;
+						break;
+					case 2:
+						task.nodes=val;
+						break;
+					case 3:
+						task.cmd=val;
+						break;
+				}
 			}
 
 			rsltTasks.push_back(task);
@@ -84,7 +83,7 @@ bool xmlParser::format_Ck(string xmlFile)
 	stdF_root=stdF.get_child("job");
 
 	ptree::iterator it=root.begin();
-	ptree::iteratro std_it=stdF_root.begin();
+	ptree::iterator std_it=stdF_root.begin();
 
 	while(it!=root.end())
 	{
@@ -101,7 +100,7 @@ bool xmlParser::format_Ck(string xmlFile)
 		it++;
 		std_it++;
 	}
-	it(std_it!=stdF_root.end())
+	if(std_it!=stdF_root.end())
 		return false;
 	return true;
 }

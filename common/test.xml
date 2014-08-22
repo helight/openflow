@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<job>
+	<name><![CDATA[this is a test file]]></name>
+	<description><![CDATA[test file 4 XML]]></description>
+	<properties></properties>
+
+	<start>
+		<name><![CDATA[start]]></name>
+		<description><![CDATA[]]></description>
+	</start>
+
+	<shell_process>
+		<name><![CDATA[test node1]]></name>
+		<description><![CDATA[this is the description of node1]]></description>
+		<nodes><![CDATA[127.0.0.1]]></nodes>
+		<command>
+			<![CDATA[#!/bin/sh 
+			cd /data/log/ls]]>
+		</commmand>
+	</shell_process>
+	<shell_process>
+		<name><![CDATA[test node2]]></name>
+		<description><![CDATA[thsi is the second node's description part]]></description>
+		<nodes><![CDATA[127.0.071]]></nodes>
+		<command>
+			<![CDATA[#!/bin/sh.distrib]]>
+		</commmand>
+	</shell_process>
+	<shell_process>
+		<name><![CDATA[test node3]]></name>
+		<description><![CDATA[the third nodes's description]]></description>
+		<nodes><![CDATA[127.0.0.2]]></nodes>
+		<command>
+			<![CDATA[#cd /usr/share]]>
+		</command>
+	</shell_process>
+
+	<end>
+		<name><![CDATA[this is the end of this xml]]></name>
+		<description><![CDATA[]]></description>
+	</end>
+
+	<test><![CDATA[this is a test]]></test>
+</job>
