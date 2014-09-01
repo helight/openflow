@@ -4,16 +4,14 @@
 // Description:
 // deal with tasks received from master
 
+#include <fcntl.h>
 #include <stdlib.h>
-#include <fstream>
 #include <sys/wait.h>
 #include <sys/time.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <fstream>
 #include <glog/logging.h>
 #include "agent_handler.h"
-
-using namespace std;
 
 namespace openflow { namespace agent {
     CAgentHandler::CAgentHandler() {}
@@ -23,16 +21,13 @@ namespace openflow { namespace agent {
     int32_t CAgentHandler::execute_task(const openflow::task_info &task)
     {
         /*用fork execlp执行脚本程序*/
-        LOG(INFO) << "receive a task.";
-        LOG(INFO) << "task id: " << task.task_id;
-        LOG(INFO) << "task name: " << task.task_name;
-        LOG(INFO) << "start handling...";
+        LOG(INFO) << "receive a task."
+        << "task id: " << task.task_id
+        << "task name: " << task.task_name
+        << "start handling...";
 
         /*获取任务执行时间的开始*/
         gettimeofday(&start_time, NULL);
-
-        /*将任务插入到任务队列里*/
-        task_queue.insert(pair<int32_t, string>(task.task_id, task.task_name));
 
         /*检测是否超出并发度*/
         if ( fork_cnt >= fork_max )
@@ -43,9 +38,13 @@ namespace openflow { namespace agent {
         else
         {
             /*开始执行任务*/
-            int32_t fork_rv;
+
+            /*将任务插入到任务队列里*/
+            task_queue.insert(pair<int32_t, string>(task.task_id, task.task_name));
+
+           int32_t fork_rv;
             if ( (fork_rv = fork()) == -1 )
-                LOG(INFO) << "fork error.";
+                LOG(ERROR) << "fork error.";
             else if ( fork_rv == 0 )
             {
                 /*将task.cmd存入task_name命名的文件中*/
@@ -67,16 +66,19 @@ namespace openflow { namespace agent {
                 char id_des[255] = "/home/km/Desktop/openflow_result_data/";
                 strcat(id_des, id_src);
                 if( (fd = creat(id_des, 0644)) == -1 )
-                    LOG(INFO) << "creat error";
+                    LOG(ERROR) << "creat error"; 
 
-                /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
+                /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/ 
                 dup2(fd, 1);
                 dup2(fd, 2);
-                execlp("bash", "bash", "-x", p, NULL);
+                if ( execlp("bash", "bash", "-x", p, NULL) < 0 )
+                {
+                    LOG(ERROR) << "execlp error";
+                    return -1;
+                }
+                //LOG(INFO) << "execlp failed...";
+                //exit(1);
 
-                /*execlp执行出错的输出*/
-                LOG(INFO) << "execlp failed...";
-                exit(1);
             }
             else
             {
@@ -93,12 +95,12 @@ namespace openflow { namespace agent {
                 time_use /= 1000000;
 
                 /*任务最终状态的输出*/
-                LOG(INFO) << "handling done...";
-                LOG(INFO) << "done waiting for " << fork_rv << ",wait returned "
-                    << wait_rv;
-                LOG(INFO) << "task execution status is " << task_status;
-                LOG(INFO) << "task pid is " << task_pid;
-                LOG(INFO) << "the time of exeution is " << time_use;
+                LOG(INFO) << "handling done..."
+                << "done waiting for " << fork_rv 
+                << ",wait returned " << wait_rv
+                << "task execution status is " << task_status
+                << "task pid is " << task_pid
+                << "the time of exeution is " << time_use;
             }
         }
 
@@ -116,17 +118,21 @@ namespace openflow { namespace agent {
             /*用kill结束task所在的进程*/
             char *pid;
             sprintf(pid, "%d", task_pid);
-            execlp("kill", pid, NULL);
-            LOG(INFO) << "execlp failed...";
-            exit(1);
-        }
+            if ( execlp("kill", pid, NULL) < 0 )
+            {
+                LOG(ERROR) << "execlp error";
+                return -1;
+            }
+            //LOG(INFO) << "execlp failed...";
+            //exit(1);
+       }
         else
         {
             /*将task从任务队列中删除*/
             if ( task_queue.erase(task.task_id) )
-                LOG(INFO) << "ok: task " << task.task_id << " removed!\n";
+                LOG(INFO) << "ok: task " << task.task_id << " removed!";
             else
-                LOG(INFO) << "oops: task " << task.task_id << " not found!\n";
+                LOG(INFO) << "oops: task " << task.task_id << " not found!";
         }
 
         return 0;
@@ -137,13 +143,13 @@ namespace openflow { namespace agent {
         /*测试用
          * 测试任务队列
          */
-        LOG(INFO) << "*********************************" << endl;
-        LOG(INFO) << "the task queue is: " << endl;
+        LOG(INFO) << "*********************************"
+        << "the task queue is: ";
         map<int32_t, string>::iterator task_queue_iter;
         for ( task_queue_iter = task_queue.begin();
             task_queue_iter != task_queue.end(); task_queue_iter++ )
             LOG(INFO) << task_queue_iter->first <<  " " << task_queue_iter->second;
-        LOG(INFO) << "*********************************" << endl;
+        LOG(INFO) << "*********************************";
 
         return 0;
     }
