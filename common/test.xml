@@ -11,28 +11,21 @@
 
 	<shell_process>
 		<name><![CDATA[test node1]]></name>
-		<description><![CDATA[this is the description of node1]]></description>
+		<description><![CDATA[node1]]></description>
 		<nodes><![CDATA[127.0.0.1]]></nodes>
-		<command>
-			<![CDATA[#!/bin/sh 
-			cd /data/log/ls]]>
-		</commmand>
+		<command><![CDATA[#!/bin/sh]]></commmand>
 	</shell_process>
 	<shell_process>
 		<name><![CDATA[test node2]]></name>
-		<description><![CDATA[thsi is the second node's description part]]></description>
+		<description><![CDATA[node2]]></description>
 		<nodes><![CDATA[127.0.071]]></nodes>
-		<command>
-			<![CDATA[#!/bin/sh.distrib]]>
-		</commmand>
+		<command><![CDATA[#!/bin/sh.distrib]]></commmand>
 	</shell_process>
 	<shell_process>
 		<name><![CDATA[test node3]]></name>
-		<description><![CDATA[the third nodes's description]]></description>
+		<description><![CDATA[node3]]></description>
 		<nodes><![CDATA[127.0.0.2]]></nodes>
-		<command>
-			<![CDATA[#cd /usr/share]]>
-		</command>
+		<command><![CDATA[#cd /usr/share]]></command>
 	</shell_process>
 
 	<end>
@@ -40,5 +33,4 @@
 		<description><![CDATA[]]></description>
 	</end>
 
-	<test><![CDATA[this is a test]]></test>
 </job>
