@@ -5,6 +5,7 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 #include <boost/format.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -28,7 +29,7 @@ namespace openflow { namespace agent{
             void fini();
 
         private:
-            common::CThriftServerHelper<CAgentHandler, AgentServiceProcessor>_openflow_agent;
+            common::CThriftServerHelper<CAgentHandler, AgentServiceProcessor> _openflow_agent;
     };
 
     bool CMainHelper::init(int argc, char *argv[])

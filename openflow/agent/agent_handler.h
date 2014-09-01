@@ -9,7 +9,11 @@
 #pragma once
 
 #include <vector>
+#include <map>
+#include <string>
 #include "rpc/agent/AgentService.h"
+
+using namespace std;
 
 namespace openflow { namespace agent {
 
@@ -17,10 +21,47 @@ namespace openflow { namespace agent {
     {
         public:
             CAgentHandler();
+            ~CAgentHandler();
 
-            int32_t submit_task(const int32_t t_id);
+            int32_t execute_task(const openflow::task_info &task);
 
-            int32_t kill_task();
+            int32_t kill_task(const openflow::task_info &task);
+
+            int32_t show_task();
+
+            int32_t report_status();
+
+        private:
+
+            /*统计任务执行之间*/
+            struct timeval start_time, end_time;
+            float time_use;
+
+            /*task的pid*/
+            pid_t task_pid;
+
+            /*任务返回码*/
+            int32_t child_status;
+
+            /*正在执行任务的数量*/
+            //int32_t task_count = 0;
+
+            /*控制fork的数量*/
+            const int32_t fork_max = 10;
+            int32_t fork_cnt = 0;
+
+            /*任务队列*/
+            map<int32_t, string> task_queue;
+
+            /*将task的执行返回值转化为成功失败*/
+            string task_status;
+            void sorf()
+            {
+                if ( child_status == 0 )
+                    task_status = "SUCCESS";
+                else
+                    task_status = "FAILED";
+            }
     };
 
 } }

@@ -22,25 +22,53 @@ extern "C" int main(int argc, char *argv[])
 
     thrift_client_helper.connect();
 
-    openflow::job_info info;
-    info.job_id = 7;
+    openflow::task_info task1;
+    task1.task_id = 8;
+    task1.task_name = "kobemiller";
+    task1.cmd = "ps;ls;date;who;pwd;";
 
-    tools::agent_client::CTask task;
+    openflow::task_info task2;
+    task2.task_id = 10;
+    task2.task_name = "kobe";
+    task2.cmd = "ps;ls;date;who;pwd;";
+
+    openflow::task_info task3;
+    task3.task_id = 5;
+    task3.task_name = "miller";
+    task3.cmd = "ps;ls;date;who;pwd;";
+
+    tools::agent_client::CTask Ctask;
     
-    int tmp = task.receive_task();
+    int tmp = Ctask.receive_task();
     if ( tmp != 0 )
     {
         LOG(ERROR) << "fail to receive task.";
         return -1;
     }
 
-    LOG(INFO) << "submit task...";
-    tmp = thrift_client_helper->submit_task(info.job_id);
+    LOG(INFO) << "execute task...";
+    tmp = thrift_client_helper->execute_task(task1);
     if ( tmp != 0 )
     {
-        LOG(ERROR) << "fail to submit task.";
+        LOG(ERROR) << "fail to execute task.";
         return -1;
     }
-    
+
+    tmp = thrift_client_helper->execute_task(task2);
+    if ( tmp != 0 )
+    {
+        LOG(ERROR) << "fail to execute task.";
+        return -1;
+    }
+
+    tmp = thrift_client_helper->execute_task(task3);
+    if ( tmp != 0 )
+    {
+        LOG(ERROR) << "fail to execute task.";
+        return -1;
+    }
+
+    thrift_client_helper->show_task();
+
     return 0;
 }
