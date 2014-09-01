@@ -10,7 +10,7 @@
 
 TEST(CXMLParser,parserXML)
 {
-	std::vector<StTask> stdTasks;
+	std::vector<StTask> std_tasks;
 	std::vector<StTask>::iterator std_it;
 
 	std::vector<StTask> tasks;
@@ -22,29 +22,29 @@ TEST(CXMLParser,parserXML)
 	task.description = "node1";
 	task.nodes = "127.0.0.1";
 	task.cmd = "#!/bin/sh";
-	stdTasks.push_back(task);
+	std_tasks.push_back(task);
 
 	task.name = "test node2";
 	task.description = "node2";
 	task.nodes = "127.0.071";
 	task.cmd = "#!/bin/sh.distrib";
-	stdTasks.push_back(task);
+	std_tasks.push_back(task);
 
 	task.name = "test node3";
 	task.description = "node3";
 	task.nodes = "127.0.0.2";
 	task.cmd = "#cd /usr/share";
-	stdTasks.push_back(task);
+	std_tasks.push_back(task);
 
 	
 	CXMLParser parser;
 	tasks = parser.parse_XML("test.xml");
 
-	std_it = stdTasks.begin();
+	std_it = std_tasks.begin();
 	it = tasks.begin();
 
-	while(std_it != stdTasks.end() && it != tasks.end())
-	{  
+	while(std_it != std_tasks.end() && it != tasks.end())
+	{   
 	    EXPECT_STREQ(std_it->name.c_str(),it->name.c_str());
 		EXPECT_STREQ(std_it->description.c_str(),it->description.c_str());
 		EXPECT_STREQ(std_it->nodes.c_str(),it->nodes.c_str());
