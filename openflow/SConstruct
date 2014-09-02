@@ -30,9 +30,9 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/', common,
            root_path + "/rpc/agent"
            ])
 
-env.Append(LIBS = ['thriftnb', 'thrift', 'glog', 'gtest', 'event', 'gflags'
+env.Append(LIBS = ['common', 'thriftnb', 'thrift', 'glog', 'gtest', 'event', 'gflags'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
-           , 'sqlite3', 'tinyxml','common', 'pthread','dl', 'z'])
+           , 'sqlite3', 'tinyxml', 'pthread','dl', 'z', 'unwind', 'lzma'])
 
 #'unwind', 'lzma', do not work for me(renzhen).
 

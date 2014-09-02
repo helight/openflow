@@ -1,10 +1,11 @@
-// Copyright (c) 2014, HelightXu
+// Copyright (c) 2014, OpenFlow
 // Author: Zhwen Xu<HelightXu@gmail.com>
 // Created: 2014-05-05
 // Description:
 //
 
 #include <iostream>
+#include <exception>
 #include <boost/format.hpp>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -47,7 +48,11 @@ bool CMainHelper::run()
     LOG(INFO) << "openflow master start ...";
     LOG(INFO) << "thread num: " << FLAGS_thread_num ;
 
-    _openflow_master.serve(OPENFLOW_MASTER_HANDLER_PORT, FLAGS_thread_num);
+    try {
+        _openflow_master.serve(OPENFLOW_MASTER_HANDLER_PORT, FLAGS_thread_num);
+    } catch (std::exception& exn) {
+        LOG(ERROR) << "CMainHelper::run: " << exn.what();
+    }
 
     return true;
 }

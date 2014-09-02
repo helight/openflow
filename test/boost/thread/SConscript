@@ -1,0 +1,7 @@
+Import('env')
+
+env.Program(
+    target = 'demo',
+    source = 'demo.cpp'
+)
+

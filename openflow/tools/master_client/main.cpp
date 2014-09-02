@@ -9,19 +9,56 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <glog/logging.h>
+#include <gflags/gflags.h>
+#include <boost/format.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <main_template.h>
 #include <thrift_helper.h>
+#include <utils.h>
 #include "rpc/master/MasterService.h"
 #include "job.h"
 
-using namespace openflow::master;
-using namespace apache;
+namespace openflow { namespace tools { namespace master_client{
 
-int main(int argc, char** argv) {
-    common::CThriftClientHelper<MasterServiceClient>
-        thrift_client_helper("127.0.0.1", 9080);
+using namespace apache::thrift;
 
-    thrift_client_helper.connect();
+class CMainHelper : public common::IMainHelper
+{
+private:
+    bool init(int argc, char* argv[]);
+    bool run();
+    void fini();
+
+private:
+    common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper;
+};
+
+bool CMainHelper::init(int argc, char* argv[])
+{
+    // init glog,gflags
+    FLAGS_logbufsecs = 0;           // write log no cache
+    FLAGS_max_log_size = 300;       // max log size for each log file
+    FLAGS_log_dir = boost::str(boost::format("%s/") % common::CUtils::get_program_path());
+    google::ParseCommandLineFlags(&argc, &argv, true);
+    google::InitGoogleLogging("master_client");
+
+    thrift_client_helper = new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
+    if (NULL == thrift_client_helper)
+    {
+        LOG(ERROR) << "Fail to create master client.";
+        return false;
+    }
+    return true;
+}
+
+bool CMainHelper::run()
+{
+   try {
+        thrift_client_helper->connect();
+    } catch (TException& exn) {
+        LOG(ERROR) << exn.what();
+        return false;
+    }
 
     openflow::job_info info;
     info.job_name = "testor";
@@ -34,20 +71,45 @@ int main(int argc, char** argv) {
 
     //store job into databse
     job.set_xml("demo.xml");
-    int ret = job.store("../../web/database/openflow.db", info);
-    if (ret != 0) {
+    int ret = job.store("openflow.db", info);
+    if (ret < 0) {
         LOG(ERROR) << "Fail to store job into database.";
-        return -1;
+        return false;
     }
 
     //submit job to master server
     LOG(INFO) << "submit job...";
-    ret = thrift_client_helper->submit_job(info.job_id);
-    if (ret != 0) {
-        LOG(ERROR) << "fail to submit job.";
+    try {
+        ret = thrift_client_helper->get()->submit_job(info.job_id);
+        if (ret < 0) {
+            LOG(ERROR) << "fail to submit job.";
+            return false;
+        }
+
+        thrift_client_helper->close();
+    } catch (TException& exn) {
+        LOG(ERROR) <<  exn.what();
+        return false;
     }
 
     LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
 
-    return 0;
+    return true;
 }
+
+void CMainHelper::fini()
+{
+    if(!thrift_client_helper)
+    {
+        delete thrift_client_helper;
+    }
+}
+
+extern "C" int main(int argc, char* argv[])
+{
+    CMainHelper main_helper;
+
+    return main_template(&main_helper, argc, argv);
+}
+
+}}} //namespace openflow::tools::master_client
