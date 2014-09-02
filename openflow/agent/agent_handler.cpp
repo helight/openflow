@@ -40,7 +40,7 @@ namespace openflow { namespace agent {
             /*开始执行任务*/
 
             /*将任务插入到任务队列里*/
-            task_queue.insert(pair<int32_t, string>(task.task_id, task.task_name));
+            task_queue.insert(std::pair<int32_t, std::string>(task.task_id, task.task_name));
 
            int32_t fork_rv;
             if ( (fork_rv = fork()) == -1 )
@@ -49,9 +49,9 @@ namespace openflow { namespace agent {
             {
                 /*将task.cmd存入task_name命名的文件中*/
                 const char *p = task.task_name.data();
-                ofstream fout;
+                std::ofstream fout;
                 fout.open(p);
-                fout << task.cmd << endl;
+                fout << task.cmd << std::endl;
                 fout.close();
 
                 int32_t fd;
@@ -145,7 +145,7 @@ namespace openflow { namespace agent {
          */
         LOG(INFO) << "*********************************"
         << "the task queue is: ";
-        map<int32_t, string>::iterator task_queue_iter;
+        std::map<int32_t, std::string>::iterator task_queue_iter;
         for ( task_queue_iter = task_queue.begin();
             task_queue_iter != task_queue.end(); task_queue_iter++ )
             LOG(INFO) << task_queue_iter->first <<  " " << task_queue_iter->second;

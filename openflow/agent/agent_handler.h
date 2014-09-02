@@ -50,7 +50,7 @@ namespace openflow { namespace agent {
             int32_t fork_cnt = 0;
 
             /*任务队列*/
-            std::map<int32_t, string> task_queue;
+            std::map<int32_t, std::string> task_queue;
 
             /*将task的执行返回值转化为成功失败*/
             std::string task_status;

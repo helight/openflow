@@ -35,7 +35,7 @@ extern "C" int main(int argc, char *argv[])
     openflow::task_info task3;
     task3.task_id = 5;
     task3.task_name = "miller";
-    task3.cmd = "ps;ls;date;who;pwd;";
+    task3.cmd = "ps; ls; date; who; pwd;";
 
     tools::agent_client::CTask Ctask;
     
