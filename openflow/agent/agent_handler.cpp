@@ -48,10 +48,11 @@ namespace openflow { namespace agent {
             else if ( fork_rv == 0 )
             {
                 /*将task.cmd存入task_name命名的文件中*/
+                std::string exe_shell = "trap 'echo $?;exit;' ERR \n" + task.cmd;
                 const char *p = task.task_name.data();
                 std::ofstream fout;
                 fout.open(p);
-                fout << task.cmd << std::endl;
+                fout << exe_shell << std::endl;
                 fout.close();
 
                 int32_t fd;

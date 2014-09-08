@@ -25,7 +25,7 @@ extern "C" int main(int argc, char *argv[])
     openflow::task_info task1;
     task1.task_id = 8;
     task1.task_name = "kobemiller";
-    task1.cmd = "ps;ls;date;who;pwd;";
+    task1.cmd = "ps;ls -e;date;who;pwd;";
 
     openflow::task_info task2;
     task2.task_id = 10;
