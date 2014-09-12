@@ -48,5 +48,3 @@ SConscript(['master/SConscript'], exports = 'env')
 SConscript(['agent/SConscript'], exports = 'env')
 
 SConscript(['tools/SConscript'], exports = 'env')
-
-SConscript(['../test/common/xml_parse/Sconstruct'], exports = 'env')

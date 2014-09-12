@@ -9,30 +9,17 @@ env.Append(CPPPATH = [root_path, thirdparty,
            thirdparty + '/glog/include/',
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
-           thirdparty + '/sqlite/include/',
-           thirdparty + '/libunwind/include/',
            ])
 
 env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            thirdparty + '/glog/lib',
            thirdparty + '/gflags/lib',
            thirdparty + '/gtest/lib',
-           thirdparty + '/sqlite/lib/',
-           thirdparty + '/libunwind/lib',
            ])
 
-env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'sqlite3'
-           , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
-           , 'pthread','dl', 'z', 'unwind', 'lzma'])
-
-env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
-           , '-Wno-unused-parameter', '-Wno-unused-local-typedefs'
-           , '-Wno-missing-field-initializers'])
-
-env.Append(LINKFLAGS = ['-static'])
+env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'pthread'])
 
 env.Program(
     target = "xml_parser_test",
     source = ['xml_parser_test.cpp']
     )
-
