@@ -1,0 +1,25 @@
+import os
+env = Environment()  # Initialize the environment
+
+root_path = os.getcwd()
+thirdparty = str(root_path) + "/../../../thirdparty/"
+
+env.Append(CPPPATH = [root_path, thirdparty,
+           thirdparty + '/boost/include/',
+           thirdparty + '/glog/include/',
+           thirdparty + '/gflags/include/',
+           thirdparty + '/gtest/include/',
+           ])
+
+env.Append(LIBPATH = [thirdparty + '/boost/lib/',
+           thirdparty + '/glog/lib',
+           thirdparty + '/gflags/lib',
+           thirdparty + '/gtest/lib',
+           ])
+
+env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'pthread'])
+
+env.Program(
+    target = "xml_parser_test",
+    source = ['xml_parser_test.cpp']
+    )
