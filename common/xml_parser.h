@@ -3,7 +3,7 @@
 #include<boost/property_tree/ptree.hpp>
 #include<boost/property_tree/xml_parser.hpp>
 
-static const std::string task_member[]={"name","description","nodes","command"};
+static const std::string task_member[] = {"name","description","nodes","command"};
 
 struct StTask
 {
@@ -15,38 +15,37 @@ struct StTask
 
 class CXMLParser
 {
-	public:
-		std::vector<StTask> parse_XML(const std::string & xmlFile);
-		bool check_format(const std::string & xmlFile);
-		int shell_prcss_num(const std::string & xmlFile);
-	private:
-		boost::property_tree::ptree pt;
-		boost::property_tree::ptree root;
-		StTask task;
+public:
+	std::vector<StTask> parse_XML(const std::string& xml_file);
+	bool check_format(const std::string& xmlFile);
+	int shell_prcss_num(const std::string& xmlFile);
+private:
+	boost::property_tree::ptree pt;
+	boost::property_tree::ptree root;
+	StTask task;
 };
 
-std::vector<StTask> CXMLParser::parse_XML(const std::string & xml_file)
+std::vector<StTask> CXMLParser::parse_XML(const std::string& xml_file)
 {
 	std::vector<StTask> rslt_tasks;
-	boost::property_tree::read_xml(xml_file,pt);
+	boost::property_tree::read_xml(xml_file, pt);
 	root = pt.get_child("job");
 
 	for(boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); it++)
-	 {
+	{
 		if(it->first == "shell_process")
-	 	{
+		{
 			boost::property_tree::ptree pt;
 			std::string val;
 			boost::property_tree::ptree shell_process = it->second;
 
-			int i = 0;
-			for(; i < 4; i++)
-	 		{
+			for(int i=0; i<4; i++)
+			{
 				pt = shell_process.get_child(task_member[i]);
 				val = pt.data();
-	
+
 				switch(i)
-	 			{
+				{
 					case 0:
 						task.name = val;
 						break;
@@ -67,21 +66,19 @@ std::vector<StTask> CXMLParser::parse_XML(const std::string & xml_file)
 	}
 	return rslt_tasks;
 }
-//this method was designed for xml format checking.
-//this method will check every first-level node's tag 
-//by compared with the standard.xml file
-//
-//therefore if standard xml file's format changing is needed
-//you only need to make some changes on the standard.xml file
-bool CXMLParser::check_format(const std::string & xml_file)
+
+/**
+ * xml file format checking depend on a standard.xml file
+ */
+bool CXMLParser::check_format(const std::string& xml_file)
 {
 	boost::property_tree::ptree std_pt;
 	boost::property_tree::ptree std_pt_root;
 
-	boost::property_tree::read_xml(xml_file,pt);
+	boost::property_tree::read_xml(xml_file, pt);
 	root = pt.get_child("job");
 
-	boost::property_tree::read_xml("standard.xml",std_pt);
+	boost::property_tree::read_xml("standard.xml", std_pt);
 	std_pt_root = std_pt.get_child("job");
 
 	boost::property_tree::ptree::iterator it = root.begin();
@@ -93,28 +90,30 @@ bool CXMLParser::check_format(const std::string & xml_file)
 		{
 			if(it->first != std_it->first)
 				return false;
-	 	}
+		}
 		else
 		{
 			it++;
 			continue;
-	 	}
+		}
 		it++;
 		std_it++;
-	} 
+	}
 	if(std_it != std_pt_root.end())
 		return false;
 	return true;
 }
 
-//returns num of shell process in the target xml file
-int CXMLParser::shell_prcss_num(const std::string & xml_file)
+/**
+ * count the number of "shell_process" node(s)
+ */
+int CXMLParser::shell_prcss_num(const std::string& xml_file)
 {
-	boost::property_tree::read_xml(xml_file,pt);
+	boost::property_tree::read_xml(xml_file, pt)	;
 	root = pt.get_child("job");
 
 	int dscrptn_count = 0;
-	
+
 	boost::property_tree::ptree::iterator it = root.begin();
 
 	while(it != root.end())
@@ -124,7 +123,6 @@ int CXMLParser::shell_prcss_num(const std::string & xml_file)
 			dscrptn_count++;
 		}
 		it++;
-	} 
-
+	}
 	return dscrptn_count;
 }
