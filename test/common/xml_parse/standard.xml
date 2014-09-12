@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<job>
+	<name><![CDATA[this is a standard file]]></name>
+	<description><![CDATA[]]></description>
+	<properties></properties>
+
+	<start>
+		<name><![CDATA[]]></name>
+		<description><![CDATA[]]></description>
+	</start>
+
+	<end>
+		<name><![CDATA[]]></name>
+		<description><![CDATA[]]></description>
+	</end>
+	
+	
+</job>
