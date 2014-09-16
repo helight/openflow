@@ -1,0 +1,19 @@
+import os
+env = Environment()  # Initialize the environment
+
+root_path = os.getcwd()
+thirdparty = str(root_path) + "/../../../thirdparty/"
+
+env.Append(CPPPATH = [root_path, thirdparty,
+           thirdparty + '/boost/include/',
+           thirdparty + '/gtest/include/',
+           ])
+
+env.Append(LIBPATH = [thirdparty + '/gtest/lib'])
+
+env.Append(LIBS = ['gtest', 'pthread'])
+
+env.Program(
+    target = "xml_parser_test",
+    source = ['xml_parser_test.cpp']
+    )
