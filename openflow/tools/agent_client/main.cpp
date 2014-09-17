@@ -68,7 +68,7 @@ extern "C" int main(int argc, char *argv[])
         return -1;
     }
 
-    thrift_client_helper->show_task();
+    thrift_client_helper->show_running_task();
 
     return 0;
 }
