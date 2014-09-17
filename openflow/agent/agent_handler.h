@@ -13,7 +13,6 @@
 #include <string>
 #include "rpc/agent/AgentService.h"
 
-
 namespace openflow { namespace agent {
 
     class CAgentHandler : public AgentServiceIf
@@ -26,7 +25,13 @@ namespace openflow { namespace agent {
 
             int32_t kill_task(const openflow::task_info &task);
 
-            int32_t show_task();
+            /*计算task执行时间*/
+            float track_time(struct timeval, struct timeval);
+
+            /*跟踪子进程*/
+            int32_t parent_catch_sig(int32_t);
+
+            int32_t show_running_task();
 
             int32_t report_status();
 
