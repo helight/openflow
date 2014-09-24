@@ -1,0 +1,375 @@
+<%
+    master="../master/detail.html";
+%>
+
+<view1>
+	<style>
+	div.instance {
+		padding:10px;
+		margin: 10px 2px;
+		background-color: #B2D1C1;
+	}
+	div.instance input#instance {
+		width:60px;
+		height:25px;
+		padding:2px 6px;
+		border:1px solid #000;
+	}
+	.easyui-tabs div.tabitem>ul {
+		list-style: none;
+	}
+	.easyui-tabs div.tabitem>ul>li
+	{
+		margin:6px 0 6px 10px;
+	}
+	.easyui-tabs div.tabitem>ul>li>div {
+		display:inline;
+	}
+	.easyui-numberbox {
+		width:40px;
+	}
+	.easyui-datebox {
+		width:100px;
+	}
+	.easyui-timespinner {
+		width:80px;
+	}
+
+	</style>
+	<script src="<%=rootUrl %>/content/js/openflow.instance.js?ver=<%= version%>"></script>
+
+<div class="instance">
+	<label for="instance">实例</label>
+	<input id="instance" title="双击选择关联实例" name="instance" data-instance="<%= instance%>" value="<%= instance %>" onchange="validInstance(this)" />
+	<span id="instaneName"><%= instanceName %></span>
+</div>
+	<div class="easyui-tabs">
+		<div title="快捷模式" class="tabitem tab0">
+			<ul>
+				<li>从
+					<input id="rdStartTime01" type="radio" checked="checked" name="starttime0" />
+					<label for="starttime">现在</label>&nbsp;
+					<input id="rdStartTime02" type="radio" name="starttime" />
+					<input id="starttime0" type="text" value="" class="easyui-datebox" data-options="showSeconds:false,formatter:dateFormatter" name="starttime" />
+					<label for="starttime">开始</label>
+				到
+					<input id="endtime0" type="text" value="2099-01-01" class="easyui-datebox" data-options="formatter:dateFormatter" name="endtime" />
+					<label for="endtime">终止</label>
+					(<span class="msg_tip_info">任务执行时间</span>)
+				</li>
+				<li>
+					<input id="chk00" type="radio" checked="checked" name="chknutype0" />
+					<span>每</span>
+					<input id="txtTimeNum00" name="timenum" type="text" class="easyui-numberbox" data-options="min:1" style="width:40px;" value="1" />
+					<span>月</span>
+					<div id="area0">	-
+						<input id="detailday00" name="detailday0" type="text"  style="width:30px;" class="easyui-numberbox" value="1" data-options="min:1,max:31"/>
+						<label for="detailday0" >号(表示所选择月份的某天执行)</label>
+						<input id="detailtime00" class="easyui-timespinner" value="01:00"/>
+						<label for="detailtime0" >时</label>
+					</div>
+				</li>
+				<li>
+					<input id="chk01" type="radio" name="chknutype0" />
+					<span>每</span>
+					<input id="txtTimeNum01" name="timenum"  type="text" disabled class="easyui-numberbox" data-options="min:1" style="width:40px;" value="1" />
+					<span>天</span>
+					<div id="area01">
+						<input id="detailtime01" type="text" disabled class="easyui-timespinner" value="01:00"/>
+						<label for="detailtime1" >时</label>
+					</div>
+				</li>
+				<li>
+					<input id="chk02" type="radio" name="chknutype0" />
+					<span>每</span>
+					<input id="txtTimeNum02" name="timenum"  type="text" disabled class="easyui-numberbox" data-options="min:1" style="width:40px;" value="1" />
+					<span>小时</span>
+					<div id="area02">
+						<input id="detailmintue02" type="text" disabled name="detailday0"  style="width:30px;" class="easyui-numberbox" value="0" data-options="min:0,max:59"/>
+						<label for="detailmintue2" >分</label>
+					</div>
+				</li>
+				<li>
+					<input id="chk03" type="radio" name="chknutype0" />
+					<span>每</span>
+					<input id="txtTimeNum03" name="timenum"  type="text" disabled class="easyui-numberbox" data-options="min:1" style="width:40px;" value="1" />
+					<span>分钟</span>
+				</li>
+				<li>
+					<input id="chk04" type="radio" name="chknutype0" />
+					<span>每</span>
+					<input id="txtTimeNum04" name="timenum"  type="text" disabled class="easyui-numberbox" data-options="min:1" style="width:40px;" value="1" />
+					<span>周</span>
+					<select id="txtweek04" name="timenum" disabled>
+						<option value="0">星期日</option>
+						<option value="1">星期一</option>
+						<option value="2">星期二</option>
+						<option value="3">星期三</option>
+						<option value="4">星期四</option>
+						<option value="5">星期五</option>
+						<option value="6">星期六</option>
+					</select>
+					<div id="area04">
+						<input id="detailtime04" type="text" disabled class="easyui-timespinner" value="01:00"/>
+						<label for="detailtime4" >时</label>
+					</div>
+				</li>
+				<li>
+					crontab时间格式:<span id="rulestring0"></span>&nbsp;
+					<a href="/content/html/crontab.html" target="_blank">格式说明</a>
+				</li>
+				<li>
+					<button id="btnSave0">保存</button>
+				</li>
+			</ul>
+		</div>
+		<div title="高级模式" class="tabitem tab1">
+			<ul>
+				<li>从
+					<input id="rdStartTime11" type="radio" checked="checked" name="starttime1" />
+					<label for="starttime">现在</label>&nbsp;
+					<input id="rdStartTime12" type="radio" name="starttime" />
+					<input id="starttime1" type="text" value="" class="easyui-datebox" data-options="showSeconds:false,formatter:dateFormatter" name="starttime" />
+					<label for="starttime">开始</label>
+				到
+					<input id="endtime1" type="text" value="2099-01-01" class="easyui-datebox" data-options="formatter:dateFormatter" name="endtime" />
+					<label for="endtime">终止</label>
+					(<span class="msg_tip_info">任务执行时间</span>)
+				</li>
+				<li>
+					<label>月份：</label>
+					<input id="txtMonth" type="text" value="*"/>
+					<span>例如：0,1,2,3,10-50/3</span>
+				</li>
+				<li>
+					<label>日期：</label>
+					<input id="txtDate" type="text" value="*" />
+					<span>例如：1,3,5,4-23/4</span>
+				</li>
+				<li>
+					<label>小时：</label>
+					<input id="txtHour" type="text" value="*" />
+					<span>例如：*</span>
+				</li>
+				<li>
+					<label>分钟：</label>
+					<input id="txtMinute" type="text" value="0" />
+					<span>例如：0,1,2,3,10-50/3</span>
+				</li>
+				<li>
+					<label>星期：</label>
+					<input id="txtWeek" type="text" value="*" />
+					<span>例如：0,1,2,3,10-50/3</span>
+				</li>
+				<li>crontab时间格式:<span id="rulestring1"></span>&nbsp;
+					<a href="/content/html/crontab.html" target="_blank">格式说明</a></li>
+				<li>
+					<button id="btnSave1">保存</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		/**
+* 用于日历控制格式化
+*/
+function dayTimeFormatter(date) {
+	//var num = $('#txtTimeNum').val();
+    return openflow.formatDate(date,'yyyy-MM-dd HH:mm');
+}
+
+//如果实例已指定，则禁用输入实例框
+if($('#instance').val()) {
+	$('#instance').attr('disabled','disabled');
+}
+
+
+/**
+* 生成定时规则字符串
+*/
+function getRule(container) {
+	//分 时 天 月 星期
+	var rule = ['0','*','*','*','*'];
+	//快捷模式
+	if(container == '.tab0') {
+	    var chks = $(container + ' input[type=radio][name=chknutype0]:checked');
+	    if(chks.length > 0) {
+	    	//如果选择为月或天，则需指定具体时间执行
+			switch(chks.attr('id')) {
+				case 'chk00':{
+					var num = $('#txtTimeNum00').val();
+					var day = $('#detailday00').val();
+					if(!day) {
+						openflow.message.warning('请指定具体执行为当月几号');
+						$('#detailday00').focus();
+						return;
+					}
+					rule[3] += '/' + num;
+					rule[2] = day;
+					var time = $('#detailtime00').timespinner('getValue');
+					var ts = time.split(':');
+					rule[1] = ts[0];//小时
+					rule[0] = ts[1];//分
+					break;
+				}
+				case 'chk01':{//天
+					var num = $('#txtTimeNum01').val();
+					rule[2] += '/' + num;
+					var time = $('#detailtime01').timespinner('getValue');
+					var ts = time.split(':');
+					rule[1] = ts[0];//小时
+					rule[0] = ts[1];//分
+					break;
+				}
+				case "chk02" :{	//时
+					var num = $('#txtTimeNum02').val();
+					rule[1] += '/' + num;
+					var mintue = $('#detailmintue02').numberbox('getValue');
+					rule[0] = mintue;//分
+					break;
+				}
+				case "chk03" :{
+					var num = $('#txtTimeNum03').val();
+					rule[0] =  '*/' + num;
+					break;
+				}
+				case "chk04" :{			//周
+					var num = $('#txtTimeNum04').val();
+					var week = $('#txtweek04').val();
+					rule[4] = week + '/' + num;//分
+					var time = $('#detailtime04').timespinner('getValue');
+					var ts = time.split(':');
+					rule[1] = ts[0];//小时
+					rule[0] = ts[1];//分
+					break;
+				}
+			}
+	    }
+    }
+    //高级模式
+    else {
+    	var m = $('#txtMonth').val();//月
+    	var d = $('#txtDate').val();//日期
+    	var h = $('#txtHour').val();//时
+    	var mt = $('#txtMinute').val();//分
+    	var w = $('#txtWeek').val();//星期
+    	rule[0] = mt || 0;
+    	rule[1] = h || '*';
+    	rule[2] = d || '*';
+    	rule[3] = m || '*';
+    	rule[4] = w || '*';
+    }
+	rule = rule.join(' ');
+	return rule;
+}
+
+        //当前定时任务id
+		var currentId = <%=id%>;
+
+
+
+
+/**
+* 绑定选择
+*/
+$('input[type=radio][name^=chknutype]').bind('change',function() {
+	$(this).parent().parent().find('[id^=txtTimeNum],[id^=detail],[id^=txtweek]').attr('disabled','disabled');
+	if(this.checked) {
+		$(this).parent().find('input,select').attr('disabled',false);
+	}
+});
+
+$('.tab0 input,select').bind('change',function() {
+	$('#rulestring0').html(getRule('.tab0'));
+});
+$('.tab1 input,select').bind('change',function() {
+	$('#rulestring1').html(getRule('.tab1'));
+});
+
+$('#starttime0').val(openflow.formatDate(new Date(),'yyyy-MM-dd'));
+		//选择关联实例
+		var instanceSelecter = new openflow.instanceSelecter();
+		$('#instance').bind('dblclick',function() {
+            var _this = $(this);
+            instanceSelecter.show(function(id,name) {
+                _this.attr('data-instance',id);
+                _this.val(id);
+                $('#instaneName').html(name);
+            });
+        });
+		//保存任务
+        $('#btnSave0,#btnSave1').click(function() {
+        	var instance = $('#instance').attr('data-instance') || $('#instance').val();
+        	if(!instance) {
+        		openflow.message.warning('必须指定一个实例');
+        		return;
+        	}
+        	var selectedItem = $('div.easyui-tabs').tabs('getSelected');
+        	//0表示快捷模式，1表示高级模式
+        	var selectedIndex = selectedItem.hasClass('tab0')?0:1;
+        	var starttime = "*";
+        	if($(selectedIndex?'#rdStartTime12':'#rdStartTime02').attr('checked')) {
+        		starttime = $(selectedIndex?'#starttime1':'#starttime0').datetimebox('getValue');
+        		if(!starttime) {
+        			openflow.message.warning('请选择一个开始时间');
+        			return;
+        		}
+        		starttime = openflow.formatDate(starttime,'yyyy-MM-dd HH:mm:ss');
+        	}
+        	var endtime = $(selectedIndex?'#endtime1':'#endtime0').datetimebox('getValue');
+        	if(endtime) {
+        		endtime = openflow.formatDate(endtime,'yyyy-MM-dd HH:mm:ss');
+        	}
+        	else {
+        		endtime = '2100-01-01 23:59:59';
+        	}
+        	var rule = getRule(selectedIndex?'.tab1':'.tab0');
+        	openflow.request('post', {
+        		id:currentId,
+                instance: instance,
+                starttime: starttime,
+                endtime:endtime,
+                rule:rule,
+                url: '/servers/clockTaskServer.js?cmd=' + (currentId?'update':'insert')
+            }, function (data) {
+                if (data) {
+                    openflow.message.success(currentId?'保存成功':'添加成功');
+                    currentId = data;
+                }
+                else {
+                    openflow.message.error('失败');
+                }
+            }) ;
+        });
+		//重置父页高度
+        resetParentHeight();
+
+
+	/**
+	* 校验实例有效性
+	*/
+	function validInstance(target) {
+		$(target).toggleClass('error',false);
+		$(target).attr('title','双击选择关联实例');
+		$('#instaneName').html('');
+		if(target.value) {
+			openflow.request('post', {
+		        url: openflow.root + 'servers/instanceServer.js?cmd=get&id=' + target.value
+		    	}, function (data) {
+		    		if(!data) {
+		    			$(target).toggleClass('error',true);
+		    			$(target).attr('title','不存在的实例，定时任务无效');
+		    			$('#instaneName').html('不存在的实例，定时任务无效');
+		    			openflow.message.warning('不存在的实例，定时任务无效');
+		    		}
+		    		else {
+		    			$('#instaneName').html(data.Name);
+		    		}
+		    	});
+		 }
+	}
+
+
+	</script>
+</view1>

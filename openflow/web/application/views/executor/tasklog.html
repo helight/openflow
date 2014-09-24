@@ -1,0 +1,61 @@
+<%
+    master="../../master/detail.html";
+%>
+<view1>
+    <style>
+    html,body{
+        overflow: auto;
+    }
+#logs{
+    width:100%;
+    height:100%;
+}
+    </style>
+<script type = "text/javascript">
+var uuid = '<%=uuid%>';
+var host = '<%=host%>';
+
+/**
+* 显示指定页的日志
+*/
+function viewlog(p) {
+		p=p || 1;
+		openflow.request('get', {
+            url: openflow.root + 'servers/executorServer.js?cmd=seekviewlog&host=' + host + '&uuid=' + uuid + '&pagesize=2048&page=' + p
+        }, function (data,err) {
+            if (data) {
+                if(data.content) {
+                    data.content = data.content.replace(/\n/g,'<br />');
+                }
+               $('#logs').html(data.content);
+               $('#pager1').paging({ index: p, count: data.num_pages });
+               $('#pager2').paging({ index: p, count: data.num_pages });
+            }
+            else if(err) {
+            	$('#logs').html(err.toString());
+            }
+        });
+	}
+$(function() {
+	$('#pager1').paging({
+	    showCount: 6, //当前页附近显示多少页码，比如，4或5表示前后显二个页码，6表示前后显示三个,都会除以2
+	    change: function (p) {
+	        viewlog(p);
+	    }
+	});
+    $('#pager2').paging({
+        showCount: 6, //当前页附近显示多少页码，比如，4或5表示前后显二个页码，6表示前后显示三个,都会除以2
+        change: function (p) {
+            viewlog(p);
+        }
+    });
+	$('#logs').html('<div class="jm_wait">加载中...</div>');
+	viewlog(1);
+});
+</script>
+</view1>
+<view2>
+    <div id="pager1"></div>
+<div id="logs"></div>
+    <div id="pager2"></div>
+</view2>
