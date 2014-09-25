@@ -23,12 +23,6 @@ class Main extends CI_Controller {
         $data["mode"] = 2;
 		$this->load->view('editor', $data);
 	}
-
-    public function edit()
-    {
-        $data["mode"] = 4;
-		$this->load->view('editor', $data);
-    }
 }
 
 /* End of file welcome.php */

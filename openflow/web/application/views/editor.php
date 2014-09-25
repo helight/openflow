@@ -39,30 +39,8 @@
     <script src="../content/codemirror/lib/util/runmode.js"></script>
 
 <!-- jmgraph引用 -->
-    <!--<script type="text/javascript" src="<%=rootUrl %>/content/jmgraph/common/jmUtils.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/common/jmModels.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/common/jmProperty.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/common/jmEvents.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/common/jmControl.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmShape.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmPath.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmLine.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmCircle.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmArc.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmHArc.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmPrismatic.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmBezier.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmRect.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/shapes/jmArraw.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/controls/jmImage.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/controls/jmLabel.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/controls/jmArrowLine.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/controls/jmResize.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/jmGraph.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/editor/jmCell.js" ></script>
-    <script type="text/javascript" src="../content/jmgraph/editor/jmEditor.js" ></script>-->
     <script type="text/javascript" src="../content/jmgraph/loadJMGraph.js" ></script>
-    <!-- jmgraph引用结束 -->
+<!-- jmgraph引用结束 -->
 
     <script src="../content/js/openflow.editor.js?ver=<%= version%>"></script>
     <script src="../content/js/openflow.editor.toolbar.js?ver=<%= version%>"></script>

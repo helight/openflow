@@ -969,7 +969,7 @@ openflow.editor = (function () {
             //data.Image =  this.editor.toImage();//获取图像
 
             if(openflow.flag == 4) {
-                data.url= '/servers/componentServer.js?cmd=' + (this.data && this.data.Id?'update':'insert');
+                data.url= '/edit/save_xml?cmd=' + (this.data && this.data.Id?'update':'insert');
                 if(this.data && this.data.Id) data.Id = this.data.Id;
             }
             else {
