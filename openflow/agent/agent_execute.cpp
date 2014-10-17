@@ -67,12 +67,12 @@ namespace openflow { namespace agent {
                 char id_src[255];
                 sprintf(id_src, "%d", task.task_id);
                 /*文件路径*/
-                char id_des[255] = "/home/km/Desktop/openflow_result_data/";
+                char id_des[255] = "/home/km/Desktop/execute_data/";
                 strcat(id_des, id_src);
                 if( (fd = creat(id_des, 0644)) == -1 )
-                    LOG(ERROR) << "creat error"; 
+                    LOG(ERROR) << "creat error";
 
-                /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/ 
+                /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
                 dup2(fd, 1);
                 dup2(fd, 2);
                 if ( execlp("bash", "bash", "-x", p, NULL) < 0 )
