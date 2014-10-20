@@ -15,6 +15,7 @@
 
 namespace openflow { namespace master {
 
+
 	class CmasterConn
 	{
 		public:
