@@ -1,0 +1,185 @@
+Log file created at: 2014/10/20 11:13:17
+Running on machine: jeff-Lenovo-G480
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1020 11:13:17.586295 14224 main.cpp:48] openflow agent start...
+I1020 11:13:17.586685 14224 main.cpp:49] thread num: 4
+I1020 11:13:21.850177 14225 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:21.876826 14225 agent_handler.cpp:98] The task (pid = 14230) returned:
+I1020 11:13:21.876900 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:21.876920 14225 agent_handler.cpp:106] handling done...done waiting for 14230task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.026591
+I1020 11:13:21.877553 14226 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:21.883932 14226 agent_handler.cpp:98] The task (pid = 14233) returned:
+I1020 11:13:21.884006 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:21.884026 14226 agent_handler.cpp:106] handling done...done waiting for 14233task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.006308
+I1020 11:13:21.884799 14227 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:21.890002 14227 agent_handler.cpp:98] The task (pid = 14235) returned:
+I1020 11:13:21.890074 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:21.890107 14227 agent_handler.cpp:106] handling done...done waiting for 14235task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005125
+I1020 11:13:22.596256 14228 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:22.602242 14228 agent_handler.cpp:98] The task (pid = 14238) returned:
+I1020 11:13:22.602310 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.602330 14228 agent_handler.cpp:106] handling done...done waiting for 14238task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005909
+I1020 11:13:22.603068 14225 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:22.609093 14225 agent_handler.cpp:98] The task (pid = 14241) returned:
+I1020 11:13:22.609163 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.609171 14225 agent_handler.cpp:106] handling done...done waiting for 14241task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005961
+I1020 11:13:22.609671 14226 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:22.614892 14226 agent_handler.cpp:98] The task (pid = 14243) returned:
+I1020 11:13:22.614964 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.614984 14226 agent_handler.cpp:106] handling done...done waiting for 14243task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005184
+I1020 11:13:22.931978 14227 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:22.937266 14227 agent_handler.cpp:98] The task (pid = 14246) returned:
+I1020 11:13:22.937314 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.937330 14227 agent_handler.cpp:106] handling done...done waiting for 14246task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005223
+I1020 11:13:22.938097 14228 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:22.944380 14228 agent_handler.cpp:98] The task (pid = 14249) returned:
+I1020 11:13:22.944455 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.944476 14228 agent_handler.cpp:106] handling done...done waiting for 14249task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.00622
+I1020 11:13:22.945096 14225 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:22.951454 14225 agent_handler.cpp:98] The task (pid = 14251) returned:
+I1020 11:13:22.951545 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:22.951619 14225 agent_handler.cpp:106] handling done...done waiting for 14251task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.006227
+I1020 11:13:23.199942 14226 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:23.206285 14226 agent_handler.cpp:98] The task (pid = 14254) returned:
+I1020 11:13:23.206414 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.206456 14226 agent_handler.cpp:106] handling done...done waiting for 14254task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.006252
+I1020 11:13:23.206986 14227 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:23.210460 14227 agent_handler.cpp:98] The task (pid = 14257) returned:
+I1020 11:13:23.210566 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.210597 14227 agent_handler.cpp:106] handling done...done waiting for 14257task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.003411
+I1020 11:13:23.210929 14228 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:23.216336 14228 agent_handler.cpp:98] The task (pid = 14259) returned:
+I1020 11:13:23.216543 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.216609 14228 agent_handler.cpp:106] handling done...done waiting for 14259task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005364
+I1020 11:13:23.511371 14225 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:23.517403 14225 agent_handler.cpp:98] The task (pid = 14262) returned:
+I1020 11:13:23.517485 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.517510 14225 agent_handler.cpp:106] handling done...done waiting for 14262task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005934
+I1020 11:13:23.518034 14226 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:23.521394 14226 agent_handler.cpp:98] The task (pid = 14265) returned:
+I1020 11:13:23.521466 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.521477 14226 agent_handler.cpp:106] handling done...done waiting for 14265task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.003296
+I1020 11:13:23.521847 14227 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:23.527598 14227 agent_handler.cpp:98] The task (pid = 14267) returned:
+I1020 11:13:23.528070 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.528112 14227 agent_handler.cpp:106] handling done...done waiting for 14267task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005693
+I1020 11:13:23.803104 14228 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:23.808902 14228 agent_handler.cpp:98] The task (pid = 14270) returned:
+I1020 11:13:23.809007 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.809032 14228 agent_handler.cpp:106] handling done...done waiting for 14270task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005738
+I1020 11:13:23.809686 14225 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:23.816591 14225 agent_handler.cpp:98] The task (pid = 14273) returned:
+I1020 11:13:23.816777 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.816828 14225 agent_handler.cpp:106] handling done...done waiting for 14273task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.006825
+I1020 11:13:23.817483 14226 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:23.821501 14226 agent_handler.cpp:98] The task (pid = 14275) returned:
+I1020 11:13:23.821722 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:23.821774 14226 agent_handler.cpp:106] handling done...done waiting for 14275task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.003907
+I1020 11:13:24.114073 14227 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:24.119935 14227 agent_handler.cpp:98] The task (pid = 14278) returned:
+I1020 11:13:24.120021 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.120048 14227 agent_handler.cpp:106] handling done...done waiting for 14278task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005773
+I1020 11:13:24.120754 14228 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:24.126008 14228 agent_handler.cpp:98] The task (pid = 14281) returned:
+I1020 11:13:24.126143 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.126170 14228 agent_handler.cpp:106] handling done...done waiting for 14281task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005183
+I1020 11:13:24.126788 14225 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:24.131116 14225 agent_handler.cpp:98] The task (pid = 14283) returned:
+I1020 11:13:24.131186 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.131212 14225 agent_handler.cpp:106] handling done...done waiting for 14283task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.004254
+I1020 11:13:24.370086 14226 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:13:24.375417 14226 agent_handler.cpp:98] The task (pid = 14286) returned:
+I1020 11:13:24.375540 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.375572 14226 agent_handler.cpp:106] handling done...done waiting for 14286task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005251
+I1020 11:13:24.376163 14227 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:13:24.381446 14227 agent_handler.cpp:98] The task (pid = 14289) returned:
+I1020 11:13:24.381507 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.381543 14227 agent_handler.cpp:106] handling done...done waiting for 14289task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005231
+I1020 11:13:24.382060 14228 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:13:24.386260 14228 agent_handler.cpp:98] The task (pid = 14291) returned:
+I1020 11:13:24.386452 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:13:24.386517 14228 agent_handler.cpp:106] handling done...done waiting for 14291task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.004118
+I1020 11:14:15.055778 14225 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:14:15.061782 14225 agent_handler.cpp:98] The task (pid = 14360) returned:
+I1020 11:14:15.061868 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:14:15.061895 14225 agent_handler.cpp:106] handling done...done waiting for 14360task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005913
+I1020 11:14:15.062391 14226 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:14:15.069257 14226 agent_handler.cpp:98] The task (pid = 14363) returned:
+I1020 11:14:15.069372 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:14:15.069402 14226 agent_handler.cpp:106] handling done...done waiting for 14363task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.006787
+I1020 11:14:15.069977 14227 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:14:15.074487 14227 agent_handler.cpp:98] The task (pid = 14365) returned:
+I1020 11:14:15.074659 14227 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:14:15.074712 14227 agent_handler.cpp:106] handling done...done waiting for 14365task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.004452
+I1020 11:17:56.291518 14228 agent_handler.cpp:27] receive a task.task id: 1task name: 
+			测试shell节点1
+		start handling...0
+I1020 11:17:56.297528 14228 agent_handler.cpp:98] The task (pid = 14435) returned:
+I1020 11:17:56.297651 14228 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:17:56.297683 14228 agent_handler.cpp:106] handling done...done waiting for 14435task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.005919
+I1020 11:17:56.298277 14225 agent_handler.cpp:27] receive a task.task id: 2task name: 
+			测试shell节点2
+		start handling...0
+I1020 11:17:56.301625 14225 agent_handler.cpp:98] The task (pid = 14438) returned:
+I1020 11:17:56.301728 14225 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:17:56.301748 14225 agent_handler.cpp:106] handling done...done waiting for 14438task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.003284
+I1020 11:17:56.302309 14226 agent_handler.cpp:27] receive a task.task id: 3task name: 
+			测试shell节点3
+		start handling...0
+I1020 11:17:56.306517 14226 agent_handler.cpp:98] The task (pid = 14440) returned:
+I1020 11:17:56.306644 14226 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:17:56.306679 14226 agent_handler.cpp:106] handling done...done waiting for 14440task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.004164

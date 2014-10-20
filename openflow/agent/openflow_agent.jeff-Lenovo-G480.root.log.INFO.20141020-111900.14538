@@ -1,0 +1,22 @@
+Log file created at: 2014/10/20 11:19:00
+Running on machine: jeff-Lenovo-G480
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1020 11:19:00.610034 14538 main.cpp:48] openflow agent start...
+I1020 11:19:00.610491 14538 main.cpp:49] thread num: 4
+I1020 11:19:05.330605 14540 agent_handler.cpp:27] receive a task.task id: 8task name: kobemillerstart handling...0
+I1020 11:19:05.333644 14540 agent_handler.cpp:98] The task (pid = 14545) returned:
+I1020 11:19:05.333705 14540 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:19:05.333725 14540 agent_handler.cpp:106] handling done...done waiting for 14545task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.002953
+I1020 11:19:05.334421 14539 agent_handler.cpp:27] receive a task.task id: 10task name: kobestart handling...0
+I1020 11:19:05.337321 14539 agent_handler.cpp:98] The task (pid = 14546) returned:
+I1020 11:19:05.337383 14539 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:19:05.337402 14539 agent_handler.cpp:106] handling done...done waiting for 14546task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.002823
+I1020 11:19:05.337795 14541 agent_handler.cpp:27] receive a task.task id: 5task name: millerstart handling...0
+I1020 11:19:05.340692 14541 agent_handler.cpp:98] The task (pid = 14547) returned:
+I1020 11:19:05.340771 14541 agent_handler.cpp:121] task exited, exit code= 0
+I1020 11:19:05.340802 14541 agent_handler.cpp:106] handling done...done waiting for 14547task execution status is SUCCESStask pid is 1718510960the time of exeution is 0.002832
+I1020 11:19:05.341291 14542 agent_handler.cpp:192] *********************************the task queue is: 
+I1020 11:19:05.341336 14542 agent_handler.cpp:197] 5 miller
+I1020 11:19:05.341363 14542 agent_handler.cpp:197] 8 kobemiller
+I1020 11:19:05.341387 14542 agent_handler.cpp:197] 10 kobe
+I1020 11:19:05.341408 14542 agent_handler.cpp:198] *********************************

@@ -15,8 +15,8 @@
 
         <nodes> <![CDATA[127.0.0.1]]>  </nodes>
         <command>
-        <![CDATA[#!/bin/sh
-        cd /data/log/
+        <![CDATA[#!/bin/bash
+	date;
         ls]]>
         </command>
     </shell_process>
@@ -24,11 +24,10 @@
     <shell_process>
         <name> <![CDATA[测试shell节点2]]>   </name>
         <description>   <![CDATA[测试shell节点2]]> </description>
-        <nodes>  <![CDATA[127.0.0.2]]>  </nodes>
+        <nodes>  <![CDATA[127.0.0.1]]>  </nodes>
         <command>
-        <![CDATA[#!/bin/sh
-        cd /data/app_log/
-        ls |xargs rm
+        <![CDATA[#!/bin/bash
+	ls /etc
         ]]>
         </command>
     </shell_process>
@@ -36,10 +35,10 @@
     <shell_process>
         <name>   <![CDATA[测试shell节点3]]>   </name>
         <description>  <![CDATA[测试shell节点3]]>   </description>
-        <nodes>  <![CDATA[127.0.0.3]]>   </nodes>
+        <nodes>  <![CDATA[127.0.0.1]]>   </nodes>
         <command>
-        <![CDATA[#!/bin/sh
-        cd /data/log/
+        <![CDATA[#!/bin/bash
+	ls
         ]]>
         </command>
     </shell_process>
