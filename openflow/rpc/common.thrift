@@ -11,7 +11,14 @@ struct job_info
 
 struct task_info
 {
-    1: i32 task_id,
-    2: string task_name,
-    3: string cmd
+//FIXME ZhangYifei
+//   1: i32 task_id,
+
+    1: string name,
+    2: string description,
+    3: string nodes,
+    4: string cmd,
+//临时使用,后期agent+master规范task_info结构体
+    5: i32 task_id,
+    6: string task_name
 }
