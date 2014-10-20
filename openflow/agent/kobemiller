@@ -1,0 +1,1 @@
+#!/bin/bash ps;ls -e;date;who;pwd;

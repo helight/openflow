@@ -21,11 +21,13 @@ namespace openflow { namespace agent {
 
     int32_t CAgentHandler::execute_task(const openflow::task_info &task)
     {
+	int i = 0;
+	
         /*用fork execlp执行脚本程序*/
         LOG(INFO) << "receive a task."
         << "task id: " << task.task_id
         << "task name: " << task.task_name
-        << "start handling...";
+        << "start handling..."<<i++;
 
         /*获取任务执行时间的开始*/
         gettimeofday(&start_time, NULL);
@@ -64,8 +66,9 @@ namespace openflow { namespace agent {
                 char id_src[255];
                 sprintf(id_src, "%d", task.task_id);
                 /*文件路径*/
-                char id_des[255] = "/home/km/Desktop/openflow_result_data/";
-                strcat(id_des, id_src);
+               // char id_des[255] = "/home/km/Desktop/openflow_result_data/";
+                char id_des[255] = "/tmp/data";
+		strcat(id_des, id_src);
                 if( (fd = creat(id_des, 0644)) == -1 )
                     LOG(ERROR) << "creat error"; 
 

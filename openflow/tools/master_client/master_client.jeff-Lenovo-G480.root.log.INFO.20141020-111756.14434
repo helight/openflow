@@ -1,0 +1,8 @@
+Log file created at: 2014/10/20 11:17:56
+Running on machine: jeff-Lenovo-G480
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1020 11:17:56.136034 14434 job.cpp:35] demo.xml opened.
+I1020 11:17:56.289543 14434 job.cpp:76] xml saved to sqlite successfully.
+I1020 11:17:56.289608 14434 job.cpp:80] The last insert job ID is 104.
+I1020 11:17:56.289719 14434 main.cpp:81] submit job...
+I1020 11:17:56.290158 14434 main.cpp:95] submit job(104) successfully.
