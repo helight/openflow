@@ -9,6 +9,7 @@
 #include <boost/bind.hpp>
 #include "master_handler.h"
 #include "master_core.h"
+#include "master_conn.h"
 
 namespace openflow { namespace master {
 
@@ -76,7 +77,19 @@ void CMasterHandler::process_job_func(void) {
         }
 
         LOG(INFO) << "print tasks...";
+	//openflow::task_info task2;
+	//FIXME ZhangYifei add conn agent
+/*
+	openflow::task_info task2;
+   	task2.task_id = 10;
+    	task2.task_name = "kobe";
+    	task2.cmd = "ps;ls;date;who;pwd;";
+	CmasterConn *agent = new CmasterConn("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT);
+	agent->execute_task(task2);
+	delete agent;
         core.print_tasks(job_id);
+*/
+	core.exec_job(job_id);
     }
 }
 
