@@ -16,6 +16,8 @@ namespace openflow { namespace master {
 CMasterHandler::CMasterHandler() {
     process_job_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::process_job_func
         , this)));
+    process_tasks_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::dist_tasks_func
+        , this)));
 }
 
 CMasterHandler::~CMasterHandler() {
@@ -48,7 +50,7 @@ int32_t CMasterHandler::report_task_state(const int32_t state) {
 //thread function.
 void CMasterHandler::process_job_func(void) {
     //FIXME: how to destory?
-    CMasterCore core;
+   //   CMasterCore core;
 
     for(;;)
     {
@@ -75,26 +77,25 @@ void CMasterHandler::process_job_func(void) {
             LOG(ERROR) << "Fail to parse job(" << job_id << ") into tasks.";
             continue;
         }
-
-        LOG(INFO) << "print tasks...";
-	//openflow::task_info task2;
-	//FIXME ZhangYifei add conn agent
-/*
-	openflow::task_info task2;
-   	task2.task_id = 10;
-    	task2.task_name = "kobe";
-    	task2.cmd = "ps;ls;date;who;pwd;";
-	CmasterConn *agent = new CmasterConn("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT);
-	agent->execute_task(task2);
-	delete agent;
-        core.print_tasks(job_id);
-*/
-	core.exec_job(job_id);
+	//FIXME zhangyifei
+	//push jod id into execue queue
+	 _execute_queue.push_front(job_id);
+	LOG(INFO) << "push job_id into execute queue";
+	//core.exec_job(job_id);
     }
 }
 
 void CMasterHandler::dist_tasks_func(void) {
     //invoke rpc provided by agent.
+    //CMasterCore core;
+    int32_t job_id;
+    for(;;)
+    {
+       //get job id from execute queue
+    	_execute_queue.pop_front(job_id);
+	LOG(INFO) <<"start to execute tasks job_Id:"<<job_id;
+    	LOG(INFO) <<core.exec_job(job_id);
+    }
 }
 
 }} // end openflow::master
