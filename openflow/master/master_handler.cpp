@@ -22,6 +22,7 @@ CMasterHandler::CMasterHandler() {
 
 CMasterHandler::~CMasterHandler() {
     process_job_thread->join();
+    process_tasks_thread->join();
 }
 
 int32_t CMasterHandler::submit_job(const int32_t job_id) {
