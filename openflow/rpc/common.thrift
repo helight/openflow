@@ -19,4 +19,3 @@ struct task_info
     5: string description,
     6: string name
 }
-}
