@@ -86,13 +86,34 @@ bool CMainHelper::run()
             return false;
         }
 
-        thrift_client_helper->close();
+//        thrift_client_helper->close();
     } catch (TException& exn) {
         LOG(ERROR) <<  exn.what();
         return false;
     }
 
     LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
+
+//AddMe ZhangYiFei 2014/10/30 test master side reporte_agent_sate interface
+   openflow::agent_state state;
+   state.remain_mem = "600MB";
+   state.mem_use_percent = "80%";
+   state.cpu_idle_percent = "70%";
+   state.cpu_load = "1.2 4.3 5.6";
+   state.ipaddr = "192.168.0.1";
+   state.swap_use_percent = "0%";
+   try {
+  	 ret = thrift_client_helper->get()->report_task_state(state);
+	 if (ret < 0) {
+  	   LOG(INFO) << ret;
+  	   return false;
+	}
+   } catch (TException& exn) {
+	   LOG(ERROR) << exn.what();
+	   return false;	
+   }
+
+    thrift_client_helper->close();
 
     return true;
 }

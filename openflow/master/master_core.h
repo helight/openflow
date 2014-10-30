@@ -5,7 +5,6 @@
 #include <vector>
 #include <boost/unordered_map.hpp>
 #include "rpc/master/MasterService.h"
-
 namespace openflow { namespace master {
 //FIXME:struct StTask needs to be removed later.
 //FIXME:struct StTask needs to remove change to task_info

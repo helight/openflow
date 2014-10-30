@@ -15,6 +15,7 @@
 #include "../common/table.h"
 #include "../common/database.h"
 #include "../common/dataset.h"
+#include "../config.h"
 #include "master_core.h"
 #include "master_conn.h"
 
@@ -168,11 +169,8 @@ int CMasterCore::exec_job(const int32_t job_id)
     	tasks = _tasks[job_id];
     try
 	{
-	    CmasterConn agent("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT);
+	    CmasterConn agent("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT); //后续将127.0.0.1 改成nodes里面解析出来的地址
 	    LOG(INFO) << "connect to agent success";
-	   //std::vector<openflow::task_info>::iterator it = tasks.begin();
-	   //LOG(INFO) << it->name;
-	   //LOG(INFO) << it->cmd;
    	 for(std::vector<openflow::task_info>::iterator it = tasks.begin(); it != tasks.end(); it++)
    	 {
 		task.name = it->name;
