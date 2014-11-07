@@ -8,6 +8,7 @@
 #define OPENFLOW_AGENT_HANDLER_H
 #pragma once
 
+#include <unistd.h>
 #include <vector>
 #include <map>
 #include <string>
@@ -27,6 +28,9 @@ namespace openflow { namespace agent {
 
             int32_t execute_task();
 
+            int32_t real_execute(const openflow::task_info &task);
+
+            
         private:
             common::CBlockingQueue<openflow::task_info> _tasks;
             boost::shared_ptr<boost::thread> execute_task_thread;

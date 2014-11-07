@@ -3,7 +3,6 @@
 // Created: 2014-07-03
 // Description:
 // deal with tasks received from master
-
 #include <glog/logging.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
@@ -14,8 +13,9 @@
 namespace openflow { namespace agent {
     CAgentHandler::CAgentHandler() 
     {
-    	execute_task_thread = boost::shared_ptr<boost::thread>
+        execute_task_thread = boost::shared_ptr<boost::thread>
     	(new boost::thread(boost::BOOST_BIND(&CAgentHandler::execute_task, this)));
+    	LOG(INFO) << "kobemiller";
     }
 
     CAgentHandler::~CAgentHandler() 
@@ -36,27 +36,46 @@ namespace openflow { namespace agent {
     int32_t CAgentHandler::execute_task()
     {
         CTaskExecute main_execute;
-        
-        for ( ; ; )
+        while ( 1 )
         {
-            if ( main_execute.fork_cnt >= main_execute.FORK_MAX )
-            {
-                LOG(ERROR) << "fork to the max";
-                return -2;  //-2代表fork超出数量
-            }
-            else 
-            {
-                main_execute.fork_cnt++;
+        	if ( (main_execute.fork_cnt) >= (main_execute.FORK_MAX) )
+        	{
+        		LOG(ERROR) << "fork to the max";
+        		sleep(10);
+        		break;
+        	}
+        	else
+        	{
+        		(main_execute.fork_cnt)++;
+        		openflow::task_info task;
+        		_tasks.pop_back(task);
+        		int32_t re_rv = real_execute(task);
+        		if ( re_rv != 0 )
+        			LOG(ERROR) << "real_execute error";
+        		else
+        		 	(main_execute.fork_cnt)--;
+        	}
+        }
+        return 0;
+    }
 
-                CChild child;
-                openflow::task_info task;
-                _tasks.pop_back(task);
-                child.handler_task(task);
-                child.running_task_queue.insert(std::pair<int32_t, std::string>(task.task_id, task.task_name));
-                child.parent_trace_child();
-                child.trace_time();
-                child.get_task_status();
-            }
+    int32_t CAgentHandler::real_execute(const openflow::task_info &task)
+    {
+    	int32_t pid;
+        if ( (pid = fork()) == -1 )
+            LOG(ERROR) << "fork error";
+        else if ( pid == 0 )
+        {
+        	CChild child;
+        	child.handler_task(task);
+            child.running_task_queue.insert(std::pair<int32_t, std::string>(task.task_id, task.task_name));
+            child.parent_trace_child();
+            child.trace_time();
+            child.get_task_status();
+        }
+        else if ( pid > 0 )
+        {
+        	return 0;
         }
         return 0;
     }
@@ -249,5 +268,4 @@ namespace openflow { namespace agent {
 //     }
 
 } }
-
 

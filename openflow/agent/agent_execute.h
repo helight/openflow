@@ -24,7 +24,7 @@ public:
 	int32_t show_running_task();
 
 	int32_t fork_cnt = 0;
-	const static int32_t FORK_MAX = 10;
+    const static int FORK_MAX = 10;
 
 	std::map<int32_t, std::string> running_task_queue;
 };
