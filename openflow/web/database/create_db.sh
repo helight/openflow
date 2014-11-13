@@ -5,8 +5,8 @@
 #tables:
 #job: 存储作业xml
 
-#SQLITE="../../../thirdparty/sqlite/bin/sqlite3"
-SQLITE="sqlite3"
+SQLITE="../../../thirdparty/sqlite/bin/sqlite3"
+#SQLITE="sqlite3"
 DBNAME="openflow.db";  #数据库名称
 TABLENAME_JOB="tbJobs";     #数据库中表的名称
 TABLENAME_AGENTSTATE="AgentState";
