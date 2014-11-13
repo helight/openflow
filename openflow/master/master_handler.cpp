@@ -3,23 +3,32 @@
 // Created: 2014-06-08
 // Description:
 //  Using rpc interface to process job.
+#include <boost/format.hpp>
 #include <glog/logging.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
+#include <string>
 #include "master_handler.h"
 #include "master_core.h"
 #include "master_conn.h"
+#include "master_opdb.h"
+#include "../config.h"
 
 namespace openflow { namespace master {
 
 CMasterHandler::CMasterHandler() {
     process_job_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::process_job_func
         , this)));
+    process_tasks_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::dist_tasks_func
+        , this)));
 }
 
 CMasterHandler::~CMasterHandler() {
     process_job_thread->join();
+    process_tasks_thread->join();
 }
 
 int32_t CMasterHandler::submit_job(const int32_t job_id) {
@@ -40,15 +49,42 @@ int32_t CMasterHandler::kill_job(const int32_t id) {
     return 0;
 }
 
-int32_t CMasterHandler::report_task_state(const int32_t state) {
+int32_t CMasterHandler::report_task_state(const openflow::agent_state &state) {
     // Your implementation goes here
+    // FIXME ZhangYiFei
+    // this function need to do
+    // 1. Called by agent
+    // 2. agent transfer state struct to master
+    // 3. decomposition the state struct
+    // 4. store to sqilte3
+    CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+    if(false == db.connect("../web/database/openflow.db")) {
+		LOG(ERROR) << "connect to db error";
+		return -1;
+    }
+
+    if(false == db.optable(openflow::OPENFLOW_DB_AGENTSTATETABLENAME)) {
+    		LOG(ERROR) << "open table error";
+		return -2;
+    }
+
+//输出state 信息到日志 测试用
+   LOG(INFO)<<state.remain_mem <<state.mem_use_percent <<state.cpu_idle_percent << state.cpu_load <<state.ipaddr<<state.swap_use_percent;
+
+   std::string sql = boost::str(boost::format("INSERT INTO AgentState values('%s','%s','%s','%s','%s','%s');")
+				% state.ipaddr %state.remain_mem %state.mem_use_percent %state.cpu_idle_percent %state.cpu_load %state.swap_use_percent);
+   if(false == db.execute(sql)) {
+	LOG(ERROR) << "execut sql error";
+	return -3;
+   }
+	
     return 0;
 }
 
 //thread function.
 void CMasterHandler::process_job_func(void) {
     //FIXME: how to destory?
-    CMasterCore core;
+   //   CMasterCore core;
 
     for(;;)
     {
@@ -75,26 +111,24 @@ void CMasterHandler::process_job_func(void) {
             LOG(ERROR) << "Fail to parse job(" << job_id << ") into tasks.";
             continue;
         }
-
-        LOG(INFO) << "print tasks...";
-	//openflow::task_info task2;
-	//FIXME ZhangYifei add conn agent
-/*
-	openflow::task_info task2;
-   	task2.task_id = 10;
-    	task2.task_name = "kobe";
-    	task2.cmd = "ps;ls;date;who;pwd;";
-	CmasterConn *agent = new CmasterConn("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT);
-	agent->execute_task(task2);
-	delete agent;
-        core.print_tasks(job_id);
-*/
-	core.exec_job(job_id);
+	//FIXME zhangyifei
+	//push jod id into execue queue
+	 _execute_queue.push_front(job_id);
+	LOG(INFO) << "push job_id into execute queue";
     }
 }
 
 void CMasterHandler::dist_tasks_func(void) {
     //invoke rpc provided by agent.
+    //CMasterCore core;
+    int32_t job_id;
+    for(;;)
+    {
+       //get job id from execute queue
+    	_execute_queue.pop_front(job_id);
+	LOG(INFO) <<"start to execute tasks job_Id:"<<job_id;
+    	LOG(INFO) <<core.exec_job(job_id);
+    }
 }
 
 }} // end openflow::master

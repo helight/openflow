@@ -10,11 +10,18 @@
 
 #include <glog/logging.h>
 #include <thrift_helper.h>
+<<<<<<< HEAD
+=======
 #include "../config.h"
+>>>>>>> origin/kobemiller
 #include "rpc/agent/AgentService.h"
 
 namespace openflow { namespace master {
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/kobemiller
 	class CmasterConn
 	{
 		public:
@@ -35,6 +42,10 @@ namespace openflow { namespace master {
 			
 			
 	};
+<<<<<<< HEAD
+}} //end namespace
+=======
    }
 }
+>>>>>>> origin/kobemiller
 #endif
