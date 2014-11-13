@@ -10,7 +10,6 @@
 
 #include <glog/logging.h>
 #include <thrift_helper.h>
-#include "../config.h"
 #include "rpc/agent/AgentService.h"
 
 namespace openflow { namespace master {
@@ -36,6 +35,5 @@ namespace openflow { namespace master {
 			
 			
 	};
-   }
-}
+}} //end namespace
 #endif
