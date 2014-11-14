@@ -45,7 +45,7 @@ extern "C" int main(int argc, char *argv[])
     openflow::task_info task5;
     task5.task_id = 2;
     task5.task_name = "kobe";
-    task5.cmd = "#!/bin/bash\n for((a=0; a < 10000; ++a));do echo $a;done;";
+    task5.cmd = "#!/bin/bash;for((a=0; a < 10000; ++a));do echo $a;done;";
 
     openflow::task_info task6;
     task6.task_id = 3;

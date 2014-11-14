@@ -51,13 +51,8 @@ namespace openflow { namespace agent {
 			LOG(ERROR) << "fork error.\n";
 		else if ( fork_rv == 0 )
 		{
-			/*将task.cmd存入task_name命名的文件中*/
-                const char *p = task.task_name.data();
-                std::ofstream fout;
-                fout.open(p);
-                fout << task.cmd << std::endl;
-                fout.close();
-
+			/*将task_cmd转换为const char**/
+                const char *p = task.cmd.c_str();
                 int32_t fd;
 
                 /*获取当前进程的pid,为后边可能要杀死进程使用*/
@@ -75,7 +70,7 @@ namespace openflow { namespace agent {
                 /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
                 dup2(fd, 1);
                 dup2(fd, 2);
-                if ( execlp("bash", "bash", "-x", p, NULL) < 0 )
+                if ( execlp("bash", "bash", "-cx", p, NULL) < 0 )
                 {
                     LOG(ERROR) << "execlp error";
                     return -1;
