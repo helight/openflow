@@ -68,4 +68,12 @@ bool CMasterDB::execute(const std::string &sql)
 	
 }
 
+void CMasterDB::close()
+{
+	
+	db->close();
+	delete table;
+	delete db;
+	
+}
 }} //end namespace

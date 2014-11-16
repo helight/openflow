@@ -30,3 +30,12 @@ struct agent_state
    5: string ipaddr, //ip地址
    6: string swap_use_percent //交换分区使用百分比
 }
+
+struct task_state
+{
+  1: i32 job_id, //job id标识任务属于哪个job
+  2: i32 task_id, //任务id
+  3: i32 task_status, //任务的执行状态,成功或者失败
+  4: string task_result, //任务的执行结果
+  5: string ipaddr
+}

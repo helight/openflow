@@ -23,7 +23,8 @@ public:
     int32_t submit_job(const  int32_t job_id);
     int32_t stop_job(const int32_t id);
     int32_t kill_job(const int32_t id);
-    int32_t report_task_state(const openflow::agent_state &state);
+    int32_t report_agent_state(const openflow::agent_state &state);
+    int32_t report_task_state(const openflow::task_state &state);
 
     //threads function.
     //fetch and parse job.

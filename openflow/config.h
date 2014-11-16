@@ -31,6 +31,7 @@ const std::string OPENFLOW_DB_DBNAME = "openflow.db";
 const std::string OPENFLOW_DB_JOBTABLENAME = "toJob";
 const std::string OPENFLOW_DB_SQLITE_CONNSTR = "../web/database/openflow.db";
 const std::string OPENFLOW_DB_AGENTSTATETABLENAME = "AgentState";
+const std::string OPENFLOW_DB_TASKSTATETABLENAME = "TaskState";
 
 } // end namespace openflow
 

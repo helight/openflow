@@ -18,6 +18,7 @@
 #include "../config.h"
 #include "master_core.h"
 #include "master_conn.h"
+#include "master_opdb.h"
 
 namespace openflow { namespace master {
 
@@ -83,6 +84,17 @@ bool CMasterCore::parse_job(const int32_t job_id)
     boost::property_tree::xml_parser::read_xml(ss, pt);
     root = pt.get_child("job");
 
+    CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+    if(false == db.connect("../web/database/openflow.db")) {
+                LOG(ERROR) << "connect to db error";
+                return -1;
+   }
+
+   if(false == db.optable(openflow::OPENFLOW_DB_TASKSTATETABLENAME)) {
+                LOG(ERROR) << "open table error";
+                return -2;
+   }
+
 //FIXME ZhangYiFei
 /*
     const std::string task_member[] = {"name","description","nodes", "command"};
@@ -130,10 +142,18 @@ bool CMasterCore::parse_job(const int32_t job_id)
 	    task.task_id = id;
 	    id++;
             tasks.push_back(task);
+
+	//任务入库
+	    std::string sql = boost::str(boost::format("INSERT INTO TaskState (job_id,task_id,task_name,cmd,desc) values('%d','%d','%s','%s','%s');")
+                                % job_id %task.task_id %task.task_name %task.cmd %task.description);
+            if(false == db.execute(sql)) {
+                LOG(ERROR) << "execut inert task sql error";
+                return -3;
+            }
         }
     }
+    
     _tasks.insert(std::pair<int32_t, std::vector<openflow::task_info> >(job_id, tasks));
-
     return true;
 }
 

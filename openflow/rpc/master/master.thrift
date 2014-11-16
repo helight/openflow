@@ -11,6 +11,7 @@ service MasterService
     i32 kill_job(1: i32 id),
 
     /* serve for agent client */
-    i32 report_task_state(1: common.agent_state state)
+    i32 report_agent_state(1: common.agent_state state)
+    i32 report_task_state(1: common.task_state state)
 }
 

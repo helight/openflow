@@ -49,7 +49,7 @@ int32_t CMasterHandler::kill_job(const int32_t id) {
     return 0;
 }
 
-int32_t CMasterHandler::report_task_state(const openflow::agent_state &state) {
+int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state) {
     // Your implementation goes here
     // FIXME ZhangYiFei
     // this function need to do
@@ -70,14 +70,35 @@ int32_t CMasterHandler::report_task_state(const openflow::agent_state &state) {
 
 //输出state 信息到日志 测试用
    LOG(INFO)<<state.remain_mem <<state.mem_use_percent <<state.cpu_idle_percent << state.cpu_load <<state.ipaddr<<state.swap_use_percent;
-
    std::string sql = boost::str(boost::format("INSERT INTO AgentState values('%s','%s','%s','%s','%s','%s');")
 				% state.ipaddr %state.remain_mem %state.mem_use_percent %state.cpu_idle_percent %state.cpu_load %state.swap_use_percent);
    if(false == db.execute(sql)) {
-	LOG(ERROR) << "execut sql error";
+	LOG(ERROR) << "execut agent state receive sql error";
 	return -3;
    }
-	
+    return 0;
+}
+
+int32_t CMasterHandler::report_task_state(const openflow::task_state &state) {
+    
+	CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+        if(false == db.connect("../web/database/openflow.db")) {
+		LOG(ERROR) << "connect to db error";
+		return -1;
+   	 }
+
+       if(false == db.optable(openflow::OPENFLOW_DB_TASKSTATETABLENAME)) {
+    		LOG(ERROR) << "open table error";
+		return -2;
+       }
+
+      std::string sql = boost::str(boost::format("UPDATE  TaskState SET task_status='%d',task_result='%s' where job_id='%d' and task_id='%d';")
+				% state.task_status %state.task_result %state.job_id %state.task_id);
+      if(false == db.execute(sql)) {
+	LOG(ERROR) << "execut task state receive sql error";
+	return -3;
+     }
+    db.close();
     return 0;
 }
 
