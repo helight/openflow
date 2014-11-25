@@ -9,9 +9,9 @@
 #pragma once
 
 #include <sys/msg.h>
+#include <sys/shm.h>
 #include <vector>
 #include <map>
-#include <string>
 #include <boost/shared_ptr.hpp>
 #include "blocking_queue.h"
 #include "rpc/agent/AgentService.h"
@@ -36,12 +36,12 @@ namespace openflow { namespace agent {
             boost::shared_ptr<boost::thread> execute_task_thread;
     };
 */
-struct conv_task_info
-{
-    int32_t task_id;
-    char task_name[256];
-    char cmd[512];
-};
+    struct conv_task_info
+    {
+        int32_t task_id;
+        char task_name[256];
+        char cmd[512];
+    };
 
     class CAgentHandler : public AgentServiceIf
     {
@@ -56,6 +56,7 @@ struct conv_task_info
         int32_t real_execute(const openflow::agent::conv_task_info &task);
 
         int32_t msg_init();
+        int32_t shm_init();
     private:
         struct MSG_TASK
         {
@@ -64,7 +65,12 @@ struct conv_task_info
         };
         struct MSG_TASK msg_task; 
         int32_t msgid;
+
+        int32_t shmid;
+        int32_t* task_cnt = NULL;
+
         int32_t pid;
+        const static int32_t TASK_MAX = 10;
     };
 } }
 #endif

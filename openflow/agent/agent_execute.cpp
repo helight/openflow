@@ -85,8 +85,8 @@ namespace openflow { namespace agent {
         		gettimeofday(&end_time, NULL);
         		change_status();
         	}
+            return 0;
         }
-        return 0;
 	}
 
 	void CChild::parent_trace_child()
