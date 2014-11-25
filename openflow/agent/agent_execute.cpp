@@ -37,11 +37,11 @@ namespace openflow { namespace agent {
 	CChild::CChild() {}
 	CChild::~CChild() {}
 
-	int32_t CChild::handler_task(const openflow::task_info task)
+	int32_t CChild::handler_task(const openflow::agent::conv_task_info &task)
 	{
 		LOG(INFO) << "start handling...\n"
 		<< "task id: " << task.task_id << std::endl
-		<< "task name: " << task.task_name << std::endl
+		<< "task name: " << *(task.task_name) << std::endl
 		<< ".............................\n";
 
 		gettimeofday(&start_time, NULL);
@@ -51,8 +51,6 @@ namespace openflow { namespace agent {
 			LOG(ERROR) << "fork error.\n";
 		else if ( fork_rv == 0 )
 		{
-			/*将task_cmd转换为const char**/
-                const char *p = task.cmd.c_str();
                 int32_t fd;
 
                 /*获取当前进程的pid,为后边可能要杀死进程使用*/
@@ -70,7 +68,7 @@ namespace openflow { namespace agent {
                 /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
                 dup2(fd, 1);
                 dup2(fd, 2);
-                if ( execlp("bash", "bash", "-cx", p, NULL) < 0 )
+                if ( execlp("bash", "bash", "-cx", task.cmd, NULL) < 0 )
                 {
                     LOG(ERROR) << "execlp error";
                     return -1;

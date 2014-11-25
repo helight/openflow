@@ -35,7 +35,7 @@ public:
 	CChild();
 	~CChild();
 
-	int32_t handler_task(const openflow::task_info);
+	int32_t handler_task(const openflow::agent::conv_task_info &task);
 
 	int32_t kill_task();
 
