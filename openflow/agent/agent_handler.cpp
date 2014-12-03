@@ -8,21 +8,96 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include "../config.h"
 #include "agent_handler.h"
 #include "agent_execute.h"
+#include "agent_conn.h"
+#include "sys_info.h"
 
 namespace openflow { namespace agent {
     CAgentHandler::CAgentHandler() 
     {
     	execute_task_thread = boost::shared_ptr<boost::thread>
     	(new boost::thread(boost::BOOST_BIND(&CAgentHandler::execute_task, this)));
+
+	// FIXME:(zomoe)
+	// new thread for report agent_status
+	agent_state_thread = boost::shared_ptr<boost::thread>
+	(new boost::thread(boost::BOOST_BIND(&CAgentHandler::report_status,this)));
+
     }
 
     CAgentHandler::~CAgentHandler() 
     {
     	execute_task_thread->join();
+	agent_state_thread->join();
     }
 
+    int32_t CAgentHandler::report_status()
+    { 
+	    // FIXME:(zomoe)
+	    // enabled timefd as timeout !
+	    struct tmp_info tmp_p;
+	    openflow::agent_state state;
+	    struct itimerspec new_value;
+	    int fd;
+	    struct timespec now;
+	    uint64_t exp_t;
+	    ssize_t s;
+	    fd = timerfd_create(CLOCK_REALTIME, 0);
+	    if (fd == -1)
+		  LOG(ERROR) << "timerfd_create error";
+	    while(true){
+		    Sys_Info *sys =new Sys_Info(tmp_p);
+		    state.remain_mem = tmp_p.remain_mem;
+		    state.mem_use_percent = tmp_p.mem_use_percent;
+		    state.cpu_idle_percent = tmp_p.cpu_idle_percent;
+		    state.cpu_load = tmp_p.cpu_load;
+		    state.ipaddr = tmp_p.ipaddr;
+		    state.swap_use_percent = tmp_p.swap_use_percent;
+		    try 
+		    {
+			    /* OPENFLOW_MASTER_IPADDR as a marco, defined the master ip_addr, which located in ../config.h */
+			    CagentConn master(openflow::OPENFLOW_MASTER_IPADDR,openflow::OPENFLOW_MASTER_HANDLER_PORT);
+			    LOG(INFO) << "connect to master success";
+			    master.report_status(state);
+			    LOG(INFO) << "for report_status end";
+		    }
+		    catch(apache::thrift::TException &e)
+		    {
+			    LOG(ERROR) << e.what();
+			    return -1;
+		    }
+
+		    /* Create a CLOCK_REALTIME absolute timer with initial
+		       expiration and interval as specified in command line */
+
+		    if (clock_gettime(CLOCK_REALTIME, &now) == -1)
+			  LOG(ERROR) << "clock_gettime";
+
+		    /* Timeout time as 60 sec ! 
+		     * it can be replaced with TIMEOUT as a macro
+		     * which should be define in ../config.h
+		     */
+
+		    new_value.it_value.tv_sec = now.tv_sec + openflow::AGENT_REPORT_TIMEOUT;
+		    // new_value.it_value.tv_sec = now.tv_sec + 60;
+		    new_value.it_value.tv_nsec = now.tv_nsec;
+
+		    /* timer accuracy set in secs level ,so tv_nsec will be set with zero*/
+		    new_value.it_interval.tv_nsec = 0;
+
+		    if (timerfd_settime(fd, TFD_TIMER_ABSTIME, &new_value, NULL) == -1)
+			  LOG(ERROR) << "timerfd_settime";
+		    s = read(fd, &exp_t, sizeof(uint64_t));
+		    if (s != sizeof(uint64_t))
+			  LOG(ERROR) << "read error";
+		    delete sys;
+	    }
+
+	    return 0;
+
+    }
     bool CAgentHandler::receive_task(const openflow::task_info &task)
     {
         bool receive_rv;
