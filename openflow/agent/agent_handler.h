@@ -27,9 +27,12 @@ namespace openflow { namespace agent {
 
             int32_t execute_task();
 
+	    int32_t report_status();
+
         private:
             common::CBlockingQueue<openflow::task_info> _tasks;
             boost::shared_ptr<boost::thread> execute_task_thread;
+	    boost::shared_ptr<boost::thread> agent_state_thread;
 
        //     int32_t execute_task();
 
