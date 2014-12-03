@@ -17,6 +17,7 @@ enum
     AGENT_OK            = 0,
     AGENT_TASK_OVER_MAX = 1000,
     AGENT_FORK_ERROR    = 1001,
+    AGENT_REPORT_TIMEOUT = 60 //zomoe add 
 };
 
 enum
@@ -32,6 +33,9 @@ const std::string OPENFLOW_DB_JOBTABLENAME = "toJob";
 const std::string OPENFLOW_DB_SQLITE_CONNSTR = "../web/database/openflow.db";
 const std::string OPENFLOW_DB_AGENTSTATETABLENAME = "AgentState";
 const std::string OPENFLOW_DB_TASKSTATETABLENAME = "TaskState";
+
+//FIXME (zomoe) add details
+const std::string OPENFLOW_MASTER_IPADDR = "127.0.0.1";
 
 } // end namespace openflow
 
