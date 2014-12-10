@@ -103,7 +103,6 @@ bool CMainHelper::run()
    state.ipaddr = "192.168.0.1";
    state.swap_use_percent = "0%";
    try {
-	sleep(5);
   	 ret = thrift_client_helper->get()->report_agent_state(state);
 	 if (ret < 0) {
   	   LOG(INFO) << ret;
