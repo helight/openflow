@@ -11,11 +11,13 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <string>
+#include <map>
 #include "master_handler.h"
 #include "master_core.h"
 #include "master_conn.h"
 #include "master_opdb.h"
 #include "../config.h"
+#include <time.h>
 
 namespace openflow { namespace master {
 
@@ -24,11 +26,14 @@ CMasterHandler::CMasterHandler() {
         , this)));
     process_tasks_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::dist_tasks_func
         , this)));
+    process_state_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::BOOST_BIND(&CMasterHandler::store_state
+        , this)));
 }
 
 CMasterHandler::~CMasterHandler() {
     process_job_thread->join();
     process_tasks_thread->join();
+    process_state_thread->join();
 }
 
 int32_t CMasterHandler::submit_job(const int32_t job_id) {
@@ -57,25 +62,11 @@ int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state) {
     // 2. agent transfer state struct to master
     // 3. decomposition the state struct
     // 4. store to sqilte3
-    CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
-    if(false == db.connect("../web/database/openflow.db")) {
-		LOG(ERROR) << "connect to db error";
-		return -1;
-    }
-
-    if(false == db.optable(openflow::OPENFLOW_DB_AGENTSTATETABLENAME)) {
-    		LOG(ERROR) << "open table error";
-		return -2;
-    }
-
-//输出state 信息到日志 测试用
-   LOG(INFO)<<state.remain_mem <<state.mem_use_percent <<state.cpu_idle_percent << state.cpu_load <<state.ipaddr<<state.swap_use_percent;
-   std::string sql = boost::str(boost::format("INSERT INTO AgentState values('%s','%s','%s','%s','%s','%s');")
-				% state.ipaddr %state.remain_mem %state.mem_use_percent %state.cpu_idle_percent %state.cpu_load %state.swap_use_percent);
-   if(false == db.execute(sql)) {
-	LOG(ERROR) << "execut agent state receive sql error";
-	return -3;
-   }
+    state_map.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
+    time_t now_time;
+    now_time = time(NULL);
+    timexpire.insert(std::pair<std::string,time_t>(state.ipaddr,now_time));
+    std::cout << "receive ok" <<std::endl;
     return 0;
 }
 
@@ -152,5 +143,37 @@ void CMasterHandler::dist_tasks_func(void) {
     }
 }
 
+//thread function
+int32_t CMasterHandler::store_state(){
+
+ 	CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+        if(false == db.connect("../web/database/openflow.db")) {
+		LOG(ERROR) << "connect to db error";
+		return -1;
+   	}
+
+    	if(false == db.optable(openflow::OPENFLOW_DB_AGENTSTATETABLENAME)) {
+    		LOG(ERROR) << "open table error";
+		return -2;
+   	}
+	std::cout << "connect to db success" << std::endl;
+	while(1){
+		
+		std::map<std::string,openflow::agent_state>::iterator it;
+		std::cout <<"start to deal with data" <<std::endl;
+		it = state_map.begin();
+		while(it != state_map.end()){
+	//输出state 信息到日志 测试用
+		  LOG(INFO)<<"INERT INTO "<<(it->second).ipaddr;
+   	       	  std::string sql = boost::str(boost::format("INSERT INTO AgentState values('%s','%s','%s','%s','%s','%s');")
+				%(it->second).ipaddr %(it->second).remain_mem %(it->second).mem_use_percent %(it->second).cpu_idle_percent %(it->second).cpu_load %(it->second).swap_use_percent);
+   	          if(false == db.execute(sql)) {
+		     LOG(ERROR) << "execut agent state receive sql error";
+		     return -3;
+          	  }
+             }
+	   sleep(60);
+        }
+ }
 }} // end openflow::master
 
