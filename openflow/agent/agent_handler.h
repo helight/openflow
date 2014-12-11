@@ -16,6 +16,8 @@
 #include "blocking_queue.h"
 #include "rpc/agent/AgentService.h"
 
+void signal_handler(int32_t, siginfo_t*, void*);
+
 namespace openflow { namespace agent {
 /*
     class CAgentHandler : public AgentServiceIf
@@ -54,6 +56,9 @@ namespace openflow { namespace agent {
         int32_t execute_task();
 
         int32_t real_execute(const openflow::agent::conv_task_info &task);
+
+        void regist_signal();
+        void signal_handle(int32_t sig);
 
         int32_t msg_init();
         int32_t shm_init();

@@ -11,7 +11,8 @@
 
 void sig_handler(int32_t sig, siginfo_t *info, void* cld)
 {
-	((openflow::agent::CChild*)cld)->signal_handler(sig, ((openflow::agent::CChild*)cld)->child_status);
+    ((openflow::agent::CChild*)cld)->signal_handler(sig);
+	//((openflow::agent::CChild*)cld)->signal_handler(sig, ((openflow::agent::CChild*)cld)->child_status);
 }
 
 namespace openflow { namespace agent {
@@ -34,18 +35,28 @@ namespace openflow { namespace agent {
         return 0;
 	}
 
-	CChild::CChild() {}
-	CChild::~CChild() {}
+	CChild::CChild() 
+    {
+        std::cout << "**************constructor" << std::endl;
+        parent_trace_child();
+        gettimeofday(&start_time, NULL);
+    }
+	CChild::~CChild()
+    {
+        std::cout << "**************destructor" << std::endl;
+        gettimeofday(&end_time, NULL);
+        trace_time();
+        get_task_status();
+    }
 
 	int32_t CChild::handler_task(const openflow::agent::conv_task_info &task)
 	{
 		LOG(INFO) << "start handling...\n"
 		<< "task id: " << task.task_id << std::endl
-		<< "task name: " << *(task.task_name) << std::endl
+		<< "task name: " << (task.task_name) << std::endl
 		<< ".............................\n";
 
-		gettimeofday(&start_time, NULL);
-
+		
 		int32_t fork_rv;
 		if ( (fork_rv = fork()) == -1 )
 			LOG(ERROR) << "fork error.\n";
@@ -74,19 +85,30 @@ namespace openflow { namespace agent {
                     return -1;
                 }
         }
-        else if ( fork_rv > 0 )
-        {
-        	parent_trace_child();
+        task_pid = wait(&child_status);
+			if ( WIFEXITED(child_status) )
+		    {
+		        LOG(INFO) << ">> child exited, exit code= " << WEXITSTATUS(child_status) << std::endl;
+		    }
+		    else if ( WIFSIGNALED(child_status) )
+		    {
+		        LOG(ERROR) << ">> child killed (signal " << WTERMSIG(child_status) << ")\n";
+		    }
+		    else if ( WIFSTOPPED(child_status) )
+		    {
+		        LOG(ERROR) << ">> child stopped (signal " << WSTOPSIG(child_status) << ")\n";
+		    }
+		#ifdef WIFCONTINUED
+		    else if ( WIFCONTINUED(child_status) )
+		    {
+		        LOG(ERROR) << ">> child continued\n";
+		    }
+		#endif
+		    else
+		        LOG(ERROR) << "unexpected CChild.child_status(" << child_status << ")\n";
 
-        	if ( wait(&child_status) != fork_rv )
-        		LOG(ERROR) << "wait error\n";
-        	else
-        	{
-        		gettimeofday(&end_time, NULL);
-        		change_status();
-        	}
-            return 0;
-        }
+        change_status();
+        return 0;
 	}
 
 	void CChild::parent_trace_child()
@@ -115,13 +137,13 @@ namespace openflow { namespace agent {
 
 	void CChild::trace_time()
 	{
-		time_use = 1000000 * (end_time.tv_sec - start_time.tv_sec) +
-            (end_time.tv_usec - start_time.tv_usec);
+        time_use = 1000000 * (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec);
         time_use /= 1000000;
 	}
 
-	void CChild::signal_handler(int32_t sig, int32_t child_status)
+	void CChild::signal_handler(int32_t sig)
 	{
+/*         task_pid = wait(&child_status);
 		LOG(INFO) << "parent catch signal: " << sig << std::endl;
 		if ( sig == SIGCHLD )
 		{
@@ -151,13 +173,15 @@ namespace openflow { namespace agent {
 			LOG(ERROR) << ">> child exec error\n";
 		    exit(1);
 		}
+*/
+		LOG(INFO) << "parent catch signal: " << sig << std::endl;
 	}
 
 	void CChild::get_task_status()
 	{
 		LOG(INFO) << "task execution status is: " << task_status << std::endl
-		<< "parent pid is: " << getpid() << std::endl
-		<< "task pid is: " << task_pid << std::endl
+		<< "task pid is:    " << task_pid << std::endl
+        << "parent pid is:  " << getpid() << std::endl
 		<< "time of execution is: " << time_use << std::endl;
 	}
 

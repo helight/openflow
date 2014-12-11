@@ -40,7 +40,9 @@ public:
 
 	void parent_trace_child();
 
-	void signal_handler(int32_t sig, int32_t child_status);\
+	//void signal_handler(int32_t sig, int32_t child_status);
+    void signal_handler(int32_t sig);
+
 	int32_t child_status;
 
 	void get_task_status();
