@@ -71,7 +71,7 @@ namespace openflow { namespace agent {
                 char id_src[255];
                 sprintf(id_src, "%d", task.task_id);
                 /*文件路径*/
-                char id_des[255] = "/home/km/Desktop/execute_data/";
+                char id_des[255] = "~/execute_data/";
                 strcat(id_des, id_src);
                 if( (fd = creat(id_des, 0644)) == -1 )
                     LOG(ERROR) << "creat error";
