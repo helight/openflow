@@ -12,6 +12,7 @@
 #include <boost/serialization/singleton.hpp>
 #include <boost/algorithm/string.hpp>
 #include <thrift/transport/TTransportException.h>
+#include <boost/algorithm/string.hpp>
 #include "../common/table.h"
 #include "../common/database.h"
 #include "../common/dataset.h"
@@ -187,19 +188,21 @@ int CMasterCore::exec_job(const int32_t job_id)
 	std::vector<openflow::task_info> tasks;
 	openflow::task_info task;
     	tasks = _tasks[job_id];
-    try
-	{
-	    CmasterConn agent("127.0.0.1",openflow::OPENFLOW_AGENT_HANDLER_PORT); //后续将127.0.0.1 改成nodes里面解析出来的地址
-	    LOG(INFO) << "connect to agent success";
+	
    	 for(std::vector<openflow::task_info>::iterator it = tasks.begin(); it != tasks.end(); it++)
    	 {
+            try
+	      {	
+	    	boost::trim(it->nodes);
+	    	CmasterConn agent((it->nodes).c_str(),openflow::OPENFLOW_AGENT_HANDLER_PORT);
+	    	LOG(INFO) << "connect to agent success";
 		task.name = it->name;
 		task.description = it->description;
 		task.nodes = it->nodes;
         	task.cmd = it->cmd;
 		task.task_name = it->task_name;
 		task.task_id = it->task_id;
-	
+
 		LOG(INFO) << "Task name: " << task.name;
        	        LOG(INFO) << "Task description: " << task.description;
        	        LOG(INFO) << "Task nodes: " << task.nodes;
@@ -208,15 +211,14 @@ int CMasterCore::exec_job(const int32_t job_id)
 		LOG(INFO) << "task task_id" <<task.task_id;
 		LOG(INFO) << "结束";
 		agent.execute_task(task);
-    	}
-	  LOG(INFO)<<"for execute end";
-       }
-   catch(apache::thrift::TException &e)
-	{
+	      }
+   	   catch(apache::thrift::TException &e)
+	      {
 		LOG(ERROR) << e.what();
 		return -1;
-	}
-
+	      }
+    	}
+	  LOG(INFO)<<"for execute end";
 	return 1;
 		
 }

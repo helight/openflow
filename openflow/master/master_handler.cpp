@@ -54,6 +54,15 @@ int32_t CMasterHandler::kill_job(const int32_t id) {
     return 0;
 }
 
+void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return){
+    
+    _return.current_jobnum = 1;
+    _return.failure_jobnum = 1;
+    _return.done_jobnum = 1;
+    _return.success_jobnum = 1;
+    return;
+}
+
 int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state) {
     // Your implementation goes here
     // FIXME ZhangYiFei
@@ -76,12 +85,12 @@ int32_t CMasterHandler::report_task_state(const openflow::task_state &state) {
         if(false == db.connect("../web/database/openflow.db")) {
 		LOG(ERROR) << "connect to db error";
 		return -1;
-   	 }
+   	}
 
        if(false == db.optable(openflow::OPENFLOW_DB_TASKSTATETABLENAME)) {
     		LOG(ERROR) << "open table error";
 		return -2;
-       }
+        }
 
       std::string sql = boost::str(boost::format("UPDATE  TaskState SET task_status='%d',task_result='%s' where job_id='%d' and task_id='%d';")
 				% state.task_status %state.task_result %state.job_id %state.task_id);

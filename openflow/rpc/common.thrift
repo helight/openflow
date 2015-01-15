@@ -39,3 +39,11 @@ struct task_state
   4: string task_result, //任务的执行结果
   5: string ipaddr
 }
+
+struct execute_jobinfo
+{
+  1: i32 current_jobnum, //正在执行的任务数
+  2: i32 done_jobnum, //执行完成的任务数
+  3: i32 failure_jobnum, // 执行失败的任务数
+  4: i32 success_jobnum //执行成功的任务数
+}
