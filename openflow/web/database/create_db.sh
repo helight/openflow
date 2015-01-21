@@ -5,11 +5,13 @@
 #tables:
 #job: 存储作业xml
 
-SQLITE="../../../thirdparty/sqlite/bin/sqlite3"
-#SQLITE="sqlite3"
-DBNAME="openflow.db";  #数据库名称
-TABLENAME_JOB="tbJobs";     #数据库中表的名称
-TABLENAME_AGENTSTATE="AgentState";
+#SQLITE="../../../thirdparty/sqlite/bin/sqlite3"
+SQLITE="sqlite3"
+DBNAME="openflow.db"  #数据库名称
+TABLENAME_JOB="tbJobs"     #数据库中表的名称
+TABLENAME_AGENTSTATE="AgentState"
+TABLENAME_TASKSTATE="TaskState"
+
 
 #测试命令是否执行成功
 function if_ok()
@@ -45,6 +47,23 @@ create_table_agent_state_sql="create table IF NOT EXISTS ${TABLENAME_AGENTSTATE}
 			);";
 
 echo "${create_table_agent_state_sql}" | ${SQLITE} ${DBNAME};
-
 if_ok "create agent_state table [fail].";
+
+#创建TASK_state表
+#FIXME ZhangYiFei
+create_table_task_state_sql="create table IF NOT EXISTS ${TABLENAME_TASKSTATE}
+                      (job_id INTEGER,
+                       task_id INTEGER  NOT NULL,
+                       task_name TEXT NOT NULL,
+                       cmd TEXT	NOT NULL,
+		       desc TEXT,
+		       task_status INTEGER,
+		       task_result TEXT,
+		       ipaddr TEXT
+			);";
+
+echo "${create_table_task_state_sql}" | ${SQLITE} ${DBNAME};
+if_ok "create task_state table [fail].";
+
+
 echo "Database and tables created sucessfully. [Done]."

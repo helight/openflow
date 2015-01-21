@@ -33,7 +33,7 @@
     <shell_process>
         <name>   <![CDATA[测试shell节点3]]>   </name>
         <description>  <![CDATA[测试shell节点3]]>   </description>
-        <nodes>  <![CDATA[127.0.0.1]]>   </nodes>
+        <nodes>  <![CDATA[192.168.198.132]]>   </nodes>
         <command>
         <![CDATA[#!/bin/sh
         echo "aaa"

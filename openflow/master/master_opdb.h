@@ -27,6 +27,7 @@ public:
 	bool optable(const std::string &tabname);
 	int execute(const std::string &sql, std::vector<std::string> &result, int32_t& columns);
 	bool execute(const std::string &sql);
+	void close();
 
 private:
 	const std::string _constr;

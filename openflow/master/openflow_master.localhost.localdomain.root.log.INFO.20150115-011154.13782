@@ -1,0 +1,5 @@
+Log file created at: 2015/01/15 01:11:54
+Running on machine: localhost.localdomain
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0115 01:11:54.681213 13782 main.cpp:48] openflow master start ...
+I0115 01:11:54.681645 13782 main.cpp:49] thread num: 4
