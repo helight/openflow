@@ -46,12 +46,12 @@ int32_t CMasterHandler::submit_job(const int32_t job_id) {
 
 int32_t CMasterHandler::stop_job(const int32_t id) {
     // Your implementation goes here
-    return 0;
+    return 999;
 }
 
 int32_t CMasterHandler::kill_job(const int32_t id) {
     // Your implementation goes here
-    return 0;
+    return 99;
 }
 
 void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return){
@@ -60,6 +60,7 @@ void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return){
     _return.failure_jobnum = 1;
     _return.done_jobnum = 1;
     _return.success_jobnum = 1;
+    LOG(INFO) << "exexute...............";
     return;
 }
 

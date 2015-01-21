@@ -24,10 +24,16 @@ class Connect extends CI_Controller {
 
 	public function index()
 	{
+		//echo "dwdwq";
 		$this->load->library("MasterOpt");
 		$result = $this->masteropt->submit_job(1);
 		echo $result;
-		$this->masteropt->close();
+		$result = $this->masteropt->execute_jobinfo();
+		echo $result;
+		return;
+		//$result = $this->masteropt->stop_job(1);
+		//echo "<h1>".$result."</h1>";
+		//$result = $this->masteropt->kill_job(2);
 	}
 
 	public function post()

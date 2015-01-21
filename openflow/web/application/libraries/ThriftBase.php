@@ -13,6 +13,7 @@ use Thrift\Transport\TBufferedTransport;
 use Thrift\Exception\TException;
 use Thrift\Transport\TFramedTransport;
 use openflow\master\MasterServiceClient;
+
 class ThriftBase
 {
 	public function __construct()
