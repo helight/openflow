@@ -29,6 +29,7 @@ struct agent_state
    4: string cpu_load, //cpu 1分钟  五分钟  十五分钟负载 放在一个字符串里面 空格分割
    5: string ipaddr, //ip地址
    6: string swap_use_percent //交换分区使用百分比
+<<<<<<< HEAD
 }
 
 struct task_state
@@ -46,4 +47,6 @@ struct execute_jobinfo
   2: i32 done_jobnum, //执行完成的任务数
   3: i32 failure_jobnum, // 执行失败的任务数
   4: i32 success_jobnum //执行成功的任务数
+=======
+>>>>>>> a4a6f82bb68b7725b33ea9a8368c7038d8f98fbf
 }

@@ -31,9 +31,6 @@ namespace openflow { namespace master {
 			openflow::task_info task;
 			//客户端操作类
 			common::CThriftClientHelper<openflow::agent::AgentServiceClient> *Agent;
-			
-			
-			
 	};
 }} //end namespace
 #endif
