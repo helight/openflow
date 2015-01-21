@@ -23,9 +23,9 @@ public:
 
 	int32_t show_running_task();
 
-	int32_t fork_cnt = 0;
     const static int FORK_MAX = 10;
 
+	int32_t fork_cnt = 0;
 	std::map<int32_t, std::string> running_task_queue;
 };
 
@@ -59,12 +59,10 @@ private:
 	{
 		if ( child_status == 0 )
 			task_status = "SUCCESS";
-		else 
+		else
 			task_status = "FAILED";
 	}
 };
 
-}
-
-}
+} } //openflow::gent
 #endif

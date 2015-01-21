@@ -18,8 +18,6 @@ struct task_info
     4: string nodes,
     5: string description,
     6: string name
-<<<<<<< HEAD
-=======
 }
 
 struct agent_state
@@ -31,5 +29,4 @@ struct agent_state
    4: string cpu_load, //cpu 1分钟  五分钟  十五分钟负载 放在一个字符串里面 空格分割
    5: string ipaddr, //ip地址
    6: string swap_use_percent //交换分区使用百分比
->>>>>>> jeff
 }

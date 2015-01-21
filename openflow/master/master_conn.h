@@ -10,18 +10,11 @@
 
 #include <glog/logging.h>
 #include <thrift_helper.h>
-<<<<<<< HEAD
-=======
 #include "../config.h"
->>>>>>> origin/kobemiller
 #include "rpc/agent/AgentService.h"
 
 namespace openflow { namespace master {
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/kobemiller
 	class CmasterConn
 	{
 		public:
@@ -38,14 +31,6 @@ namespace openflow { namespace master {
 			openflow::task_info task;
 			//客户端操作类
 			common::CThriftClientHelper<openflow::agent::AgentServiceClient> *Agent;
-			
-			
-			
 	};
-<<<<<<< HEAD
 }} //end namespace
-=======
-   }
-}
->>>>>>> origin/kobemiller
 #endif

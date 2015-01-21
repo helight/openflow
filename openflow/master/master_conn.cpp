@@ -7,10 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
-<<<<<<< HEAD
 #include <thrift/transport/TTransportException.h>
-=======
->>>>>>> origin/kobemiller
 #include "master_conn.h"
 
 namespace openflow { namespace master {
@@ -26,20 +23,13 @@ CmasterConn::CmasterConn(const std::string& host, uint16_t port)
 //关闭到客户端的连接
 CmasterConn::~CmasterConn()
 {
-<<<<<<< HEAD
 	Agent->close(); //显示调用close方法;
-=======
-<<<<<<< HEAD
->>>>>>> kobemiller
-=======
->>>>>>> origin/kobemiller
->>>>>>> jeff
 	delete Agent;
 }
 
 //填充发送到客户端的任务
 void CmasterConn::SetTask(const openflow::task_info &Task)
-{	
+{
 	task = Task;
 }
 
@@ -55,18 +45,7 @@ bool CmasterConn::receive_task(const openflow::task_info& Task)
 int32_t CmasterConn::execute_task(const openflow::task_info &Task)
 {
 	SetTask(Task);
-<<<<<<< HEAD
-	int32_t ret = (*Agent)->execute_task(task);
-	return ret;
-=======
-	int32_t ret = (*Agent)->receive_task(task);
-	return ret;
 //	return Agent->execute_task(task);
-<<<<<<< HEAD
->>>>>>> kobemiller
-=======
->>>>>>> origin/kobemiller
->>>>>>> jeff
 }
 
 }}
