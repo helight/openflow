@@ -1,9 +1,9 @@
 <?php
-	require_once("side.php");
+    $this->load->view("admin/side.php");
 ?>
 	<div class="m-sidebar-collapsed">
 		<ul class="nav nav-pills">
-			
+
 		</ul>
 
 		<div class="arrow-border">

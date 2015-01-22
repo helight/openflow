@@ -6,13 +6,13 @@
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap-responsive.css" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/style.css" />
-	
+
 	<script type='text/javascript' src='../content/js/admin/jsapi.js'></script>
-	
+
 	<script type="text/javascript" src="../content/js/admin/jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../content/js/admin/main.js"></script>
 	<script type="text/javascript" src="../content/js/admin/bootstrap.min.js"></script>
-	
+
 <!--	<script type="text/javascript" src="../content/js/admin/chart.js"></script> -->
 
 	<!--[if lt IE 9]>
@@ -24,7 +24,7 @@
 		<div class="navbar-inner m-inner">
 			<div class="container-fluid">
 				<a class="brand m-brand" href="admin">Openflow</a>
-				
+
 	            <form class="form-search m-search span5" />
 					<input type="text" placeholder="Type to search" class="span5 search-query" />
 				</form>
@@ -34,7 +34,7 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		        </button>
-		        
+
 				<div class="nav-collapse collapse">
 
 					<div class="btn-group pull-right">
@@ -57,7 +57,7 @@
 	<aside class="sidebar">
 		<ul class="nav nav-tabs nav-stacked">
 			<li class="active">
-				<a href="admin">
+				<a href="/">
 					<div>
 						<div class="ico">
 							<img src="../content/img/ico/ico-home.png" />

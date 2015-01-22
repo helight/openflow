@@ -1,9 +1,9 @@
 <?php
-	require_once("side.php");
+    $this->load->view("admin/side.php");
 ?>
 	<div class="m-sidebar-collapsed">
 		<ul class="nav nav-pills">
-			
+
 		</ul>
 
 		<div class="arrow-border">
@@ -22,15 +22,15 @@
 						<button class="close" data-dismiss="alert">x</button>
 						<strong>警告信息!</strong> 实时打印一些警告信息
 						<a href="#">
-							<span class="label label-important">处理级别!</span>	
+							<span class="label label-important">处理级别!</span>
 						</a>
 					</div>
 
 					<div class="alert">
 						<button class="close" data-dismiss="alert">x</button>
-						<strong>警告信息!</strong> 实时打印一些警告信息 
+						<strong>警告信息!</strong> 实时打印一些警告信息
 						<a href="#">
-							<span class="label label-info">处理级别</span>	
+							<span class="label label-info">处理级别</span>
 						</a>
 					</div>
 				</div>
@@ -100,7 +100,7 @@
 								<a href="#" class="span3 m-stats-item">
 									<span class="m-stats-val">1000</span>
 									执行成功率
-								</a href="#">			
+								</a href="#">
 							</div>
 						</div>
 					</div>

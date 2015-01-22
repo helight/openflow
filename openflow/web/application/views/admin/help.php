@@ -1,9 +1,9 @@
 <?php
-	require_once("side.php");
+    $this->load->view("admin/side.php");
 ?>
 	<div class="m-sidebar-collapsed">
 		<ul class="nav nav-pills">
-			
+
 		</ul>
 
 		<div class="arrow-border">
@@ -25,7 +25,7 @@
 					</div>
 				</div>
 
-				
+
 				<div class="row-fluid">
 					<div class="span6">
 						<h2>6 Columns</h2>

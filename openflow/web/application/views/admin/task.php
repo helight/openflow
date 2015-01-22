@@ -1,9 +1,9 @@
 <?php
-	require_once("side.php");
+    $this->load->view("admin/side.php");
 ?>
 	<div class="m-sidebar-collapsed">
 		<ul class="nav nav-pills">
-			
+
 		</ul>
 
 		<div class="arrow-border">
@@ -44,7 +44,7 @@
 								<a href="#" class="span3 m-stats-item">
 									<span class="m-stats-val">1000</span>
 									执行成功率
-								</a href="#">			
+								</a href="#">
 							</div>
 							</div>
 					</div>
@@ -94,7 +94,7 @@
 								<a href="#" class="btn"><i class="icon-ok"></i></a>
 							</td>
 						</tr>
-						
+
 					</tbody>
 					<tfoot>
 						<tr>

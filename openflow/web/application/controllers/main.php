@@ -20,8 +20,9 @@ class Main extends CI_Controller {
 	public function index()
 	{
         // ["mode"];//=1表示实例化,2表示查看,4=组件开发
-        $data["mode"] = 2;
-		$this->load->view('editor', $data);
+        $this->load->view('main');
+        // $data["mode"] = 2;
+		// $this->load->view('editor', $data);
 	}
 }
 
