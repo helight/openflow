@@ -26,6 +26,38 @@ class Admin extends CI_Controller {
 	{
 		$this->load->view('admin/admin');
 	}
+
+    /// for logging
+    public function login()
+    {
+        $this->load->view('admin/login');
+    }
+
+    public function login_post()
+    {
+        $username = $_POST['username'];
+        $pass = $_POST['pass'];
+        echo $pass.$username;
+    }
+
+    /// for setting
+    public function setting()
+    {
+        $this->load->view('admin/setting');
+    }
+
+    /// for user
+    public function user()
+    {
+        $this->load->view('admin/user');
+    }
+
+    /// for help
+    public function help()
+    {
+		$this->load->view('admin/help');
+    }
+
 }
 
 /* End of file welcome.php */

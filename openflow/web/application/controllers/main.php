@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
 class Main extends CI_Controller {
 
@@ -17,13 +17,20 @@ class Main extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
 	public function index()
 	{
-        // ["mode"];//=1表示实例化,2表示查看,4=组件开发
-        $this->load->view('main');
-        // $data["mode"] = 2;
-		// $this->load->view('editor', $data);
+		$this->admin();
 	}
+
+    public function admin()
+    {
+		$this->load->view('main');
+    }
 }
 
 /* End of file welcome.php */

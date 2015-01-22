@@ -75,7 +75,7 @@
 			</li>
 
 			<li class="">
-				<a href="master">
+				<a href="/master">
 					<div>
 						<div class="ico">
 						<img src="../content/img/ico/ico-report.gif" />
@@ -93,7 +93,7 @@
 			</li>
 
 			<li class="">
-				<a href="agent">
+				<a href="/agent">
 					<div>
 						<div class="ico">
 						<img src="../content/img/ico/ico-report.gif" />
@@ -111,7 +111,7 @@
 			</li>
 
 			<li class="">
-				<a href="task">
+				<a href="/task">
 					<div>
 						<div class="ico">
 							<img src="../content/img/ico/ico-setting.gif" />
@@ -129,7 +129,7 @@
 
 
 			<li class="">
-				<a href="setting">
+				<a href="/admin/setting">
 					<div>
 						<div class="ico">
 						<img src="../content/img/ico/ico-setting.gif" />
@@ -146,7 +146,7 @@
 			</li>
 
 			<li class="">
-				<a href="user">
+				<a href="/admin/user">
 					<div>
 						<div class="ico">
 							<img src="../content/img/ico/ico-user.gif" />
@@ -163,7 +163,7 @@
 			</li>
 
 			<li class="">
-				<a href="help">
+				<a href="/admin/help">
 					<div>
 						<div class="ico">
 							<img src="../content/img/ico/ico-help.gif" />
