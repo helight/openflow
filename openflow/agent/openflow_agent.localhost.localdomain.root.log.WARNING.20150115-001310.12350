@@ -1,4 +1,0 @@
-Log file created at: 2015/01/15 00:13:10
-Running on machine: localhost.localdomain
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-E0115 00:13:10.528054 12350 agent_execute.cpp:73] creat error

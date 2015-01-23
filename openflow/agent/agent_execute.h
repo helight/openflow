@@ -18,14 +18,14 @@ namespace openflow { namespace agent {
 class CTaskExecute
 {
 public:
-	CTaskExecute();
-	~CTaskExecute();
+	CTaskExecute() { fork_cnt = 0; };
+	~CTaskExecute() {};
 
 	int32_t show_running_task();
 
     const static int FORK_MAX = 10;
 
-	int32_t fork_cnt = 0;
+	int32_t fork_cnt;
 	std::map<int32_t, std::string> running_task_queue;
 };
 

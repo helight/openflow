@@ -12,7 +12,8 @@ namespace openflow { namespace master {
 //数据库的初始化
 CMasterDB::CMasterDB(const common::DB_TYPE dbtype,const std::string &dbname)
 {
-    db = ds.new_database(dbtype,dbname);
+	common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
+    db = ds.new_database(dbtype, dbname);
 }
 
 //数据库的资源释放
@@ -31,7 +32,6 @@ bool CMasterDB::connect(const std::string &connstr)
 	//2.连接数据库
     db->set_connect_str(connstr);
     return db->open();
-	
 }
 
 //操作数据库表
@@ -54,26 +54,27 @@ int CMasterDB::execute(const std::string &sql, std::vector<std::string> &result,
 	//输入sql语句,以及一个string的vector来保存查询结果
 	//columns 返回查询到的结果数
 	LOG(INFO)<<"test";
+    return 0;
 }
 
 bool CMasterDB::execute(const std::string &sql)
 {
 	//插入操作
-	
-	if ( !table->non_query(sql))
-    	{
-		return false;//根据返回结果在调用点需要记录日志
-        }
-	return true;
-	
+
+    if ( !table->non_query(sql))
+    {
+        return false;//根据返回结果在调用点需要记录日志
+    }
+
+    return true;
 }
 
 void CMasterDB::close()
 {
-	
+
 	db->close();
 	delete table;
 	delete db;
-	
 }
+
 }} //end namespace

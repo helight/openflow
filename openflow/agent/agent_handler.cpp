@@ -11,14 +11,14 @@
 #include "agent_execute.h"
 
 namespace openflow { namespace agent {
-    CAgentHandler::CAgentHandler() 
+    CAgentHandler::CAgentHandler()
     {
         execute_task_thread = boost::shared_ptr<boost::thread>
     	(new boost::thread(boost::BOOST_BIND(&CAgentHandler::execute_task, this)));
     	LOG(INFO) << "kobemiller";
     }
 
-    CAgentHandler::~CAgentHandler() 
+    CAgentHandler::~CAgentHandler()
     {
     	execute_task_thread->join();
     }
@@ -38,23 +38,23 @@ namespace openflow { namespace agent {
         CTaskExecute main_execute;
         while ( 1 )
         {
-        	if ( (main_execute.fork_cnt) >= (main_execute.FORK_MAX) )
-        	{
-        		LOG(ERROR) << "fork to the max";
-        		sleep(10);
-        		break;
-        	}
-        	else
-        	{
-        		(main_execute.fork_cnt)++;
-        		openflow::task_info task;
-        		_tasks.pop_back(task);
-        		int32_t re_rv = real_execute(task);
-        		if ( re_rv != 0 )
-        			LOG(ERROR) << "real_execute error";
-        		else
-        		 	(main_execute.fork_cnt)--;
-        	}
+            if ( (main_execute.fork_cnt) >= (main_execute.FORK_MAX) )
+            {
+                LOG(ERROR) << "fork to the max";
+                sleep(10);
+                break;
+            }
+            else
+            {
+                (main_execute.fork_cnt)++;
+                openflow::task_info task;
+                _tasks.pop_back(task);
+                int32_t re_rv = real_execute(task);
+                if ( re_rv != 0 )
+                    LOG(ERROR) << "real_execute error";
+                else
+                    (main_execute.fork_cnt)--;
+            }
         }
         return 0;
     }
@@ -130,9 +130,9 @@ namespace openflow { namespace agent {
                 // char id_des[255] = "/home/km/Desktop/openflow_result_data/";
                 // strcat(id_des, id_src);
                 // if( (fd = creat(id_des, 0644)) == -1 )
-                //     LOG(ERROR) << "creat error"; 
+                //     LOG(ERROR) << "creat error";
 
-                // /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/ 
+                // /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
                 // dup2(fd, 1);
                 // dup2(fd, 2);
                 // if ( execlp("bash", "bash", "-x", p, NULL) < 0 )
@@ -157,14 +157,14 @@ namespace openflow { namespace agent {
 //                 	/*父进程捕捉子进程返回值*/
 //                 	LOG(INFO) << "The task (pid = " << fork_rv << ") returned:";
 //                 	parent_catch_sig(child_status);
-                
+
 //                 	/*将返回值转化为SUCCESS,FAILED*/
 //                 	sorf();
 //                 }
 
                 // /*任务最终状态的输出*/
                 // LOG(INFO) << "handling done..."
-                // << "done waiting for " << fork_rv 
+                // << "done waiting for " << fork_rv
                 // << "task execution status is " << task_status
                 // << "parent pid is " << getppid() << "- "
                 // << i++ << "- "
@@ -200,7 +200,7 @@ namespace openflow { namespace agent {
 //         	LOG(ERROR) << "child continued";
 //         }
 //         else
-//             LOG(ERROR) << "unexpected status(" << status << ")\n";    
+//             LOG(ERROR) << "unexpected status(" << status << ")\n";
 
 //         return 0;
 //     }
@@ -211,7 +211,7 @@ namespace openflow { namespace agent {
         // t = 1000000 * (end_time.tv_sec - start_time.tv_sec) +
         //     (end_time.tv_usec - start_time.tv_usec);
         // t /= 1000000;
-        
+
         // return t;
 //     }
 

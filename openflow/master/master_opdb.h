@@ -33,7 +33,6 @@ private:
 	const std::string _constr;
 	common::CTable *table;
 	common::CDatabase *db;
-	common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
 };
 }} //end namespace openflow::master
 #endif // MASTER_OPDB_H

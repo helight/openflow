@@ -1,5 +1,0 @@
-Log file created at: 2015/01/14 23:56:29
-Running on machine: localhost.localdomain
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-I0114 23:56:29.529770 11601 main.cpp:48] openflow agent start...
-I0114 23:56:29.542506 11601 main.cpp:49] thread num: 4

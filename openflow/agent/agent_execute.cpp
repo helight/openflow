@@ -15,8 +15,6 @@ void sig_handler(int32_t sig, siginfo_t *info, void* cld)
 }
 
 namespace openflow { namespace agent {
-	CTaskExecute::CTaskExecute() {}
-	CTaskExecute::~CTaskExecute() {}
 
 	int32_t CTaskExecute::show_running_task()
 	{
