@@ -24,6 +24,7 @@ class Admin extends CI_Controller {
 
 	public function index()
 	{
+        echo $APPPATH;
 		$this->load->view('admin/admin');
 	}
 
