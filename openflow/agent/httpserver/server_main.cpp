@@ -31,7 +31,7 @@ const std::string kUsage = "Usage: httpserver [start|stop|restart]\r\n"	\
 							"--Options--:\r\n"							\
 							"\tstart\tstart httpserver\r\n"				\
 							"\tstop\tstop httpserver\r\n"				\
-							"\trestart\trestart httpserver\r\n"			\		
+							"\trestart\trestart httpserver\r\n"			\
 							"\tpause\tpause httpserver\r\n"				\
 							"\tresume\tresume httpserver\r\n";
 
