@@ -35,6 +35,5 @@ namespace openflow { namespace master {
 			
 			
 	};
-   }
-}
+}} //end namespace
 #endif

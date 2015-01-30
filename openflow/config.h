@@ -1,6 +1,7 @@
 #ifndef OPENFLOW_CONFIG_H
 #define OPENFLOW_CONFIG_H
 #pragma once
+#include <iostream>
 
 namespace openflow {
 
@@ -24,6 +25,13 @@ enum
     MASTER_JOB_OVER_MAX  = 2000,
     MASTER_DB_CONN_ERROR = 2001,
 };
+
+//FIXME ZhangYiFei add dbconf
+const std::string OPENFLOW_DB_DBNAME = "openflow.db";
+const std::string OPENFLOW_DB_JOBTABLENAME = "toJob";
+const std::string OPENFLOW_DB_SQLITE_CONNSTR = "../web/database/openflow.db";
+const std::string OPENFLOW_DB_AGENTSTATETABLENAME = "AgentState";
+const std::string OPENFLOW_DB_TASKSTATETABLENAME = "TaskState";
 
 } // end namespace openflow
 

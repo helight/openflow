@@ -1,0 +1,353 @@
+Log file created at: 2011/01/13 14:01:04
+Running on machine: km-24
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0113 14:01:04.540048 13272 main.cpp:48] openflow master start ...
+I0113 14:01:04.540459 13272 main.cpp:49] thread num: 4
+I0113 14:02:21.833731 13273 master_handler.cpp:116] received a job.
+I0113 14:02:21.833786 13273 master_handler.cpp:117] job id: 9
+I0113 14:02:21.834405 13273 master_handler.cpp:126] print job...
+I0113 14:02:21.834421 13273 master_core.cpp:164] Job ID: 9
+I0113 14:02:21.834434 13273 master_core.cpp:165] Job name: testor
+I0113 14:02:21.834444 13273 master_core.cpp:166] Job xml description: <?xml version="1.0" encoding="utf-8" ?>
+<job>
+	<name>
+		<![CDATA[测试test]]>
+	</name>
+	<description>
+		<![CDATA[测试示例]]>
+	</description>
+	<properties />
+	<start>
+		<name>
+			<![CDATA[开始]]>
+		</name>
+		<description>
+			<![CDATA[]]>
+		</description>
+	</start>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点1]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点1]]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[#!/bin/sh
+        ls]]>
+		</command>
+	</shell_process>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点2]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点2]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[ls /
+        ]]>
+		</command>
+	</shell_process>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点3]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点3]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[#!/bin/sh
+        echo "aaa"
+	]]>
+		</command>
+	</shell_process>
+	<end>
+		<name>
+			<![CDATA[结束]]>
+		</name>
+		<description>
+			<![CDATA[]]>
+		</description>
+	</end>
+</job>
+I0113 14:02:21.834455 13273 master_core.cpp:167] time: 2011-01-13T14:02:21
+I0113 14:02:21.845861 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点1
+		
+I0113 14:02:21.845933 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点1]
+		
+I0113 14:02:21.845947 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:21.845959 13273 master_core.cpp:122] XML elemnets: 
+			#!/bin/sh
+        ls
+		
+I0113 14:02:21.967380 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点2
+		
+I0113 14:02:21.967424 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点2
+		
+I0113 14:02:21.967437 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:21.967449 13273 master_core.cpp:122] XML elemnets: 
+			ls /
+        
+		
+I0113 14:02:22.111029 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点3
+		
+I0113 14:02:22.111075 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点3
+		
+I0113 14:02:22.111088 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:22.111100 13273 master_core.cpp:122] XML elemnets: 
+			#!/bin/sh
+        echo "aaa"
+	
+		
+I0113 14:02:22.236846 13273 master_handler.cpp:138] push job_id into execute queue
+I0113 14:02:22.236878 13274 master_handler.cpp:150] start to execute tasks job_Id:9
+I0113 14:02:22.237110 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:22.237126 13274 master_core.cpp:206] Task name: 
+			测试shell节点1
+		
+I0113 14:02:22.237136 13274 master_core.cpp:207] Task description: 
+			测试shell节点1]
+		
+I0113 14:02:22.237146 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:22.237156 13274 master_core.cpp:209] Task command: 
+			#!/bin/sh
+        ls
+		
+I0113 14:02:22.237166 13274 master_core.cpp:210] task task_name
+			测试shell节点1
+		
+I0113 14:02:22.237176 13274 master_core.cpp:211] task task_id1
+I0113 14:02:22.237186 13274 master_core.cpp:212] 结束
+I0113 14:02:22.255005 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:22.255056 13274 master_core.cpp:206] Task name: 
+			测试shell节点2
+		
+I0113 14:02:22.255069 13274 master_core.cpp:207] Task description: 
+			测试shell节点2
+		
+I0113 14:02:22.255079 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:22.255089 13274 master_core.cpp:209] Task command: 
+			ls /
+        
+		
+I0113 14:02:22.255209 13274 master_core.cpp:210] task task_name
+			测试shell节点2
+		
+I0113 14:02:22.255225 13274 master_core.cpp:211] task task_id2
+I0113 14:02:22.255238 13274 master_core.cpp:212] 结束
+I0113 14:02:22.257776 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:22.259383 13274 master_core.cpp:206] Task name: 
+			测试shell节点3
+		
+I0113 14:02:22.259420 13274 master_core.cpp:207] Task description: 
+			测试shell节点3
+		
+I0113 14:02:22.259439 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:22.259459 13274 master_core.cpp:209] Task command: 
+			#!/bin/sh
+        echo "aaa"
+	
+		
+I0113 14:02:22.259477 13274 master_core.cpp:210] task task_name
+			测试shell节点3
+		
+I0113 14:02:22.259495 13274 master_core.cpp:211] task task_id3
+I0113 14:02:22.259515 13274 master_core.cpp:212] 结束
+I0113 14:02:22.260411 13274 master_core.cpp:221] for execute end
+I0113 14:02:22.260432 13274 master_handler.cpp:151] 1
+I0113 14:02:27.247138 13273 master_handler.cpp:116] received a job.
+I0113 14:02:27.247223 13273 master_handler.cpp:117] job id: 10
+I0113 14:02:27.247722 13273 master_handler.cpp:126] print job...
+I0113 14:02:27.247741 13273 master_core.cpp:164] Job ID: 10
+I0113 14:02:27.247753 13273 master_core.cpp:165] Job name: testor
+I0113 14:02:27.247766 13273 master_core.cpp:166] Job xml description: <?xml version="1.0" encoding="utf-8" ?>
+<job>
+	<name>
+		<![CDATA[测试test]]>
+	</name>
+	<description>
+		<![CDATA[测试示例]]>
+	</description>
+	<properties />
+	<start>
+		<name>
+			<![CDATA[开始]]>
+		</name>
+		<description>
+			<![CDATA[]]>
+		</description>
+	</start>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点1]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点1]]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[#!/bin/sh
+        ls]]>
+		</command>
+	</shell_process>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点2]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点2]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[ls /
+        ]]>
+		</command>
+	</shell_process>
+	<shell_process>
+		<name>
+			<![CDATA[测试shell节点3]]>
+		</name>
+		<description>
+			<![CDATA[测试shell节点3]]>
+		</description>
+		<nodes>
+			<![CDATA[127.0.0.1]]>
+		</nodes>
+		<command>
+			<![CDATA[#!/bin/sh
+        echo "aaa"
+	]]>
+		</command>
+	</shell_process>
+	<end>
+		<name>
+			<![CDATA[结束]]>
+		</name>
+		<description>
+			<![CDATA[]]>
+		</description>
+	</end>
+</job>
+I0113 14:02:27.247778 13273 master_core.cpp:167] time: 2011-01-13T14:02:27
+I0113 14:02:27.248114 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点1
+		
+I0113 14:02:27.248133 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点1]
+		
+I0113 14:02:27.248147 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:27.248160 13273 master_core.cpp:122] XML elemnets: 
+			#!/bin/sh
+        ls
+		
+I0113 14:02:27.381027 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点2
+		
+I0113 14:02:27.381080 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点2
+		
+I0113 14:02:27.381095 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:27.381108 13273 master_core.cpp:122] XML elemnets: 
+			ls /
+        
+		
+I0113 14:02:27.506907 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点3
+		
+I0113 14:02:27.506969 13273 master_core.cpp:122] XML elemnets: 
+			测试shell节点3
+		
+I0113 14:02:27.506985 13273 master_core.cpp:122] XML elemnets: 
+			127.0.0.1
+		
+I0113 14:02:27.506999 13273 master_core.cpp:122] XML elemnets: 
+			#!/bin/sh
+        echo "aaa"
+	
+		
+I0113 14:02:27.624362 13273 master_handler.cpp:138] push job_id into execute queue
+I0113 14:02:27.624363 13274 master_handler.cpp:150] start to execute tasks job_Id:10
+I0113 14:02:27.624621 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:27.624639 13274 master_core.cpp:206] Task name: 
+			测试shell节点1
+		
+I0113 14:02:27.624651 13274 master_core.cpp:207] Task description: 
+			测试shell节点1]
+		
+I0113 14:02:27.624752 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:27.624764 13274 master_core.cpp:209] Task command: 
+			#!/bin/sh
+        ls
+		
+I0113 14:02:27.624776 13274 master_core.cpp:210] task task_name
+			测试shell节点1
+		
+I0113 14:02:27.624788 13274 master_core.cpp:211] task task_id1
+I0113 14:02:27.624800 13274 master_core.cpp:212] 结束
+I0113 14:02:27.630231 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:27.630920 13274 master_core.cpp:206] Task name: 
+			测试shell节点2
+		
+I0113 14:02:27.630939 13274 master_core.cpp:207] Task description: 
+			测试shell节点2
+		
+I0113 14:02:27.630951 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:27.630964 13274 master_core.cpp:209] Task command: 
+			ls /
+        
+		
+I0113 14:02:27.630975 13274 master_core.cpp:210] task task_name
+			测试shell节点2
+		
+I0113 14:02:27.630986 13274 master_core.cpp:211] task task_id2
+I0113 14:02:27.630998 13274 master_core.cpp:212] 结束
+I0113 14:02:27.631919 13274 master_core.cpp:198] connect to agent success
+I0113 14:02:27.631963 13274 master_core.cpp:206] Task name: 
+			测试shell节点3
+		
+I0113 14:02:27.631979 13274 master_core.cpp:207] Task description: 
+			测试shell节点3
+		
+I0113 14:02:27.631995 13274 master_core.cpp:208] Task nodes: 127.0.0.1
+I0113 14:02:27.632011 13274 master_core.cpp:209] Task command: 
+			#!/bin/sh
+        echo "aaa"
+	
+		
+I0113 14:02:27.632027 13274 master_core.cpp:210] task task_name
+			测试shell节点3
+		
+I0113 14:02:27.632042 13274 master_core.cpp:211] task task_id3
+I0113 14:02:27.632058 13274 master_core.cpp:212] 结束
+I0113 14:02:27.634174 13274 master_core.cpp:221] for execute end
+I0113 14:02:27.634239 13274 master_handler.cpp:151] 1

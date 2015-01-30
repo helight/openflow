@@ -10,10 +10,16 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/serialization/singleton.hpp>
+#include <boost/algorithm/string.hpp>
+#include <thrift/transport/TTransportException.h>
+#include <boost/algorithm/string.hpp>
 #include "../common/table.h"
 #include "../common/database.h"
 #include "../common/dataset.h"
+#include "../config.h"
 #include "master_core.h"
+#include "master_conn.h"
+#include "master_opdb.h"
 
 namespace openflow { namespace master {
 
@@ -79,9 +85,28 @@ bool CMasterCore::parse_job(const int32_t job_id)
     boost::property_tree::xml_parser::read_xml(ss, pt);
     root = pt.get_child("job");
 
+    CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+    if(false == db.connect("../web/database/openflow.db")) {
+                LOG(ERROR) << "connect to db error";
+                return -1;
+   }
+
+   if(false == db.optable(openflow::OPENFLOW_DB_TASKSTATETABLENAME)) {
+                LOG(ERROR) << "open table error";
+                return -2;
+   }
+
+//FIXME ZhangYiFei
+/*
     const std::string task_member[] = {"name","description","nodes", "command"};
     std::vector<StTask> tasks;
     StTask task;
+*/
+    const std::string task_member[] = {"name","description","nodes", "command"};
+    std::vector<openflow::task_info> tasks;
+    openflow::task_info task;
+
+    int id = 1;
     for(boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); it++)
     {
         if(it->first == "shell_process")
@@ -89,7 +114,6 @@ bool CMasterCore::parse_job(const int32_t job_id)
             boost::property_tree::ptree pt;
             std::string val;
             boost::property_tree::ptree shell_process = it->second;
-
             int i=0;
             for(; i < 4; i++)
             {
@@ -106,19 +130,31 @@ bool CMasterCore::parse_job(const int32_t job_id)
                     task.description = val;
                     break;
                 case 2:
-                    task.nodes = val;
+                   task.nodes = val;
                     break;
                 case 3:
                     task.cmd = val;
                     break;
                 }
-
             }
+
+	//FIXME 临时测试,兼容之前task_info结构体
+	    task.task_name = task.name;
+	    task.task_id = id;
+	    id++;
             tasks.push_back(task);
+
+	//任务入库
+	    std::string sql = boost::str(boost::format("INSERT INTO TaskState (job_id,task_id,task_name,cmd,desc) values('%d','%d','%s','%s','%s');")
+                                % job_id %task.task_id %task.task_name %task.cmd %task.description);
+            if(false == db.execute(sql)) {
+                LOG(ERROR) << "execut inert task sql error";
+                return -3;
+            }
         }
     }
-    _tasks.insert(std::pair<int32_t, std::vector<StTask> >(job_id, tasks));
-
+    
+    _tasks.insert(std::pair<int32_t, std::vector<openflow::task_info> >(job_id, tasks));
     return true;
 }
 
@@ -133,10 +169,12 @@ void CMasterCore::print_job(const int32_t job_id)
 
 void CMasterCore::print_tasks(const int32_t job_id)
 {
-    std::vector<StTask> tasks;
+//FIXME: ZhangYiFei
+//    std::vector<StTask> tasks;
+    std::vector<openflow::task_info> tasks;
     tasks = _tasks[job_id];
 
-    for(std::vector<StTask>::iterator it = tasks.begin(); it != tasks.end(); it++)
+    for(std::vector<openflow::task_info>::iterator it = tasks.begin(); it != tasks.end(); it++)
     {
         LOG(INFO) << "Task name: " << it->name;
         LOG(INFO) << "Task description: " << it->description;
@@ -144,4 +182,45 @@ void CMasterCore::print_tasks(const int32_t job_id)
         LOG(INFO) << "Task command: " << it->cmd;
     }
 }
+
+int CMasterCore::exec_job(const int32_t job_id)
+{
+	std::vector<openflow::task_info> tasks;
+	openflow::task_info task;
+    	tasks = _tasks[job_id];
+	
+   	 for(std::vector<openflow::task_info>::iterator it = tasks.begin(); it != tasks.end(); it++)
+   	 {
+            try
+	      {	
+	    	boost::trim(it->nodes);
+	    	CmasterConn agent((it->nodes).c_str(),openflow::OPENFLOW_AGENT_HANDLER_PORT);
+	    	LOG(INFO) << "connect to agent success";
+		task.name = it->name;
+		task.description = it->description;
+		task.nodes = it->nodes;
+        	task.cmd = it->cmd;
+		task.task_name = it->task_name;
+		task.task_id = it->task_id;
+
+		LOG(INFO) << "Task name: " << task.name;
+       	        LOG(INFO) << "Task description: " << task.description;
+       	        LOG(INFO) << "Task nodes: " << task.nodes;
+       	        LOG(INFO) << "Task command: " << task.cmd;
+		LOG(INFO) << "task task_name" <<task.task_name;
+		LOG(INFO) << "task task_id" <<task.task_id;
+		LOG(INFO) << "结束";
+		agent.execute_task(task);
+	      }
+   	   catch(apache::thrift::TException &e)
+	      {
+		LOG(ERROR) << e.what();
+		return -1;
+	      }
+    	}
+	  LOG(INFO)<<"for execute end";
+	return 1;
+		
+}
+
 }} //enf namespace openflow::master

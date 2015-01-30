@@ -7,6 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <thrift/transport/TTransportException.h>
 #include "master_conn.h"
 
 namespace openflow { namespace master {
@@ -22,6 +23,7 @@ CmasterConn::CmasterConn(const std::string& host, uint16_t port)
 //关闭到客户端的连接
 CmasterConn::~CmasterConn()
 {
+	Agent->close(); //显示调用close方法;
 	delete Agent;
 }
 
@@ -45,7 +47,6 @@ int32_t CmasterConn::execute_task(const openflow::task_info &Task)
 	SetTask(Task);
 	int32_t ret = (*Agent)->receive_task(task);
 	return ret;
-//	return Agent->execute_task(task);
 }
 
 }}

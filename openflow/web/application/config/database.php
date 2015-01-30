@@ -49,9 +49,15 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
+<<<<<<< HEAD
 $db['default']['username'] = '';
 $db['default']['password'] = '';
 $db['default']['database'] = '';
+=======
+$db['default']['username'] = 'root';
+$db['default']['password'] = 'zhang';
+$db['default']['database'] = 'openflow';
+>>>>>>> 76a6c21d356971610e5e4f99b095a7c14a9f931d
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

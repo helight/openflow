@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <glog/logging.h>
 #include <thrift_helper.h>
+#include <thrift/transport/TTransportException.h>
 #include "../../config.h"
 #include "rpc/agent/AgentService.h"
 #include "task.h"
@@ -17,11 +18,17 @@ using namespace apache;
 
 extern "C" int main(int argc, char *argv[])
 {
-    common::CThriftClientHelper<openflow::agent::AgentServiceClient>
+       common::CThriftClientHelper<openflow::agent::AgentServiceClient>
         thrift_client_helper("127.0.0.1", openflow::OPENFLOW_AGENT_HANDLER_PORT);
-
-    thrift_client_helper.connect();
-
+    try
+    { 
+   	thrift_client_helper.connect();
+    } 
+    catch(thrift::TException &e)
+    {
+	LOG(ERROR)<<e.what();
+	return 0;
+    }
     openflow::task_info task1;
     task1.task_id = 8;
     task1.task_name = "kobemiller";

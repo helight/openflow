@@ -14,7 +14,11 @@
 | path to your installation.
 |
 */
+<<<<<<< HEAD
 $config['base_url']	= '';
+=======
+$config['base_url']	= 'http://localhost/web/';
+>>>>>>> 76a6c21d356971610e5e4f99b095a7c14a9f931d
 
 /*
 |--------------------------------------------------------------------------
