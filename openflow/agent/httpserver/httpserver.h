@@ -31,7 +31,10 @@ class OHttpServer : public OServer
 {
  public:
   // Default constructor 
-  OHttpServer(){}
+  OHttpServer(){
+  	stop();
+  }
+
 
   // Constructor
   OHttpServer(
