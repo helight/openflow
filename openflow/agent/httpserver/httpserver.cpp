@@ -45,8 +45,6 @@ void OHttpServer::serve()
 		exit(0)	;
 	}
 
-	//sock_->setReuseAddr(1);
-	//sock_->setSlectValue();
 	sock_->initializeSelect();
 	while(!stop_)
 	{
