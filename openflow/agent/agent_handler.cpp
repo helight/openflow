@@ -15,9 +15,38 @@
 #include "agent_handler.h"
 
 namespace openflow { namespace agent {
-    CAgentHandler::CAgentHandler() {}
+    CAgentHandler::CAgentHandler() 
+    {
+        init();
+    }
 
     CAgentHandler::~CAgentHandler() {}
+
+    void CAgentHandler::init()
+    {
+        set_fork_max(kForkMax);
+        set_fork_cnt(kForkCnt);
+    }
+
+    void CAgentHandler::set_fork_max(const uint32_t max)
+    {
+        fork_max = max;	
+    }
+
+    uint32_t CAgentHandler::get_fork_max()const
+    {
+        return fork_max;
+    }
+
+    void CAgentHandler::set_fork_cnt(const uint32_t count)
+    {
+        fork_cnt = count;	
+    }
+
+    uint32_t CAgentHandler::get_fork_cnt()const
+    {
+        return fork_cnt;
+    }
 
     int32_t CAgentHandler::execute_task(const openflow::task_info &task)
     {
@@ -31,7 +60,7 @@ namespace openflow { namespace agent {
         gettimeofday(&start_time, NULL);
 
         /*检测是否超出并发度*/
-        if ( fork_cnt >= fork_max )
+        if ( get_fork_cnt() >= get_fork_max() )
         {
             LOG(INFO) << "fork to the max";
             return -2;  //-2代表fork超出数量

@@ -13,6 +13,10 @@
 #include <string>
 #include "rpc/agent/AgentService.h"
 
+// Set default value
+const uint32_t kForkMax = 10;
+const uint32_t kForkCnt = 0;
+
 namespace openflow { namespace agent {
 
     class CAgentHandler : public AgentServiceIf
@@ -20,6 +24,17 @@ namespace openflow { namespace agent {
         public:
             CAgentHandler();
             ~CAgentHandler();
+
+            /* initialize function */
+            void init();
+
+            /* set and get fork max count*/
+            void set_fork_max(uint32_t max);
+            uint32_t get_fork_max() const;
+
+            /* set and get fork max count*/
+            void set_fork_cnt(uint32_t count);
+            uint32_t get_fork_cnt() const;
 
             int32_t execute_task(const openflow::task_info &task);
 
@@ -51,8 +66,8 @@ namespace openflow { namespace agent {
             //int32_t task_count = 0;
 
             /*控制fork的数量*/
-            const int32_t fork_max = 10;
-            int32_t fork_cnt = 0;
+            uint32_t fork_max;
+            uint32_t fork_cnt;
 
             /*任务队列*/
             std::map<int32_t, std::string> task_queue;
