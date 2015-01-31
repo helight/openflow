@@ -77,7 +77,11 @@ private:
     {
         for(uint32_t i = 0; i < _thread_worker.size(); ++i)
         {
-            _thread_worker[i]->join();
+            // Check if joinable
+            if(_thread_worker[i]->joinable())
+            {
+                _thread_worker[i]->join();
+            }
         }
     }
 
