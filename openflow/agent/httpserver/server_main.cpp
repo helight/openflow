@@ -1,20 +1,3 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  01/19/2015 08:30:53 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (), 
- *        Company:  
- *
- * =====================================================================================
- */
 // Copyright (c) 2014, OpenFlow, HTTP SERVER                                                                      
 // Author:  David<daijinwei41@gmail.com>                                                                          
 // Created: 2014-11-25                                                                                            
