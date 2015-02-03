@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER                                                                      
-// Author:  David<daijinwei41@gmail.com>                                                                          
-// Created: 2014-11-25                                                                                            
-// Description:httpserver implemetation 
+// Author:  	David<daijinwei41@gmail.com>                                                                          
+// Created: 	2014-11-25                                                                                            
+// Modified: 	2015-02-03                                                                                            
+// Description: httpserver main
 
 
 #include <stdio.h>
