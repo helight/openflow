@@ -21,9 +21,9 @@ extern "C" int main(int argc, char *argv[])
        common::CThriftClientHelper<openflow::agent::AgentServiceClient>
         thrift_client_helper("127.0.0.1", openflow::OPENFLOW_AGENT_HANDLER_PORT);
     try
-    { 
+    {
    	thrift_client_helper.connect();
-    } 
+    }
     catch(thrift::TException &e)
     {
 	LOG(ERROR)<<e.what();
@@ -91,8 +91,8 @@ extern "C" int main(int argc, char *argv[])
 
 
     tools::agent_client::CTask Ctask;
-    
-    // int tmp = Ctask.receive_task();
+
+    // int tmp = Ctask.execute_task();
     // if ( tmp )
     // {
     //     LOG(ERROR) << "fail to receive task.";
@@ -101,18 +101,18 @@ extern "C" int main(int argc, char *argv[])
 
     LOG(INFO) << "execute task...";
     bool tmp;
-    tmp = thrift_client_helper->receive_task(task2);
-    tmp = thrift_client_helper->receive_task(task1);
-    tmp = thrift_client_helper->receive_task(task3);
-    tmp = thrift_client_helper->receive_task(task4);
-    tmp = thrift_client_helper->receive_task(task5);
-    tmp = thrift_client_helper->receive_task(task6);
-    tmp = thrift_client_helper->receive_task(task7);
-    tmp = thrift_client_helper->receive_task(task8);
-    tmp = thrift_client_helper->receive_task(task9);
-    tmp = thrift_client_helper->receive_task(task10);
-    tmp = thrift_client_helper->receive_task(task11);
-    tmp = thrift_client_helper->receive_task(task12);
+    tmp = thrift_client_helper->execute_task(task2);
+    tmp = thrift_client_helper->execute_task(task1);
+    tmp = thrift_client_helper->execute_task(task3);
+    tmp = thrift_client_helper->execute_task(task4);
+    tmp = thrift_client_helper->execute_task(task5);
+    tmp = thrift_client_helper->execute_task(task6);
+    tmp = thrift_client_helper->execute_task(task7);
+    tmp = thrift_client_helper->execute_task(task8);
+    tmp = thrift_client_helper->execute_task(task9);
+    tmp = thrift_client_helper->execute_task(task10);
+    tmp = thrift_client_helper->execute_task(task11);
+    tmp = thrift_client_helper->execute_task(task12);
     // if ( tmp != 0 )
     // {
     //     LOG(ERROR) << "fail to execute task.";

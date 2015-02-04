@@ -18,70 +18,24 @@
 
 namespace openflow { namespace agent {
 
-    class CAgentHandler : public AgentServiceIf
-    {
-        public:
-            CAgentHandler();
-            ~CAgentHandler();
+class CAgentHandler : public AgentServiceIf
+{
+public:
+    CAgentHandler();
+    ~CAgentHandler();
 
-            bool receive_task(const openflow::task_info &task);
+    int32_t execute_task(const openflow::task_info &task);
 
-            int32_t execute_task();
+    /*agent测试用：显示当前执行的任务*/
+    int32_t show_running_task();
 
-            int32_t real_execute(const openflow::task_info &task);
+    /*中止一个task*/
+    int32_t kill_task(const openflow::task_info &task);
 
-            
-        private:
-            common::CBlockingQueue<openflow::task_info> _tasks;
-            boost::shared_ptr<boost::thread> execute_task_thread;
+    /*上报自身状态信息*/
+    int32_t report_status();
 
-       //     int32_t execute_task();
-
-       //     int32_t kill_task(const openflow::task_info &task);
-
-       //     /*计算task执行时间*/
-       //     float track_time(struct timeval, struct timeval);
-
-       //     /*跟踪子进程*/
-       //     int32_t parent_catch_sig(int32_t);
-
-       //     int32_t show_running_task();
-
-       //     int32_t report_status();
-
-       // private:
-
-
-       //     /*统计任务执行之间*/
-       //     struct timeval start_time, end_time;
-       //     float time_use;
-
-       //     /*task的pid*/
-       //     pid_t task_pid;
-
-       //     /*任务返回码*/
-       //     int32_t child_status;
-
-       //     /*正在执行任务的数量*/
-       //     //int32_t task_count = 0;
-
-       //     /*控制fork的数量*/
-       //     static const int32_t fork_max = 10;
-       //     static int32_t fork_cnt = 0;
-
-       //     /*任务队列*/
-       //     std::map<int32_t, std::string> task_queue;
-
-       //     /*将task的执行返回值转化为成功失败*/
-       //     std::string task_status;
-       //     void sorf()
-       //     {
-       //         if ( child_status == 0 )
-       //             task_status = "SUCCESS";
-       //         else
-       //             task_status = "FAILED";
-       //     }
-    };
+};
 
 } }
 

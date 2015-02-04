@@ -45,7 +45,7 @@ bool CmasterConn::receive_task(const openflow::task_info& Task)
 int32_t CmasterConn::execute_task(const openflow::task_info &Task)
 {
 	SetTask(Task);
-	int32_t ret = (*Agent)->receive_task(task);
+	int32_t ret = (*Agent)->execute_task(task);
 	return ret;
 }
 
