@@ -21,9 +21,11 @@ CTaskMonitor::CTaskMonitor() : _stop(false) {}
 
 void CTaskMonitor::signal_thread()
 {
+    LOG(INFO) << "start signal monitor thread";
     while (!_stop)
     {
         int signo = wait_signal();
+        LOG(INFO) << "get one signal: " << signo;
         if (-1 == signo)
         {
             LOG(ERROR) << "wait error";
@@ -39,6 +41,7 @@ void CTaskMonitor::signal_thread()
             {
                 int exited_status;
                 pid_t task_pid = waitpid(-1, &exited_status, WNOHANG);
+                LOG(INFO) << "got task pid: " << task_pid << " exit status: " << exited_status;
 
                 if (0 == task_pid)
                 {
@@ -56,7 +59,6 @@ void CTaskMonitor::signal_thread()
                     }
                     break;
                 }
-                VLOG(4) << "task pid: " << task_pid;
             }
         }
     }
@@ -107,6 +109,7 @@ int CTaskMonitor::wait_signal() const
 
 void CTaskMonitor::on_executor_terminated()
 {
+    LOG(INFO) << "task executor terminated";
 }
 
 void CTaskMonitor::on_task_end(pid_t task_pid, int32_t exited_status)
@@ -121,13 +124,13 @@ void CTaskMonitor::on_task_end(pid_t task_pid, int32_t exited_status)
         if (0 == exit_code)
         {
             state = 0;
-            LOG(INFO) << "task : " << task_pid << " exited successfully";
+            LOG(INFO) << "task exit : " << task_pid << " exited successfully";
         }
         else
         {
             extra_info = boost::lexical_cast<std::string>(exit_code);
         }
-        LOG(INFO) << ">> child exited, exit code= " << WEXITSTATUS(exited_status) << std::endl;
+        LOG(INFO) << " child exited, exit code= " << WEXITSTATUS(exited_status) << std::endl;
     }
     else if (WIFSIGNALED(exited_status) )
     {

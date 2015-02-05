@@ -20,10 +20,8 @@ CTask::CTask(const openflow::task_info& task_info)
 
 void CTask::start()
 {
-    LOG(INFO) << "start handling...\n"
-        << "task id: " << _task_info.task_id << std::endl
-        << "task name: " << _task_info.task_name << std::endl
-        << ".............................\n";
+    LOG(INFO) << "start task task id: " << _task_info.task_id
+        << "task name: " << _task_info.task_name << "...";
 
     std::string excption_msg = "";
 
@@ -38,11 +36,34 @@ void CTask::start()
         exit(task_child_process());
     }
 
-    VLOG(4) << "end of fork process to run this app " <<  _task_info.task_name;
+    LOG(INFO) << "end of fork process to run this app " <<  _task_info.task_name;
 }
 
 int32_t CTask::task_child_process()
 {
+    int32_t fd;
+
+    /*将执行结果保存到以task_id命名的文件中*/
+    char id_src[255];
+    sprintf(id_src, "%d", _task_info.task_id);
+    /*文件路径*/
+    char id_des[255] = "../log/";
+    strcat(id_des, id_src);
+    if( (fd = creat(id_des, 0644)) == -1 )
+    {
+        LOG(ERROR) << "create log file error: " << id_des;
+        return 1;
+    }
+
+    /*关闭stdout和stderr，任务执行结果输出到task_id文件中*/
+    dup2(fd, 1);
+    dup2(fd, 2);
+    if (execl("/bin/bash", "bash", "-cx", _task_info.cmd.c_str(), NULL) < 0)
+    {
+        LOG(ERROR) << "execlp error";
+        return 2;
+    }
+
     return 0;
 }
 

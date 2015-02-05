@@ -4,12 +4,14 @@
 // Description:
 //
 #include <fcntl.h>
+#include <signal.h>
 #include <sys/time.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread/thread.hpp>
+#include <glog/logging.h>
 #include "utils.h"
 
 namespace common {
@@ -38,4 +40,28 @@ std::string CUtils::get_program_path()
     return buf;
 }
 
+bool CUtils::block_signal(int signo)
+{
+    sigset_t sigset;
+    if (-1 == sigemptyset(&sigset))
+    {
+        LOG(ERROR) << "empty sigset error: " << strerror(errno);
+        return false;
+    }
+    if (-1 == sigaddset(&sigset, signo))
+    {
+        LOG(ERROR) << "add " << strsignal(signo) << " to sigset error: " << strerror(errno);
+        return false;
+    }
+
+    LOG(INFO) << "block " << strsignal(signo) << " successfully";
+    errno = pthread_sigmask(SIG_BLOCK, &sigset, NULL);
+    if (errno != 0)
+    {
+        LOG(ERROR) << "block signals error " << strerror(errno);
+        return false;
+    }
+
+    return true;
+}
 } // end namespace common

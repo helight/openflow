@@ -60,8 +60,11 @@ void CMainHelper::init_singleton()
 
 bool CMainHelper::run()
 {
-    LOG(INFO) << "openflow agent start, thread num: " << FLAGS_thread_num;
-
+    if (!common::CUtils::block_signal(SIGCHLD) || !common::CUtils::block_signal(SIGTERM))
+    {
+        LOG(ERROR) << "block signal SIGCHLD and SIGTERM error";
+        return false;
+    }
     // run heartbeat thread
     CTaskExecute& task_excute =
         boost::serialization::singleton<CTaskExecute>::get_mutable_instance();
@@ -74,6 +77,7 @@ bool CMainHelper::run()
     _signal_monitor_thread.reset(new boost::thread(boost::bind(
                 &CTaskMonitor::signal_thread, &task_monitor)));
 
+    LOG(INFO) << "openflow agent start, thread num: " << FLAGS_thread_num;
     _openflow_agent.serve(openflow::OPENFLOW_AGENT_HANDLER_PORT, FLAGS_thread_num);
 
     return true;

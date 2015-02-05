@@ -8,6 +8,7 @@ class CUtils
 {
 public:
     static std::string get_program_path();
+    static bool block_signal(int signo);
 };
 
 } // end namespace utils
