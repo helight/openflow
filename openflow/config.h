@@ -26,6 +26,14 @@ enum
     MASTER_DB_CONN_ERROR = 2001,
 };
 
+struct StTask
+{
+    std::string name;
+    std::string description;
+    std::string nodes;
+    std::string cmd;
+};
+
 //FIXME ZhangYiFei add dbconf
 const std::string OPENFLOW_DB_DBNAME = "openflow.db";
 const std::string OPENFLOW_DB_JOBTABLENAME = "toJob";

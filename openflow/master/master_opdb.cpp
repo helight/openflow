@@ -39,7 +39,7 @@ bool CMasterDB::optable(const std::string &tabname)
 {
 	//1.设置表名字
     table = db->new_table(tabname);
-    if (!table)
+    if(!table)
     {
         delete table;
         return false;
@@ -54,14 +54,14 @@ int CMasterDB::execute(const std::string &sql, std::vector<std::string> &result,
 	//输入sql语句,以及一个string的vector来保存查询结果
 	//columns 返回查询到的结果数
 	LOG(INFO)<<"test";
+
     return 0;
 }
 
 bool CMasterDB::execute(const std::string &sql)
 {
 	//插入操作
-
-    if ( !table->non_query(sql))
+    if (!table->non_query(sql))
     {
         return false;//根据返回结果在调用点需要记录日志
     }
@@ -71,7 +71,6 @@ bool CMasterDB::execute(const std::string &sql)
 
 void CMasterDB::close()
 {
-
 	db->close();
 	delete table;
 	delete db;
