@@ -5,21 +5,13 @@
 //
 #include <boost/format.hpp>
 #include <glog/logging.h>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/typeof/typeof.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/serialization/singleton.hpp>
 #include <boost/algorithm/string.hpp>
 #include <thrift/transport/TTransportException.h>
 #include <boost/algorithm/string.hpp>
-#include "../common/table.h"
-#include "../common/database.h"
-#include "../common/dataset.h"
 #include "../config.h"
 #include "task_scheduler.h"
 #include "agent_client.h"
-#include "master_opdb.h"
 
 namespace openflow { namespace master {
 
