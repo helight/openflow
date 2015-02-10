@@ -36,6 +36,12 @@ env.Library(
     source = [
     "main_template.cpp",
     "utils.cpp",
+    ],
+)
+
+env.Library(
+    target = "dbhelp",
+    source = [
     "dbhelp_factory.cpp",
     "sqlite_help.cpp"
     ],
