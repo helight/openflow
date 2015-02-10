@@ -3,27 +3,24 @@
 // Created: 2014-10-13
 // Description: db操作的二次封装
 //
-#ifndef MASTER_OPDB_H
-#define MASTER_OPDB_H
+#ifndef OPENFLOW_MASTER_MASTER_OPDB_H
+#define OPENFLOW_MASTER_MASTER_OPDB_H
 #pragma once
 
-#include "../common/table.h"
-#include "../common/database.h"
-#include "../common/dataset.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/serialization/singleton.hpp>
 #include <boost/format.hpp>
 #include <glog/logging.h>
-#include "../common/db_config.h"
+#include <dbbase_help.h>
 
 namespace openflow { namespace master {
 
 class CMasterDB {
 
 public:
-	CMasterDB(const common::DB_TYPE dbtype,const std::string &dbname);
+	CMasterDB(const common::DbType dbtype,const std::string &dbname);
 	~CMasterDB();
-	bool  connect(const std::string &constr);
+	bool connect(const std::string &constr);
 	bool optable(const std::string &tabname);
 	int execute(const std::string &sql, std::vector<std::string> &result, int32_t& columns);
 	bool execute(const std::string &sql);
@@ -31,8 +28,6 @@ public:
 
 private:
 	const std::string _constr;
-	common::CTable *table;
-	common::CDatabase *db;
 };
 }} //end namespace openflow::master
-#endif // MASTER_OPDB_H
+#endif // OPENFLOW_MASTER_MASTER_OPDB_H

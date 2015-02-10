@@ -13,14 +13,10 @@
 #include <boost/algorithm/string.hpp>
 #include <thrift/transport/TTransportException.h>
 #include <boost/algorithm/string.hpp>
-#include "../common/table.h"
-#include "../common/database.h"
-#include "../common/dataset.h"
 #include "../config.h"
 #include "job_scheduler.h"
 #include "job_parse.h"
 #include "agent_client.h"
-#include "master_opdb.h"
 
 namespace openflow { namespace master {
 

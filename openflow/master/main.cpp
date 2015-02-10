@@ -14,12 +14,14 @@
 #include <main_template.h>
 #include <thrift_helper.h>
 #include <utils.h>
+#include <dbhelp_factory.h>
 #include "master_handler.h"
 #include "job_parse.h"
 #include "job_scheduler.h"
 #include "../config.h"
 
 DEFINE_int32(thread_num, 4, "thead num for rpc server");
+DEFINE_string(db_name, "../web/database/openflow.db", "");
 
 namespace openflow { namespace master {
 
@@ -33,7 +35,7 @@ private:
     void fini();
 
 private:
-    void init_singleton();
+    bool init_singleton();
     bool start_scheduler_thread();
 
 private:
@@ -44,9 +46,7 @@ private:
 
 bool CMainHelper::init(int argc, char* argv[])
 {
-    init_singleton();
-
-    return true;
+    return init_singleton();
 }
 
 bool CMainHelper::run()
@@ -75,10 +75,21 @@ void CMainHelper::fini()
 {
 }
 
-void CMainHelper::init_singleton()
+bool CMainHelper::init_singleton()
 {
+    bool ret = true;
     boost::serialization::singleton<CJobScheduler>::get_const_instance();
     boost::serialization::singleton<CJobParse>::get_const_instance();
+
+    common::CSqliteHelp& db_help =
+        boost::serialization::singleton<common::CSqliteHelp>::get_mutable_instance();
+    if (db_help.init(FLAGS_db_name, "", "", ""))
+    {
+        LOG(ERROR) << "sqlite dbhelp init error";
+        ret = false;
+    }
+
+    return ret;
 }
 
 bool CMainHelper::start_scheduler_thread()

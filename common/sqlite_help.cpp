@@ -10,13 +10,17 @@
 
 namespace common {
 
-CSqliteHelp::CSqliteHelp() : _is_init(false) {};
+CSqliteHelp::CSqliteHelp() : _is_init(false)
+{
+}
+
 CSqliteHelp::~CSqliteHelp()
 {
     close();
 }
 
-bool CSqliteHelp::init(const std::string& db_name, const std::string& db_user, const std::string& db_passwd, const std::string& db_host)
+bool CSqliteHelp::init(const std::string& db_name, const std::string& db_user
+                       , const std::string& db_passwd, const std::string& db_host)
 {
     if (!_is_init)
     {

@@ -13,17 +13,18 @@ class CSqliteHelp : public CDbBaseHelp
 {
 public:
     CSqliteHelp();
-    ~CSqliteHelp();
+    virtual ~CSqliteHelp();
 
 public:
-    bool init(const std::string& db_name, const std::string& db_user, const std::string& db_passwd, const std::string& db_host);
+    virtual bool init(const std::string& db_name, const std::string& db_user
+              , const std::string& db_passwd, const std::string& db_host);
 
-    bool query(const std::string& sql, std::vector<std::string> &result, int32_t& columns);
-    bool update(const std::string& sql);
-    uint32_t get_row_count(const std::string& table, const std::string& con);
-    uint32_t get_lastinsert_rowid();
+    virtual bool query(const std::string& sql, std::vector<std::string> &result, int32_t& columns);
+    virtual bool update(const std::string& sql);
+    virtual uint32_t get_row_count(const std::string& table, const std::string& con);
+    virtual uint32_t get_lastinsert_rowid();
 
-    bool close();
+    virtual bool close();
 
 private:
     bool check_table_by_name(const std::string& tbname);

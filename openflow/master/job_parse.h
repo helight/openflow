@@ -1,9 +1,7 @@
 #ifndef OPENFLOW_MASTER_JOB_PARSE_H
 #define OPENFLOW_MASTER_JOB_PARSE_H
 #pragma once
-#include <iostream>
 #include <vector>
-#include <boost/unordered_map.hpp>
 #include "rpc/master/MasterService.h"
 namespace openflow { namespace master {
 /**

@@ -18,6 +18,8 @@ bool CDbhelpFactory::init(const std::string& db_name, const std::string& db_user
     _db_user = db_user;
     _db_passwd = db_passwd;
     _db_host = db_host;
+
+    return true;
 }
 
 bool CDbhelpFactory::get_dbhelp(const int32_t type, CDbBaseHelp& db_help)

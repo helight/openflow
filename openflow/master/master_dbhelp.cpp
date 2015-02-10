@@ -1,50 +1,36 @@
-#include "../common/table.h"
-#include "../common/database.h"
-#include "../common/dataset.h"
+//Copyright (c) 2014, OpenFlow
+// Author: ZhangYiFei<zyfforlinux@163.com>, helight<helight@zhwen.org>
+// Created: 2014-10-13
+// Description: db操作的二次封装
+//
 #include <boost/algorithm/string.hpp>
 #include <boost/serialization/singleton.hpp>
 #include <boost/format.hpp>
 #include <glog/logging.h>
-#include "master_opdb.h"
+#include "master_dbhelp.h"
 
 namespace openflow { namespace master {
 
 //数据库的初始化
-CMasterDB::CMasterDB(const common::DB_TYPE dbtype,const std::string &dbname)
+CMasterDB::CMasterDB(const common::DbType dbtype,const std::string &dbname)
 {
-	common::CDataSet &ds = boost::serialization::singleton<common::CDataSet>::get_mutable_instance();
-    db = ds.new_database(dbtype, dbname);
 }
 
 //数据库的资源释放
 CMasterDB::~CMasterDB()
 {
 	//数据库的关闭
-	db->close();
-	delete table;
-	delete db;
 }
 
 //数据库的连接
 bool CMasterDB::connect(const std::string &connstr)
 {
-	//1.设置连接字符串
-	//2.连接数据库
-    db->set_connect_str(connstr);
-    return db->open();
+    return true;
 }
 
 //操作数据库表
 bool CMasterDB::optable(const std::string &tabname)
 {
-	//1.设置表名字
-    table = db->new_table(tabname);
-    if(!table)
-    {
-        delete table;
-        return false;
-    }//根据返回结果在调用点记录日志
-
 	return true;
 }
 
@@ -60,20 +46,11 @@ int CMasterDB::execute(const std::string &sql, std::vector<std::string> &result,
 
 bool CMasterDB::execute(const std::string &sql)
 {
-	//插入操作
-    if (!table->non_query(sql))
-    {
-        return false;//根据返回结果在调用点需要记录日志
-    }
-
     return true;
 }
 
 void CMasterDB::close()
 {
-	db->close();
-	delete table;
-	delete db;
 }
 
 }} //end namespace
