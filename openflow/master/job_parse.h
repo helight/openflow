@@ -17,9 +17,9 @@ public:
 
 public:
     //FIXME: Now just print out tasks.
-    bool parse_job(const int32_t job_id, std::vector<openflow::task_info>& job_tasks);
+    bool parse_job(const int32_t job_id, std::list<std::list<openflow::task_info*>*>& job_tasks);
     void print_job(const int32_t job_id);
-    void print_tasks(const int32_t job_id);
+    void print_tasks(std::list<std::list<openflow::task_info*>*>& job_tasks);
 
 private:
     bool fetch_job(const int32_t job_id, openflow::job_info& info);

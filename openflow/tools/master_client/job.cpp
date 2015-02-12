@@ -43,7 +43,7 @@ int CJob::store(const std::string &db_name, openflow::job_info &info)
 
     common::CSqliteHelp& db_help =
         boost::serialization::singleton<common::CSqliteHelp>::get_mutable_instance();
-    if (db_help.init(FLAGS_db_name, "", "", ""))
+    if (!db_help.init(FLAGS_db_name, "", "", ""))
     {
         LOG(ERROR) << "sqlite dbhelp init error";
         return -2;

@@ -1,60 +1,118 @@
 // Copyright (c) 2014, OpenFlow
-// Author: RenZhen<renzhen@163.com>
+// Author: RenZhen<renzhen@163.com>, helight<helight@zhwen.org>
 // Created: 2014-06-29
 // Description:
 //
 #include <boost/format.hpp>
-#include <glog/logging.h>
 #include <boost/serialization/singleton.hpp>
-#include <boost/algorithm/string.hpp>
-#include <thrift/transport/TTransportException.h>
-#include <boost/algorithm/string.hpp>
+#include <glog/logging.h>
 #include "../config.h"
+#include "task.h"
 #include "task_scheduler.h"
-#include "agent_client.h"
+#include "job_parse.h"
 
 namespace openflow { namespace master {
 
-void CTaskScheduler::print_job(const int32_t job_id)
-{
-}
+CTaskScheduler::CTaskScheduler(const int32_t job_id) : _job_id(job_id), _is_finished(false), _is_scheduled(false)
+{}
 
-void CTaskScheduler::print_tasks(const int32_t job_id)
+CTaskScheduler::~CTaskScheduler()
 {
-}
-
-int CTaskScheduler::exec_job(const int32_t job_id, std::vector<openflow::task_info>& tasks)
-{
-    openflow::task_info task;
-
-    for(std::vector<openflow::task_info>::iterator it = tasks.begin(); it != tasks.end(); it++)
+    if (_is_scheduled)
     {
-        try
-        {
-            boost::trim(it->nodes);
-            task.name = it->name;
-            task.description = it->description;
-            task.nodes = it->nodes;
-            task.cmd = it->cmd;
-            task.task_name = it->task_name;
-            task.task_id = it->task_id;
-
-            LOG(INFO) << "Task name: " << task.name << " Task description: " << task.description
-                << " Task nodes: " << task.nodes << " Task command: " << task.cmd
-                << " task task_name" <<task.task_name << " task task_id" <<task.task_id << " over";
-
-            LOG(INFO) << "connect to agent success";
-            CAgentClient agent((it->nodes).c_str(),openflow::OPENFLOW_AGENT_HANDLER_PORT);
-            agent.execute_task(task);
-        }
-        catch(apache::thrift::TException &e)
-        {
-            LOG(ERROR) << e.what();
-            return -1;
-        }
+        LOG(INFO) << "to release task scheduler";
+        _monitor_thread->join();
+        _scheduler_thread->join();
     }
-    LOG(INFO)<<"for execute end";
-    return 1;
+
+    on_job_finished();
+}
+
+bool CTaskScheduler::start_scheduler()
+{
+    CJobParse& job_parse = boost::serialization::singleton<CJobParse>::get_mutable_instance();
+    //parse job into tasks
+    if(false == job_parse.parse_job(_job_id, _job_tasks))
+    {
+        LOG(ERROR) << "Fail to parse job(" << _job_id << ") into tasks.";
+        return false;
+    }
+
+    _scheduler_thread.reset(
+        new boost::thread(boost::bind(&CTaskScheduler::scheduler_thread, this)));
+    _monitor_thread.reset(
+        new boost::thread(boost::bind(&CTaskScheduler::monitor_thread, this)));
+    _is_scheduled = true;
+
+    return true;
+}
+
+void CTaskScheduler::scheduler_thread()
+{
+    while (!_job_tasks.empty())
+    {
+        // create task
+        std::list<CTask*> wait_task_queue;
+        std::list<openflow::task_info*>* task_list = _job_tasks.front();
+        for (std::list<openflow::task_info*>::iterator iter = task_list->begin()
+             ; iter != task_list->end();)
+        {
+            openflow::task_info* task_info = *iter;
+            CTask *task = new CTask(task_info);
+            wait_task_queue.push_back(task);
+            delete *iter;
+        }
+        // schedule task
+        std::list<CTask*> run_task_queue;
+        while (!wait_task_queue.empty())
+        {
+            boost::this_thread::sleep(boost::posix_time::milliseconds(500));
+            std::list<CTask*>::iterator it = wait_task_queue.begin();
+            CTask *task = *it;
+            if (task->start())
+            {
+                run_task_queue.push_back(task);
+                wait_task_queue.erase(it++);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+        // check is task finished
+        while (!run_task_queue.empty())
+        {
+            boost::this_thread::sleep(boost::posix_time::milliseconds(500));
+            std::list<CTask*>::iterator it = run_task_queue.begin();
+            CTask *task = *it;
+            if (task->is_finished())
+            {
+                LOG(INFO) << "task finished: ";
+                run_task_queue.erase(it++);
+                delete task;
+            }
+            else
+            {
+                ++it;
+            }
+        }
+
+        _job_tasks.pop_front();
+    }
+}
+
+void CTaskScheduler::monitor_thread()
+{
+}
+
+bool CTaskScheduler::is_finished()
+{
+    return _is_finished;
+}
+
+void CTaskScheduler::on_job_finished()
+{
+
 }
 
 }} //enf namespace openflow::master

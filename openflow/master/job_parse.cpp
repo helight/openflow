@@ -44,7 +44,8 @@ bool CJobParse::fetch_job(const int32_t job_id, openflow::job_info& info)
     return true;
 }
 
-bool CJobParse::parse_job(const int32_t job_id, std::vector<openflow::task_info>& job_tasks)
+bool CJobParse::parse_job(const int32_t job_id
+                          , std::list<std::list<openflow::task_info*>*>& job_tasks)
 {
     openflow::job_info job_info;
     if (!fetch_job(job_id, job_info))
@@ -62,21 +63,21 @@ bool CJobParse::parse_job(const int32_t job_id, std::vector<openflow::task_info>
 
     common::CSqliteHelp& db_help =
                 boost::serialization::singleton<common::CSqliteHelp>::get_mutable_instance();
-
-    //FIXME ZhangYiFei
     /*
        const std::string task_member[] = {"name","description","nodes", "command"};
        std::vector<StTask> tasks;
        StTask task;
     */
     const std::string task_member[] = {"name","description","nodes", "command"};
-    openflow::task_info task;
+
 
     int id = 1;
     for(boost::property_tree::ptree::iterator it = root.begin(); it != root.end(); it++)
     {
         if(it->first == "shell_process")
         {
+            std::list<openflow::task_info*> *task_list = new std::list<openflow::task_info*>;
+            openflow::task_info *task =  new openflow::task_info;
             boost::property_tree::ptree pt;
             std::string val;
             boost::property_tree::ptree shell_process = it->second;
@@ -90,38 +91,57 @@ bool CJobParse::parse_job(const int32_t job_id, std::vector<openflow::task_info>
                 switch(i)
                 {
                 case 0:
-                    task.name = val;
+                    task->name = val;
                     break;
                 case 1:
-                    task.description = val;
+                    task->description = val;
                     break;
                 case 2:
-                    task.nodes = val;
+                    task->nodes = val;
                     break;
                 case 3:
-                    task.cmd = val;
+                    task->cmd = val;
                     break;
                 }
             }
 
             //FIXME 临时测试,兼容之前task_info结构体
-            task.task_name = task.name;
-            task.task_id = id;
+            task->task_name = task->name;
+            task->task_id = id;
             id++;
-            job_tasks.push_back(task);
+            task_list->push_back(task);
 
             //任务入库
             std::string sql = boost::str(boost::format(
                     "INSERT INTO TaskState (job_id,task_id,task_name,cmd,desc) values('%d','%d','%s','%s','%s');")
-                % job_id % task.task_id % task.task_name % task.cmd % task.description);
+                % job_id % task->task_id % task->task_name % task->cmd % task->description);
             if(!db_help.update(sql)) {
                 LOG(ERROR) << "execut inert task sql error";
                 return false;
             }
+            job_tasks.push_back(task_list);
         }
     }
 
+    print_tasks(job_tasks);
+
     return true;
+}
+
+void CJobParse::print_tasks(std::list<std::list<openflow::task_info*>*>& job_tasks)
+{
+    std::list<std::list<openflow::task_info*>*>::iterator iter = job_tasks.begin();
+    for (; iter != job_tasks.end(); ++iter)
+    {
+        std::list<openflow::task_info*>* task_list = *iter;
+        std::list<openflow::task_info*>::iterator it = task_list->begin();
+        for(; it != task_list->end(); ++it)
+        {
+            openflow::task_info* task = (openflow::task_info*)*it;
+            LOG(INFO) << "Task name: " << task->name << "Task description: " << task->description
+                << "Task nodes: " << task->nodes << "Task command: " << task->cmd;
+        }
+    }
 }
 
 }} //enf namespace openflow::master

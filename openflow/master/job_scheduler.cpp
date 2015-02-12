@@ -1,22 +1,20 @@
 // Copyright (c) 2014, OpenFlow
-// Author: RenZhen<renzhen@163.com>
+// Author: RenZhen<renzhen@163.com>, helight<helight@zhwen.org>
 // Created: 2014-06-29
 // Description:
 //
+#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
-#include <glog/logging.h>
+#include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-#include <boost/typeof/typeof.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/serialization/singleton.hpp>
-#include <boost/algorithm/string.hpp>
+#include <boost/typeof/typeof.hpp>
+#include <glog/logging.h>
 #include <thrift/transport/TTransportException.h>
-#include <boost/algorithm/string.hpp>
 #include "../config.h"
 #include "job_scheduler.h"
 #include "job_parse.h"
-#include "agent_client.h"
 
 namespace openflow { namespace master {
 
@@ -28,18 +26,21 @@ void CJobScheduler::scheduler_thread()
         int32_t job_id;
         //get job id from blocking queue.
         _wait_jobs_queue.pop_front(job_id);
-
         LOG(INFO) << "received a job id: " << job_id;
-
-        std::vector<openflow::task_info> job_tasks;
-        CJobParse& job_parse = boost::serialization::singleton<CJobParse>::get_mutable_instance();
-        //parse job into tasks
-        if(false == job_parse.parse_job(job_id, job_tasks))
+        if (_run_jobs_queue.find(job_id) != _run_jobs_queue.end())
         {
-            LOG(ERROR) << "Fail to parse job(" << job_id << ") into tasks.";
+            LOG(INFO) << "aleardy run this job: " << job_id;
             continue;
         }
+
+        // start to scheduler
         LOG(INFO) << "push job_id into execute queue";
+        CTaskScheduler *task_scheduler = new CTaskScheduler(job_id);
+        task_scheduler->start_scheduler();
+        {
+            boost::mutex::scoped_lock lock(_mutex);
+            _run_jobs_queue[job_id] = task_scheduler;
+        }
     }
 }
 
@@ -48,33 +49,37 @@ void CJobScheduler::clean_thread()
     while (true)
     {
         boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-        // @todo
         LOG(INFO) << "do clean";
+        {
+            boost::mutex::scoped_lock lock(_mutex);
+            std::map<int32_t, CTaskScheduler*>::iterator it = _run_jobs_queue.begin();
+            for (; it != _run_jobs_queue.end();)
+            {
+                CTaskScheduler *task_scheduler = (CTaskScheduler*)it->second;
+                if (task_scheduler->is_finished())
+                {
+                    LOG(INFO) << "this job finished: " << it->first;
+                    _run_jobs_queue.erase(it++);
+                    delete task_scheduler;
+                }
+            }
+        }
     }
 }
 
 int32_t CJobScheduler::submit_job(const int32_t job_id)
 {
     //push job id into blocking queue.
-    int ret;
-    ret = _wait_jobs_queue.push_front(job_id);
+    int ret = 0;
+    if (!_wait_jobs_queue.push_back(job_id))
+        ret = MASTER_JOB_OVER_MAX;
+
     return ret;
 }
 
 int32_t CJobScheduler::report_task_state(const openflow::task_state &state)
 {
     // CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
-    // if(false == db.connect("../web/database/openflow.db"))
-    // {
-    //     LOG(ERROR) << "connect to db error";
-    //     return -1;
-    // }
-
-    // if(false == db.optable(openflow::OPENFLOW_DB_TASKSTATETABLENAME))
-    // {
-    //     LOG(ERROR) << "open table error";
-    //     return -2;
-    // }
 
     // std::string sql = boost::str(boost::format(
     //         "UPDATE  TaskState SET task_status='%d',task_result='%s' "

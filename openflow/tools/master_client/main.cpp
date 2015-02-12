@@ -35,12 +35,6 @@ private:
 
 bool CMainHelper::init(int argc, char* argv[])
 {
-    // init glog,gflags
-    FLAGS_logbufsecs = 0;           // write log no cache
-    FLAGS_max_log_size = 300;       // max log size for each log file
-    FLAGS_log_dir = boost::str(boost::format("%s/") % common::CUtils::get_program_path());
-    google::ParseCommandLineFlags(&argc, &argv, true);
-    google::InitGoogleLogging("master_client");
 
     thrift_client_helper = new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
     if (NULL == thrift_client_helper)
@@ -53,9 +47,12 @@ bool CMainHelper::init(int argc, char* argv[])
 
 bool CMainHelper::run()
 {
-   try {
+    try
+    {
         thrift_client_helper->connect();
-    } catch (TException& exn) {
+    }
+    catch (TException& exn)
+    {
         LOG(ERROR) << exn.what();
         return false;
     }
@@ -72,46 +69,53 @@ bool CMainHelper::run()
     //store job into databse
     job.set_xml("demo.xml");
     int ret = job.store("openflow.db", info);
-    if (ret < 0) {
+    if (ret < 0)
+    {
         LOG(ERROR) << "Fail to store job into database.";
         return false;
     }
 
     //submit job to master server
     LOG(INFO) << "submit job...";
-    try {
+    try
+    {
         ret = thrift_client_helper->get()->submit_job(info.job_id);
         if (ret < 0) {
             LOG(ERROR) << "fail to submit job.";
             return false;
         }
 
-//        thrift_client_helper->close();
-    } catch (TException& exn) {
+    }
+    catch (TException& exn)
+    {
         LOG(ERROR) <<  exn.what();
         return false;
     }
 
     LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
 
-//AddMe ZhangYiFei 2014/10/30 test master side reporte_agent_sate interface
-   openflow::agent_state state;
-   state.remain_mem = "600MB";
-   state.mem_use_percent = "80%";
-   state.cpu_idle_percent = "70%";
-   state.cpu_load = "1.2 4.3 5.6";
-   state.ipaddr = "192.168.0.1";
-   state.swap_use_percent = "0%";
-   try {
-  	 ret = thrift_client_helper->get()->report_agent_state(state);
-	 if (ret < 0) {
-  	   LOG(INFO) << ret;
-  	   return false;
-	}
-   } catch (TException& exn) {
-	   LOG(ERROR) << exn.what();
-	   return false;	
-   }
+    //AddMe ZhangYiFei 2014/10/30 test master side reporte_agent_sate interface
+    openflow::agent_state state;
+    state.remain_mem = "600MB";
+    state.mem_use_percent = "80%";
+    state.cpu_idle_percent = "70%";
+    state.cpu_load = "1.2 4.3 5.6";
+    state.ipaddr = "192.168.0.1";
+    state.swap_use_percent = "0%";
+    try
+    {
+        ret = thrift_client_helper->get()->report_agent_state(state);
+        if (ret < 0)
+        {
+            LOG(INFO) << ret;
+            return false;
+        }
+    }
+    catch (TException& exn)
+    {
+        LOG(ERROR) << exn.what();
+        return false;
+    }
 
     thrift_client_helper->close();
 
@@ -128,6 +132,13 @@ void CMainHelper::fini()
 
 extern "C" int main(int argc, char* argv[])
 {
+    // init glog,gflags
+    FLAGS_logbufsecs = 0;           // write log no cache
+    FLAGS_max_log_size = 300;       // max log size for each log file
+    FLAGS_log_dir = boost::str(boost::format("%s/") % common::CUtils::get_program_path());
+    google::ParseCommandLineFlags(&argc, &argv, true);
+    google::InitGoogleLogging("master_client");
+
     CMainHelper main_helper;
 
     return main_template(&main_helper, argc, argv);

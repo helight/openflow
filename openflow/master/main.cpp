@@ -83,7 +83,7 @@ bool CMainHelper::init_singleton()
 
     common::CSqliteHelp& db_help =
         boost::serialization::singleton<common::CSqliteHelp>::get_mutable_instance();
-    if (db_help.init(FLAGS_db_name, "", "", ""))
+    if (!db_help.init(FLAGS_db_name, "", "", ""))
     {
         LOG(ERROR) << "sqlite dbhelp init error";
         ret = false;

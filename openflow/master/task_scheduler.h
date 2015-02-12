@@ -1,9 +1,10 @@
 #ifndef OPENFLOW_MASTER_TASK_SCHEDULER_H
 #define OPENFLOW_MASTER_TASK_SCHEDULER_H
 #pragma once
-#include <iostream>
-#include <vector>
-#include <boost/unordered_map.hpp>
+#include <list>
+#include <boost/scoped_ptr.hpp>
+#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include "rpc/master/MasterService.h"
 namespace openflow { namespace master {
 /**
@@ -12,13 +13,28 @@ namespace openflow { namespace master {
  */
 class CTaskScheduler{
 public:
-    CTaskScheduler() {}
-    ~CTaskScheduler() {}
+    CTaskScheduler(const int32_t job_id);
+    ~CTaskScheduler();
 
-    int exec_job(const int32_t job_id, std::vector<openflow::task_info>& tasks);
+    bool start_scheduler();
+    void scheduler_thread();
+    void monitor_thread();
 
-    void print_job(const int32_t job_id);
-    void print_tasks(const int32_t job_id);
+    bool is_finished();
+
+private:
+    void on_job_finished();
+
+
+private:
+    int32_t _job_id;
+    bool _is_finished;
+    bool _is_scheduled;
+    mutable boost::mutex _mutex;
+    std::list<std::list<openflow::task_info*>*> _job_tasks;
+
+    boost::scoped_ptr<boost::thread> _scheduler_thread;
+    boost::scoped_ptr<boost::thread> _monitor_thread;
 };
 }} //end namespace openflow::master
 #endif // MASTER_CORE_H
