@@ -14,20 +14,22 @@ namespace openflow { namespace agent {
 class CTaskExecute
 {
 public:
-	CTaskExecute() {};
+	CTaskExecute() : _is_init(false) {};
+    bool init();
 
 	int32_t start_task(const openflow::task_info& task_info);
+    int32_t update_task_state(const int32_t task_pid, const int32_t state);
+    void delete_task_by_pid(const int32_t task_pid);
 
     void report_heart_beat_thread();
-
-    void update_task_state(int32_t task_pid, int32_t state);
-    void delete_task_by_pid(int32_t task_pid);
 
 private:
     bool over_max_tasks_num();
 
 private:
+    bool _is_init;
     mutable boost::mutex _mutex;
+    std::string _local_ip;
     std::map<pid_t, CTask*> _pid_tasks;
     boost::atomic<uint64_t> _all_task_count;
 };

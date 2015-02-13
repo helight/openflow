@@ -13,8 +13,8 @@
 #include <glog/logging.h>
 #include <main_template.h>
 #include <thrift_helper.h>
-#include <utils.h>
 #include <dbhelp_factory.h>
+#include <utils.h>
 #include "master_handler.h"
 #include "job_parse.h"
 #include "job_scheduler.h"

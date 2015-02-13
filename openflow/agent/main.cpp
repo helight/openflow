@@ -54,7 +54,10 @@ bool CMainHelper::init(int argc, char *argv[])
 
 void CMainHelper::init_singleton()
 {
-    boost::serialization::singleton<CTaskExecute>::get_const_instance();
+    CTaskExecute& task_excute =
+        boost::serialization::singleton<CTaskExecute>::get_mutable_instance();
+    task_excute.init();
+
     boost::serialization::singleton<CTaskMonitor>::get_const_instance();
 }
 
@@ -65,6 +68,7 @@ bool CMainHelper::run()
         LOG(ERROR) << "block signal SIGCHLD and SIGTERM error";
         return false;
     }
+
     // run heartbeat thread
     CTaskExecute& task_excute =
         boost::serialization::singleton<CTaskExecute>::get_mutable_instance();

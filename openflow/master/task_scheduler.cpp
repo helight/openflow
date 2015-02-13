@@ -7,7 +7,6 @@
 #include <boost/serialization/singleton.hpp>
 #include <glog/logging.h>
 #include "../config.h"
-#include "task.h"
 #include "task_scheduler.h"
 #include "job_parse.h"
 
@@ -63,7 +62,6 @@ void CTaskScheduler::scheduler_thread()
             delete *iter;
         }
         // schedule task
-        std::list<CTask*> run_task_queue;
         while (!wait_task_queue.empty())
         {
             boost::this_thread::sleep(boost::posix_time::milliseconds(500));
@@ -71,7 +69,7 @@ void CTaskScheduler::scheduler_thread()
             CTask *task = *it;
             if (task->start())
             {
-                run_task_queue.push_back(task);
+                _run_task_queue[task->get_uuid()] = task;
                 wait_task_queue.erase(it++);
             }
             else
@@ -80,15 +78,16 @@ void CTaskScheduler::scheduler_thread()
             }
         }
         // check is task finished
-        while (!run_task_queue.empty())
+        while (!_run_task_queue.empty())
         {
             boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-            std::list<CTask*>::iterator it = run_task_queue.begin();
-            CTask *task = *it;
+            std::map<std::string, CTask*>::iterator it = _run_task_queue.begin();
+            CTask *task = it->second;
             if (task->is_finished())
             {
                 LOG(INFO) << "task finished: ";
-                run_task_queue.erase(it++);
+                // @todo update db state
+                _run_task_queue.erase(it++);
                 delete task;
             }
             else

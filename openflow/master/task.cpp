@@ -53,4 +53,8 @@ void CTask::on_job_finished()
 
 }
 
+std::string CTask::get_uuid()
+{
+    return _task_info.uuid;
+}
 }} //enf namespace openflow::master

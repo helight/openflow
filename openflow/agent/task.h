@@ -28,6 +28,8 @@ public:
     void stop();
     void update_state(int32_t state);
     pid_t get_pid() const;
+    int32_t get_job_id() const;
+    std::string get_uuid() const;
 
 private:
     int32_t task_child_process();

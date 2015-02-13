@@ -5,15 +5,16 @@
 //
 #include <boost/format.hpp>
 #include <glog/logging.h>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/typeof.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/serialization/singleton.hpp>
-#include <boost/algorithm/string.hpp>
 #include <thrift/transport/TTransportException.h>
 #include <boost/algorithm/string.hpp>
 #include <dbhelp_factory.h>
+#include <utils.h>
 #include "../config.h"
 #include "job_parse.h"
 
@@ -106,9 +107,12 @@ bool CJobParse::parse_job(const int32_t job_id
             }
 
             //FIXME 临时测试,兼容之前task_info结构体
-            task->task_name = task->name;
+            task->uuid = common::CUtils::generate_uuid();
+            task->job_id = job_id;
             task->task_id = id;
+            task->task_name = task->name;
             id++;
+
             task_list->push_back(task);
 
             //任务入库
@@ -119,6 +123,7 @@ bool CJobParse::parse_job(const int32_t job_id
                 LOG(ERROR) << "execut inert task sql error";
                 return false;
             }
+
             job_tasks.push_back(task_list);
         }
     }

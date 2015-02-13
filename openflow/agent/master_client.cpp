@@ -29,4 +29,9 @@ int32_t CMasterClient::report_task_state(const openflow::task_state& state)
 	return _master->get()->report_task_state(state);
 }
 
+int32_t CMasterClient::report_agent_state(const openflow::agent_state &state)
+{
+    return _master->get()->report_agent_state(state);
+}
+
 }}

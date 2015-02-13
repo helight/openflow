@@ -1,3 +1,8 @@
+// Copyright (c) 2014, OpenFlow
+// Author: RenZhen<renzhen@163.com>, helight<helight@zhwen.org>
+// Created: 2014-06-29
+// Description:
+//
 #ifndef OPENFLOW_MASTER_TASK_SCHEDULER_H
 #define OPENFLOW_MASTER_TASK_SCHEDULER_H
 #pragma once
@@ -6,6 +11,8 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include "rpc/master/MasterService.h"
+#include "task.h"
+
 namespace openflow { namespace master {
 /**
  * What to do:
@@ -32,6 +39,7 @@ private:
     bool _is_scheduled;
     mutable boost::mutex _mutex;
     std::list<std::list<openflow::task_info*>*> _job_tasks;
+    std::map<std::string, CTask*> _run_task_queue;
 
     boost::scoped_ptr<boost::thread> _scheduler_thread;
     boost::scoped_ptr<boost::thread> _monitor_thread;

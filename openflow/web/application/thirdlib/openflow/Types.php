@@ -165,6 +165,14 @@ class task_info {
   static $_TSPEC;
 
   /**
+   * @var string
+   */
+  public $uuid = null;
+  /**
+   * @var int
+   */
+  public $job_id = null;
+  /**
    * @var int
    */
   public $task_id = null;
@@ -193,32 +201,46 @@ class task_info {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
+          'var' => 'uuid',
+          'type' => TType::STRING,
+          ),
+        2 => array(
+          'var' => 'job_id',
+          'type' => TType::I32,
+          ),
+        3 => array(
           'var' => 'task_id',
           'type' => TType::I32,
           ),
-        2 => array(
+        4 => array(
           'var' => 'task_name',
           'type' => TType::STRING,
           ),
-        3 => array(
+        5 => array(
           'var' => 'cmd',
           'type' => TType::STRING,
           ),
-        4 => array(
+        6 => array(
           'var' => 'nodes',
           'type' => TType::STRING,
           ),
-        5 => array(
+        7 => array(
           'var' => 'description',
           'type' => TType::STRING,
           ),
-        6 => array(
+        8 => array(
           'var' => 'name',
           'type' => TType::STRING,
           ),
         );
     }
     if (is_array($vals)) {
+      if (isset($vals['uuid'])) {
+        $this->uuid = $vals['uuid'];
+      }
+      if (isset($vals['job_id'])) {
+        $this->job_id = $vals['job_id'];
+      }
       if (isset($vals['task_id'])) {
         $this->task_id = $vals['task_id'];
       }
@@ -260,41 +282,55 @@ class task_info {
       switch ($fid)
       {
         case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->uuid);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->job_id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
           if ($ftype == TType::I32) {
             $xfer += $input->readI32($this->task_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
+        case 4:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->task_name);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 3:
+        case 5:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->cmd);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 4:
+        case 6:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->nodes);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 5:
+        case 7:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->description);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 6:
+        case 8:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->name);
           } else {
@@ -314,33 +350,43 @@ class task_info {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('task_info');
+    if ($this->uuid !== null) {
+      $xfer += $output->writeFieldBegin('uuid', TType::STRING, 1);
+      $xfer += $output->writeString($this->uuid);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->job_id !== null) {
+      $xfer += $output->writeFieldBegin('job_id', TType::I32, 2);
+      $xfer += $output->writeI32($this->job_id);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->task_id !== null) {
-      $xfer += $output->writeFieldBegin('task_id', TType::I32, 1);
+      $xfer += $output->writeFieldBegin('task_id', TType::I32, 3);
       $xfer += $output->writeI32($this->task_id);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->task_name !== null) {
-      $xfer += $output->writeFieldBegin('task_name', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('task_name', TType::STRING, 4);
       $xfer += $output->writeString($this->task_name);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cmd !== null) {
-      $xfer += $output->writeFieldBegin('cmd', TType::STRING, 3);
+      $xfer += $output->writeFieldBegin('cmd', TType::STRING, 5);
       $xfer += $output->writeString($this->cmd);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->nodes !== null) {
-      $xfer += $output->writeFieldBegin('nodes', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('nodes', TType::STRING, 6);
       $xfer += $output->writeString($this->nodes);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->description !== null) {
-      $xfer += $output->writeFieldBegin('description', TType::STRING, 5);
+      $xfer += $output->writeFieldBegin('description', TType::STRING, 7);
       $xfer += $output->writeString($this->description);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->name !== null) {
-      $xfer += $output->writeFieldBegin('name', TType::STRING, 6);
+      $xfer += $output->writeFieldBegin('name', TType::STRING, 8);
       $xfer += $output->writeString($this->name);
       $xfer += $output->writeFieldEnd();
     }
@@ -354,6 +400,10 @@ class task_info {
 class agent_state {
   static $_TSPEC;
 
+  /**
+   * @var string
+   */
+  public $ipaddr = null;
   /**
    * @var string
    */
@@ -373,33 +423,29 @@ class agent_state {
   /**
    * @var string
    */
-  public $ipaddr = null;
-  /**
-   * @var string
-   */
   public $swap_use_percent = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
-          'var' => 'remain_mem',
+          'var' => 'ipaddr',
           'type' => TType::STRING,
           ),
         2 => array(
-          'var' => 'mem_use_percent',
+          'var' => 'remain_mem',
           'type' => TType::STRING,
           ),
         3 => array(
-          'var' => 'cpu_idle_percent',
+          'var' => 'mem_use_percent',
           'type' => TType::STRING,
           ),
         4 => array(
-          'var' => 'cpu_load',
+          'var' => 'cpu_idle_percent',
           'type' => TType::STRING,
           ),
         5 => array(
-          'var' => 'ipaddr',
+          'var' => 'cpu_load',
           'type' => TType::STRING,
           ),
         6 => array(
@@ -409,6 +455,9 @@ class agent_state {
         );
     }
     if (is_array($vals)) {
+      if (isset($vals['ipaddr'])) {
+        $this->ipaddr = $vals['ipaddr'];
+      }
       if (isset($vals['remain_mem'])) {
         $this->remain_mem = $vals['remain_mem'];
       }
@@ -420,9 +469,6 @@ class agent_state {
       }
       if (isset($vals['cpu_load'])) {
         $this->cpu_load = $vals['cpu_load'];
-      }
-      if (isset($vals['ipaddr'])) {
-        $this->ipaddr = $vals['ipaddr'];
       }
       if (isset($vals['swap_use_percent'])) {
         $this->swap_use_percent = $vals['swap_use_percent'];
@@ -451,35 +497,35 @@ class agent_state {
       {
         case 1:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->remain_mem);
+            $xfer += $input->readString($this->ipaddr);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->mem_use_percent);
+            $xfer += $input->readString($this->remain_mem);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 3:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->cpu_idle_percent);
+            $xfer += $input->readString($this->mem_use_percent);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->cpu_load);
+            $xfer += $input->readString($this->cpu_idle_percent);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 5:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->ipaddr);
+            $xfer += $input->readString($this->cpu_load);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -504,29 +550,29 @@ class agent_state {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('agent_state');
+    if ($this->ipaddr !== null) {
+      $xfer += $output->writeFieldBegin('ipaddr', TType::STRING, 1);
+      $xfer += $output->writeString($this->ipaddr);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->remain_mem !== null) {
-      $xfer += $output->writeFieldBegin('remain_mem', TType::STRING, 1);
+      $xfer += $output->writeFieldBegin('remain_mem', TType::STRING, 2);
       $xfer += $output->writeString($this->remain_mem);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->mem_use_percent !== null) {
-      $xfer += $output->writeFieldBegin('mem_use_percent', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('mem_use_percent', TType::STRING, 3);
       $xfer += $output->writeString($this->mem_use_percent);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cpu_idle_percent !== null) {
-      $xfer += $output->writeFieldBegin('cpu_idle_percent', TType::STRING, 3);
+      $xfer += $output->writeFieldBegin('cpu_idle_percent', TType::STRING, 4);
       $xfer += $output->writeString($this->cpu_idle_percent);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cpu_load !== null) {
-      $xfer += $output->writeFieldBegin('cpu_load', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('cpu_load', TType::STRING, 5);
       $xfer += $output->writeString($this->cpu_load);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->ipaddr !== null) {
-      $xfer += $output->writeFieldBegin('ipaddr', TType::STRING, 5);
-      $xfer += $output->writeString($this->ipaddr);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->swap_use_percent !== null) {
@@ -545,6 +591,10 @@ class task_state {
   static $_TSPEC;
 
   /**
+   * @var string
+   */
+  public $uuid = null;
+  /**
    * @var int
    */
   public $job_id = null;
@@ -560,37 +610,36 @@ class task_state {
    * @var string
    */
   public $task_result = null;
-  /**
-   * @var string
-   */
-  public $ipaddr = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
       self::$_TSPEC = array(
         1 => array(
+          'var' => 'uuid',
+          'type' => TType::STRING,
+          ),
+        2 => array(
           'var' => 'job_id',
           'type' => TType::I32,
           ),
-        2 => array(
+        3 => array(
           'var' => 'task_id',
           'type' => TType::I32,
           ),
-        3 => array(
+        4 => array(
           'var' => 'task_status',
           'type' => TType::I32,
           ),
-        4 => array(
-          'var' => 'task_result',
-          'type' => TType::STRING,
-          ),
         5 => array(
-          'var' => 'ipaddr',
+          'var' => 'task_result',
           'type' => TType::STRING,
           ),
         );
     }
     if (is_array($vals)) {
+      if (isset($vals['uuid'])) {
+        $this->uuid = $vals['uuid'];
+      }
       if (isset($vals['job_id'])) {
         $this->job_id = $vals['job_id'];
       }
@@ -602,9 +651,6 @@ class task_state {
       }
       if (isset($vals['task_result'])) {
         $this->task_result = $vals['task_result'];
-      }
-      if (isset($vals['ipaddr'])) {
-        $this->ipaddr = $vals['ipaddr'];
       }
     }
   }
@@ -629,36 +675,36 @@ class task_state {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->job_id);
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->uuid);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
           if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->task_id);
+            $xfer += $input->readI32($this->job_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 3:
           if ($ftype == TType::I32) {
-            $xfer += $input->readI32($this->task_status);
+            $xfer += $input->readI32($this->task_id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->task_result);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->task_status);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 5:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->ipaddr);
+            $xfer += $input->readString($this->task_result);
           } else {
             $xfer += $input->skip($ftype);
           }
@@ -676,29 +722,29 @@ class task_state {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('task_state');
+    if ($this->uuid !== null) {
+      $xfer += $output->writeFieldBegin('uuid', TType::STRING, 1);
+      $xfer += $output->writeString($this->uuid);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->job_id !== null) {
-      $xfer += $output->writeFieldBegin('job_id', TType::I32, 1);
+      $xfer += $output->writeFieldBegin('job_id', TType::I32, 2);
       $xfer += $output->writeI32($this->job_id);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->task_id !== null) {
-      $xfer += $output->writeFieldBegin('task_id', TType::I32, 2);
+      $xfer += $output->writeFieldBegin('task_id', TType::I32, 3);
       $xfer += $output->writeI32($this->task_id);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->task_status !== null) {
-      $xfer += $output->writeFieldBegin('task_status', TType::I32, 3);
+      $xfer += $output->writeFieldBegin('task_status', TType::I32, 4);
       $xfer += $output->writeI32($this->task_status);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->task_result !== null) {
-      $xfer += $output->writeFieldBegin('task_result', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('task_result', TType::STRING, 5);
       $xfer += $output->writeString($this->task_result);
-      $xfer += $output->writeFieldEnd();
-    }
-    if ($this->ipaddr !== null) {
-      $xfer += $output->writeFieldBegin('ipaddr', TType::STRING, 5);
-      $xfer += $output->writeString($this->ipaddr);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

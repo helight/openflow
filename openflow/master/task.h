@@ -15,6 +15,7 @@ public:
     bool start();
     bool is_finished();
     int32_t get_task_id();
+    std::string get_uuid();
 
 private:
     void on_job_finished();

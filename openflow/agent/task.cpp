@@ -81,4 +81,14 @@ pid_t CTask::get_pid() const
     return _task_pid;
 }
 
+int32_t CTask::get_job_id() const
+{
+    return _task_info.job_id;
+}
+
+std::string CTask::get_uuid() const
+{
+    return _task_info.uuid;
+}
+
 }}
