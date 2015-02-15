@@ -3,16 +3,15 @@
 // Created: 2014-06-29
 // Description:
 //
-#include <boost/format.hpp>
-#include <glog/logging.h>
 #include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/typeof.hpp>
 #include <boost/serialization/singleton.hpp>
+#include <glog/logging.h>
 #include <thrift/transport/TTransportException.h>
-#include <boost/algorithm/string.hpp>
 #include <dbhelp_factory.h>
 #include <utils.h>
 #include "../config.h"
@@ -120,7 +119,7 @@ bool CJobParse::parse_job(const int32_t job_id
                     "INSERT INTO TaskState (job_id,task_id,task_name,cmd,desc) values('%d','%d','%s','%s','%s');")
                 % job_id % task->task_id % task->task_name % task->cmd % task->description);
             if(!db_help.update(sql)) {
-                LOG(ERROR) << "execut inert task sql error";
+                LOG(ERROR) << "execut inert task sql error: " << sql;
                 return false;
             }
 

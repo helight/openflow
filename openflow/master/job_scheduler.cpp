@@ -79,30 +79,31 @@ int32_t CJobScheduler::submit_job(const int32_t job_id)
 
 int32_t CJobScheduler::report_task_state(const openflow::task_state &state)
 {
-    // CMasterDB db(common::DB_SQLITE,openflow::OPENFLOW_DB_DBNAME);
+    int32_t ret = -1;
+    boost::mutex::scoped_lock lock(_mutex);
+    std::map<int32_t, CTaskScheduler*>::iterator it = _run_jobs_queue.find(state.job_id);
+    if (it != _run_jobs_queue.end())
+    {
+        CTaskScheduler* task_scheduler = it->second;
+        if (task_scheduler->update_task_state(state))
+        {
+            ret = 0;
+        }
+        else
+        {
+            LOG(ERROR) << "task state update error";
+        }
+    }
 
-    // std::string sql = boost::str(boost::format(
-    //         "UPDATE  TaskState SET task_status='%d',task_result='%s' "
-    //         "where job_id='%d' and task_id='%d';")
-    //     % state.task_status % state.task_result % state.job_id % state.task_id);
-    // if(false == db.execute(sql))
-    // {
-    //     LOG(ERROR) << "execut task state receive sql error";
-    //     return -3;
-    // }
-    // db.close();
-    //
-    return 0;
+    return ret;
 }
 
 int32_t CJobScheduler::report_agent_state(const openflow::agent_state &state)
 {
-    // FIXME ZhangYiFei
-    // 1. Called by agent
-    // 2. agent transfer state struct to master
-    // 3. decomposition the state struct
-    _agent_state.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
     std::cout << "receive ok" <<std::endl;
+    _agent_state.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
+
     return 0;
 }
+
 }} //enf namespace openflow::master

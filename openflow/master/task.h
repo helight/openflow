@@ -13,6 +13,7 @@ public:
     ~CTask();
 
     bool start();
+    void set_state(const openflow::task_state &state);
     bool is_finished();
     int32_t get_task_id();
     std::string get_uuid();
@@ -21,10 +22,11 @@ private:
     void on_job_finished();
 
 private:
-    int32_t _task_id;
-    openflow::task_info _task_info;
     bool _is_finished;
     bool _is_scheduled;
+    int32_t _task_state;
+    std::string _ret_msg;
+    openflow::task_info _task_info;
 };
 }} //end namespace openflow::master
 #endif // OPENFLOW_MASTER_TASK_H

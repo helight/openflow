@@ -81,23 +81,42 @@ void CTaskScheduler::scheduler_thread()
         while (!_run_task_queue.empty())
         {
             boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-            std::map<std::string, CTask*>::iterator it = _run_task_queue.begin();
-            CTask *task = it->second;
-            if (task->is_finished())
             {
-                LOG(INFO) << "task finished: ";
-                // @todo update db state
-                _run_task_queue.erase(it++);
-                delete task;
-            }
-            else
-            {
-                ++it;
+                boost::mutex::scoped_lock lock(_mutex);
+                std::map<std::string, CTask*>::iterator it = _run_task_queue.begin();
+                CTask *task = it->second;
+                if (task->is_finished())
+                {
+                    LOG(INFO) << "task finished: ";
+                    // @todo update db state
+                    _run_task_queue.erase(it++);
+                    delete task;
+                }
+                else
+                {
+                    ++it;
+                }
             }
         }
 
         _job_tasks.pop_front();
     }
+}
+
+bool CTaskScheduler::update_task_state(const openflow::task_state &state)
+{
+    bool ret = false;
+    boost::mutex::scoped_lock lock(_mutex);
+    std::map<std::string, CTask*>::iterator it = _run_task_queue.find(state.uuid);
+
+    if (it != _run_task_queue.end())
+    {
+        CTask *task = it->second;
+        task->set_state(state);
+        ret = true;
+    }
+
+    return ret;
 }
 
 void CTaskScheduler::monitor_thread()

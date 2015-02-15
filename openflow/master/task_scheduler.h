@@ -27,6 +27,7 @@ public:
     void scheduler_thread();
     void monitor_thread();
 
+    bool update_task_state(const openflow::task_state &state);
     bool is_finished();
 
 private:
