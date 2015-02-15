@@ -128,6 +128,7 @@ void CTaskExecute::report_heart_beat_thread()
         }
         agent_state.ipaddr = _local_ip;
         agent_state.finished_task_num = _finished_count;
+        agent_state.last_time = time(NULL);
 
         LOG(INFO) << "running task num: " << agent_state.running_task_num
             << " finished task num: " << agent_state.finished_task_num;

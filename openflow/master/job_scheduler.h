@@ -26,11 +26,15 @@ public:
 
     int32_t submit_job(const int32_t job_id);
     int32_t report_task_state(const openflow::task_state &state);
+    int32_t report_agent_state(const openflow::agent_state &state);
 
 private:
     mutable boost::mutex _mutex;
     common::CBlockingQueue<int32_t> _wait_jobs_queue;  //job id queue.
     std::map<int32_t, CTaskScheduler*> _run_jobs_queue;
+
+private:
+    std::map<std::string, openflow::agent_state> _agent_state;
 };
 }} //end namespace openflow::master
 #endif // MASTER_CORE_H

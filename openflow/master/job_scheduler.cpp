@@ -95,4 +95,14 @@ int32_t CJobScheduler::report_task_state(const openflow::task_state &state)
     return 0;
 }
 
+int32_t CJobScheduler::report_agent_state(const openflow::agent_state &state)
+{
+    // FIXME ZhangYiFei
+    // 1. Called by agent
+    // 2. agent transfer state struct to master
+    // 3. decomposition the state struct
+    _agent_state.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
+    std::cout << "receive ok" <<std::endl;
+    return 0;
+}
 }} //enf namespace openflow::master

@@ -33,6 +33,7 @@ struct agent_state
    6: string cpu_idle_percent;  // cpu空闲率
    7: string cpu_load;          // cpu 1分钟  五分钟  十五分钟负载 放在一个字符串里面 空格分割
    8: string swap_use_percent;  // 交换分区使用百分比
+   9: i32 last_time;            // 最后一次上报时间
 }
 
 struct task_state

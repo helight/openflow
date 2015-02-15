@@ -56,20 +56,10 @@ void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return)
 
 int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state)
 {
-    // Your implementation goes here
-    // FIXME ZhangYiFei
-    // this function need to do
-    // 1. Called by agent
-    // 2. agent transfer state struct to master
-    // 3. decomposition the state struct
-    // 4. store to sqilte3
-    _agent_state.insert(std::pair<std::string,openflow::agent_state>(state.ipaddr,state));
-    time_t now_time;
-    now_time = time(NULL);
-    _timexpire.insert(std::pair<std::string,time_t>(state.ipaddr,now_time));
-    std::cout << "receive ok" <<std::endl;
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
-    return 0;
+    return job_scheduler.report_agent_state(state);
 }
 
 int32_t CMasterHandler::report_task_state(const openflow::task_state &state)

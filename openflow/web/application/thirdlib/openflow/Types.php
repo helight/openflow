@@ -432,6 +432,10 @@ class agent_state {
    * @var string
    */
   public $swap_use_percent = null;
+  /**
+   * @var int
+   */
+  public $last_time = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -468,6 +472,10 @@ class agent_state {
           'var' => 'swap_use_percent',
           'type' => TType::STRING,
           ),
+        9 => array(
+          'var' => 'last_time',
+          'type' => TType::I32,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -494,6 +502,9 @@ class agent_state {
       }
       if (isset($vals['swap_use_percent'])) {
         $this->swap_use_percent = $vals['swap_use_percent'];
+      }
+      if (isset($vals['last_time'])) {
+        $this->last_time = $vals['last_time'];
       }
     }
   }
@@ -573,6 +584,13 @@ class agent_state {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 9:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->last_time);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -624,6 +642,11 @@ class agent_state {
     if ($this->swap_use_percent !== null) {
       $xfer += $output->writeFieldBegin('swap_use_percent', TType::STRING, 8);
       $xfer += $output->writeString($this->swap_use_percent);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->last_time !== null) {
+      $xfer += $output->writeFieldBegin('last_time', TType::I32, 9);
+      $xfer += $output->writeI32($this->last_time);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

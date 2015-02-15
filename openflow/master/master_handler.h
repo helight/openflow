@@ -25,12 +25,8 @@ public:
     int32_t kill_job(const int32_t id);
     void get_current_jobinfo(openflow::execute_jobinfo& _return);
 
-    int32_t report_agent_state(const openflow::agent_state &state);
     int32_t report_task_state(const openflow::task_state &state);
-
-private:
-    std::map<std::string, openflow::agent_state> _agent_state;
-    std::map<std::string,time_t> _timexpire;
+    int32_t report_agent_state(const openflow::agent_state &state);
 };
 
 }} // end openflow::master
