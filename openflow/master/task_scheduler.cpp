@@ -20,7 +20,6 @@ CTaskScheduler::~CTaskScheduler()
     if (_is_scheduled)
     {
         LOG(INFO) << "to release task scheduler";
-        _monitor_thread->join();
         _scheduler_thread->join();
     }
 
@@ -39,15 +38,13 @@ bool CTaskScheduler::start_scheduler()
 
     _scheduler_thread.reset(
         new boost::thread(boost::bind(&CTaskScheduler::scheduler_thread, this)));
-    _monitor_thread.reset(
-        new boost::thread(boost::bind(&CTaskScheduler::monitor_thread, this)));
-    _is_scheduled = true;
 
     return true;
 }
 
 void CTaskScheduler::scheduler_thread()
 {
+    _is_scheduled = true;
     while (!_job_tasks.empty())
     {
         // create task
@@ -98,9 +95,10 @@ void CTaskScheduler::scheduler_thread()
                 }
             }
         }
-
         _job_tasks.pop_front();
     }
+
+    _is_finished = true;
 }
 
 bool CTaskScheduler::update_task_state(const openflow::task_state &state)
@@ -119,10 +117,6 @@ bool CTaskScheduler::update_task_state(const openflow::task_state &state)
     return ret;
 }
 
-void CTaskScheduler::monitor_thread()
-{
-}
-
 bool CTaskScheduler::is_finished()
 {
     return _is_finished;
@@ -130,7 +124,7 @@ bool CTaskScheduler::is_finished()
 
 void CTaskScheduler::on_job_finished()
 {
-
+    // @todo update db
 }
 
 }} //enf namespace openflow::master

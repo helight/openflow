@@ -46,10 +46,10 @@ void CJobScheduler::scheduler_thread()
 
 void CJobScheduler::clean_thread()
 {
+    LOG(INFO) << "do clean";
     while (true)
     {
         boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-        LOG(INFO) << "do clean";
         {
             boost::mutex::scoped_lock lock(_mutex);
             std::map<int32_t, CTaskScheduler*>::iterator it = _run_jobs_queue.begin();

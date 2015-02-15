@@ -43,7 +43,6 @@ private:
     std::map<std::string, CTask*> _run_task_queue;
 
     boost::scoped_ptr<boost::thread> _scheduler_thread;
-    boost::scoped_ptr<boost::thread> _monitor_thread;
 };
 }} //end namespace openflow::master
 #endif // MASTER_CORE_H
