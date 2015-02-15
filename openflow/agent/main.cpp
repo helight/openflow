@@ -19,11 +19,13 @@
 
 #include "../config.h"
 #include "agent_handler.h"
+#include "master_client.h"
 #include "task_execute.h"
 #include "task_monitor.h"
 
 DEFINE_int32(thread_num, 4, "thread num for rpc server");
 DEFINE_int32(max_tasks_num, 4, "max tasks for app");
+DEFINE_string(master_host, "127.0.0.1", "");
 
 namespace openflow { namespace agent {
 
@@ -57,6 +59,10 @@ void CMainHelper::init_singleton()
     CTaskExecute& task_excute =
         boost::serialization::singleton<CTaskExecute>::get_mutable_instance();
     task_excute.init();
+
+    CMasterClient& master_client =
+        boost::serialization::singleton<CMasterClient>::get_mutable_instance();
+    master_client.init(FLAGS_master_host, OPENFLOW_MASTER_HANDLER_PORT);
 
     boost::serialization::singleton<CTaskMonitor>::get_const_instance();
 }

@@ -26,11 +26,13 @@ struct task_info
 struct agent_state
 {
    1: string ipaddr;            // ip地址，区分agent的标识
-   2: string remain_mem;        // 内存剩余量
-   3: string mem_use_percent;   // 内存使用百分比
-   4: string cpu_idle_percent;  // cpu空闲率
-   5: string cpu_load;          // cpu 1分钟  五分钟  十五分钟负载 放在一个字符串里面 空格分割
-   6: string swap_use_percent;  // 交换分区使用百分比
+   2: i32 running_task_num;     // 正在运行的任务数
+   3: i32 finished_task_num;    // 已经完成的任务数
+   4: string remain_mem;        // 内存剩余量
+   5: string mem_use_percent;   // 内存使用百分比
+   6: string cpu_idle_percent;  // cpu空闲率
+   7: string cpu_load;          // cpu 1分钟  五分钟  十五分钟负载 放在一个字符串里面 空格分割
+   8: string swap_use_percent;  // 交换分区使用百分比
 }
 
 struct task_state

@@ -7,13 +7,14 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <boost/serialization/singleton.hpp>
 #include <glog/logging.h>
 #include <thrift/TApplicationException.h>
 #include <thrift_helper.h>
 #include <utils.h>
 #include "../config.h"
-#include "task_execute.h"
 #include "master_client.h"
+#include "task_execute.h"
 
 DECLARE_int32(max_tasks_num);
 namespace openflow { namespace agent {
@@ -29,6 +30,7 @@ bool CTaskExecute::init()
             return false;
         }
     }
+
     return true;
 }
 
@@ -49,7 +51,6 @@ int32_t CTaskExecute::start_task(const openflow::task_info& task_info)
     // run this task
     try
     {
-        ++_all_task_count;
         task->start();
     }
     catch (apache::thrift::TException &ex)
@@ -62,6 +63,7 @@ int32_t CTaskExecute::start_task(const openflow::task_info& task_info)
         boost::mutex::scoped_lock lock(_mutex);
         _pid_tasks.insert(std::make_pair(task->get_pid(), task));
     }
+
     return 0;
 }
 
@@ -80,22 +82,14 @@ int32_t CTaskExecute::update_task_state(const int32_t task_pid, const int32_t st
     if (it != _pid_tasks.end())
     {
         CTask *task = it->second;
-        common::CThriftClientHelper<openflow::master::MasterServiceClient>
-            master_client("127.0.0.1", OPENFLOW_MASTER_HANDLER_PORT);
-        try
-        {
-            openflow::task_state task_state;
-            task_state.uuid = task->get_uuid();
-            task_state.job_id = task->get_job_id();
-            task_state.task_status = state;
+        openflow::task_state task_state;
+        task_state.uuid = task->get_uuid();
+        task_state.job_id = task->get_job_id();
+        task_state.task_status = state;
 
-            master_client.connect();
-            ret = master_client->report_task_state(task_state);
-        }
-        catch (apache::thrift::TException& ex)
-        {
-            LOG(ERROR) << "rpc error: " << ex.what();
-        }
+        CMasterClient& master_client =
+            boost::serialization::singleton<CMasterClient>::get_mutable_instance();
+        ret = master_client.report_task_state(task_state);
     }
     else
     {
@@ -115,6 +109,7 @@ void CTaskExecute::delete_task_by_pid(const int32_t task_pid)
     {
         CTask *task = it->second;
         _pid_tasks.erase(it);
+        ++_finished_count;
         delete task;
     }
 }
@@ -126,24 +121,20 @@ void CTaskExecute::report_heart_beat_thread()
         LOG(INFO) << "do report heartbeat to master";
         boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
         // @todo report to master
+        openflow::agent_state agent_state;
         {
             boost::mutex::scoped_lock lock(_mutex);
-            LOG(INFO) << "running size: " << _pid_tasks.size();
+            agent_state.running_task_num = _pid_tasks.size();
         }
-        common::CThriftClientHelper<openflow::master::MasterServiceClient>
-            master_client("127.0.0.1", OPENFLOW_MASTER_HANDLER_PORT);
-        try
-        {
-            openflow::agent_state agent_state;
-            agent_state.ipaddr = _local_ip;
+        agent_state.ipaddr = _local_ip;
+        agent_state.finished_task_num = _finished_count;
 
-            master_client.connect();
-            master_client->report_agent_state(agent_state);
-        }
-        catch (apache::thrift::TException& ex)
-        {
-            LOG(ERROR) << "rpc error: " << ex.what();
-        }
+        LOG(INFO) << "running task num: " << agent_state.running_task_num
+            << " finished task num: " << agent_state.finished_task_num;
+
+        CMasterClient& master_client =
+            boost::serialization::singleton<CMasterClient>::get_mutable_instance();
+        master_client.report_agent_state(agent_state);
     }
 }
 

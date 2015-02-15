@@ -31,7 +31,7 @@ private:
     mutable boost::mutex _mutex;
     std::string _local_ip;
     std::map<pid_t, CTask*> _pid_tasks;
-    boost::atomic<uint64_t> _all_task_count;
+    boost::atomic<uint64_t> _finished_count;
 };
 
 } } //openflow::gent

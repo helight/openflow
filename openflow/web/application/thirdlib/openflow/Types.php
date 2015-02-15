@@ -405,6 +405,14 @@ class agent_state {
    */
   public $ipaddr = null;
   /**
+   * @var int
+   */
+  public $running_task_num = null;
+  /**
+   * @var int
+   */
+  public $finished_task_num = null;
+  /**
    * @var string
    */
   public $remain_mem = null;
@@ -433,22 +441,30 @@ class agent_state {
           'type' => TType::STRING,
           ),
         2 => array(
+          'var' => 'running_task_num',
+          'type' => TType::I32,
+          ),
+        3 => array(
+          'var' => 'finished_task_num',
+          'type' => TType::I32,
+          ),
+        4 => array(
           'var' => 'remain_mem',
           'type' => TType::STRING,
           ),
-        3 => array(
+        5 => array(
           'var' => 'mem_use_percent',
           'type' => TType::STRING,
           ),
-        4 => array(
+        6 => array(
           'var' => 'cpu_idle_percent',
           'type' => TType::STRING,
           ),
-        5 => array(
+        7 => array(
           'var' => 'cpu_load',
           'type' => TType::STRING,
           ),
-        6 => array(
+        8 => array(
           'var' => 'swap_use_percent',
           'type' => TType::STRING,
           ),
@@ -457,6 +473,12 @@ class agent_state {
     if (is_array($vals)) {
       if (isset($vals['ipaddr'])) {
         $this->ipaddr = $vals['ipaddr'];
+      }
+      if (isset($vals['running_task_num'])) {
+        $this->running_task_num = $vals['running_task_num'];
+      }
+      if (isset($vals['finished_task_num'])) {
+        $this->finished_task_num = $vals['finished_task_num'];
       }
       if (isset($vals['remain_mem'])) {
         $this->remain_mem = $vals['remain_mem'];
@@ -503,34 +525,48 @@ class agent_state {
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->remain_mem);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->running_task_num);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 3:
-          if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->mem_use_percent);
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->finished_task_num);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 4:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->cpu_idle_percent);
+            $xfer += $input->readString($this->remain_mem);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 5:
           if ($ftype == TType::STRING) {
-            $xfer += $input->readString($this->cpu_load);
+            $xfer += $input->readString($this->mem_use_percent);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 6:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->cpu_idle_percent);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 7:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->cpu_load);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 8:
           if ($ftype == TType::STRING) {
             $xfer += $input->readString($this->swap_use_percent);
           } else {
@@ -555,28 +591,38 @@ class agent_state {
       $xfer += $output->writeString($this->ipaddr);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->running_task_num !== null) {
+      $xfer += $output->writeFieldBegin('running_task_num', TType::I32, 2);
+      $xfer += $output->writeI32($this->running_task_num);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->finished_task_num !== null) {
+      $xfer += $output->writeFieldBegin('finished_task_num', TType::I32, 3);
+      $xfer += $output->writeI32($this->finished_task_num);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->remain_mem !== null) {
-      $xfer += $output->writeFieldBegin('remain_mem', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('remain_mem', TType::STRING, 4);
       $xfer += $output->writeString($this->remain_mem);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->mem_use_percent !== null) {
-      $xfer += $output->writeFieldBegin('mem_use_percent', TType::STRING, 3);
+      $xfer += $output->writeFieldBegin('mem_use_percent', TType::STRING, 5);
       $xfer += $output->writeString($this->mem_use_percent);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cpu_idle_percent !== null) {
-      $xfer += $output->writeFieldBegin('cpu_idle_percent', TType::STRING, 4);
+      $xfer += $output->writeFieldBegin('cpu_idle_percent', TType::STRING, 6);
       $xfer += $output->writeString($this->cpu_idle_percent);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->cpu_load !== null) {
-      $xfer += $output->writeFieldBegin('cpu_load', TType::STRING, 5);
+      $xfer += $output->writeFieldBegin('cpu_load', TType::STRING, 7);
       $xfer += $output->writeString($this->cpu_load);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->swap_use_percent !== null) {
-      $xfer += $output->writeFieldBegin('swap_use_percent', TType::STRING, 6);
+      $xfer += $output->writeFieldBegin('swap_use_percent', TType::STRING, 8);
       $xfer += $output->writeString($this->swap_use_percent);
       $xfer += $output->writeFieldEnd();
     }
