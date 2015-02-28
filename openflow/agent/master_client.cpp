@@ -18,7 +18,7 @@ bool CMasterClient::init(const std::string& host, uint16_t port)
         _host = host;
         _port = port;
         //客户端操作类的初始化
-        _master = new common::CThriftClientHelper<openflow::master::MasterServiceClient>(host, port);
+        _master = new common::CThriftClientHelper<openflow::master::MasterServiceClient>(_host, _port);
         _is_init = true;
     }
 
@@ -36,6 +36,7 @@ int32_t CMasterClient::report_task_state(const openflow::task_state& state)
 {
     int32_t ret = -1;
 
+    boost::mutex::scoped_lock lock(_mutex);
     try
     {
         _master->connect();
@@ -54,6 +55,7 @@ int32_t CMasterClient::report_agent_state(const openflow::agent_state &state)
 {
     int32_t ret = -1;
 
+    boost::mutex::scoped_lock lock(_mutex);
     try
     {
         _master->connect();

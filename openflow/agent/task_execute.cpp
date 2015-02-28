@@ -19,16 +19,32 @@
 DECLARE_int32(max_tasks_num);
 namespace openflow { namespace agent {
 
-bool CTaskExecute::init()
+CTaskExecute::CTaskExecute() : _is_init(false), _master_client(NULL) {};
+
+CTaskExecute::~CTaskExecute()
+{
+    if (_is_init)
+    {
+        if (_master_client)
+            delete _master_client;
+    }
+}
+
+bool CTaskExecute::init(const std::string& host, uint16_t port)
 {
     if (!_is_init)
     {
+        _host = host;
+        _port = port;
         _local_ip = common::CUtils::get_local_ip("eth0");
         if (_local_ip.empty())
         {
             LOG(FATAL) << "can't get local ip " << _local_ip;
             return false;
         }
+        //客户端操作类的初始化
+        _master_client =
+            new common::CThriftClientHelper<openflow::master::MasterServiceClient>(_host, _port);
     }
 
     return true;
@@ -133,9 +149,22 @@ void CTaskExecute::report_heart_beat_thread()
         LOG(INFO) << "running task num: " << agent_state.running_task_num
             << " finished task num: " << agent_state.finished_task_num;
 
-        CMasterClient& master_client =
-            boost::serialization::singleton<CMasterClient>::get_mutable_instance();
-        master_client.report_agent_state(agent_state);
+        // CMasterClient& master_client =
+        //     boost::serialization::singleton<CMasterClient>::get_mutable_instance();
+        // master_client.report_agent_state(agent_state);
+        // 心跳独立使用一个客户端链接
+        try
+        {
+            _master_client->connect();
+            int32_t ret = _master_client->get()->report_agent_state(agent_state);
+            _master_client->close(); //显示调用close方法;
+
+            LOG_IF(ERROR, !ret) << "heart report error " << ret;
+        }
+        catch (apache::thrift::TException& ex)
+        {
+            LOG(ERROR) << "rpc error: " << ex.what();
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 #define OPENFLOW_AGENT_MASTER_CLIENT_H
 #pragma once
 
+#include <boost/thread/mutex.hpp>
 #include <thrift_helper.h>
 #include "../config.h"
 #include "rpc/master/MasterService.h"
@@ -32,6 +33,7 @@ public:
 
 private:
     bool _is_init;
+    mutable boost::mutex _mutex;
     uint16_t _port;
     std::string _host;
     common::CThriftClientHelper<openflow::master::MasterServiceClient> *_master;

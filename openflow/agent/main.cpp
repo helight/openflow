@@ -58,7 +58,7 @@ void CMainHelper::init_singleton()
 {
     CTaskExecute& task_excute =
         boost::serialization::singleton<CTaskExecute>::get_mutable_instance();
-    task_excute.init();
+    task_excute.init(FLAGS_master_host, OPENFLOW_MASTER_HANDLER_PORT);
 
     CMasterClient& master_client =
         boost::serialization::singleton<CMasterClient>::get_mutable_instance();
