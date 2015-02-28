@@ -12,7 +12,7 @@ if [ "$1" = "start" ]; then
     if [ $count -eq 0 ]; then
         nohup ./$main_server_bin --thread_num=8 --v=4&
     fi
-elif [ "$1" = "stop"]; then
+elif [ "$1" = "stop" ]; then
     if [ $count -gt 0 ]; then
         echo "$main_server_bin is running, going to stop"
         killall -9 $main_server_bin

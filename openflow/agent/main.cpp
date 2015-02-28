@@ -39,7 +39,7 @@ private:
     void fini();
 
 private:
-    void init_singleton();
+    bool init_singleton();
     bool run_task_monitor();
 
 private:
@@ -51,20 +51,29 @@ private:
 
 bool CMainHelper::init(int argc, char *argv[])
 {
+    init_singleton();
+
     return true;
 }
 
-void CMainHelper::init_singleton()
+bool CMainHelper::init_singleton()
 {
+    LOG(INFO) << "master host: " << FLAGS_master_host
+        << " master port: " << OPENFLOW_MASTER_HANDLER_PORT;
     CTaskExecute& task_excute =
         boost::serialization::singleton<CTaskExecute>::get_mutable_instance();
-    task_excute.init(FLAGS_master_host, OPENFLOW_MASTER_HANDLER_PORT);
+    if (!task_excute.init(FLAGS_master_host, OPENFLOW_MASTER_HANDLER_PORT))
+    {
+        LOG(FATAL) << "task execute init failed";
+    }
 
     CMasterClient& master_client =
         boost::serialization::singleton<CMasterClient>::get_mutable_instance();
     master_client.init(FLAGS_master_host, OPENFLOW_MASTER_HANDLER_PORT);
 
     boost::serialization::singleton<CTaskMonitor>::get_const_instance();
+
+    return true;
 }
 
 bool CMainHelper::run()

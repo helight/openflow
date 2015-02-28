@@ -45,6 +45,7 @@ int32_t CMasterHandler::kill_job(const int32_t id)
 
 int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state)
 {
+    LOG(INFO) << "get one agent state report: " << state.ipaddr;
     CJobScheduler& job_scheduler =
         boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
@@ -53,7 +54,7 @@ int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state)
 
 int32_t CMasterHandler::report_task_state(const openflow::task_state &state)
 {
-
+    LOG(INFO) << "get one agent task state report: " << state.uuid;
     CJobScheduler& job_scheduler =
         boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 

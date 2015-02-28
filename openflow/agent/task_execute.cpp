@@ -43,8 +43,10 @@ bool CTaskExecute::init(const std::string& host, uint16_t port)
             return false;
         }
         //客户端操作类的初始化
+        // common::CThriftClientHelper<openflow::master::MasterServiceClient> master_client(_host, _port);
         _master_client =
             new common::CThriftClientHelper<openflow::master::MasterServiceClient>(_host, _port);
+        _is_init = true;
     }
 
     return true;
@@ -135,7 +137,6 @@ void CTaskExecute::report_heart_beat_thread()
     while (true)
     {
         LOG(INFO) << "do report heartbeat to master";
-        boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
         // @todo report to master
         openflow::agent_state agent_state;
         {
@@ -149,22 +150,23 @@ void CTaskExecute::report_heart_beat_thread()
         LOG(INFO) << "running task num: " << agent_state.running_task_num
             << " finished task num: " << agent_state.finished_task_num;
 
-        // CMasterClient& master_client =
-        //     boost::serialization::singleton<CMasterClient>::get_mutable_instance();
-        // master_client.report_agent_state(agent_state);
+        LOG(INFO) << "master host: " << _host << " master port: " << _port;
+
         // 心跳独立使用一个客户端链接
         try
         {
             _master_client->connect();
             int32_t ret = _master_client->get()->report_agent_state(agent_state);
-            _master_client->close(); //显示调用close方法;
+            _master_client->close();
 
-            LOG_IF(ERROR, !ret) << "heart report error " << ret;
+            LOG_IF(ERROR, ret) << "heart report error " << ret;
         }
         catch (apache::thrift::TException& ex)
         {
             LOG(ERROR) << "rpc error: " << ex.what();
         }
+
+        boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
     }
 }
 
