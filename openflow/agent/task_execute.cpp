@@ -136,7 +136,7 @@ void CTaskExecute::report_heart_beat_thread()
 {
     while (true)
     {
-        LOG(INFO) << "do report heartbeat to master";
+        // LOG(INFO) << "do report heartbeat to master";
         // @todo report to master
         openflow::agent_state agent_state;
         {
@@ -148,9 +148,8 @@ void CTaskExecute::report_heart_beat_thread()
         agent_state.last_time = time(NULL);
 
         LOG(INFO) << "running task num: " << agent_state.running_task_num
-            << " finished task num: " << agent_state.finished_task_num;
-
-        LOG(INFO) << "master host: " << _host << " master port: " << _port;
+            << " finished task num: " << agent_state.finished_task_num
+            << " master host: " << _host << " master port: " << _port;
 
         // 心跳独立使用一个客户端链接
         try
@@ -166,7 +165,7 @@ void CTaskExecute::report_heart_beat_thread()
             LOG(ERROR) << "rpc error: " << ex.what();
         }
 
-        boost::this_thread::sleep(boost::posix_time::milliseconds(3000));
+        boost::this_thread::sleep(boost::posix_time::milliseconds(10000));
     }
 }
 

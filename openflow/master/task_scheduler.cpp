@@ -12,7 +12,8 @@
 
 namespace openflow { namespace master {
 
-CTaskScheduler::CTaskScheduler(const int32_t job_id) : _job_id(job_id), _is_finished(false), _is_scheduled(false)
+CTaskScheduler::CTaskScheduler(const int32_t job_id)
+    : _job_id(job_id), _is_finished(false), _is_scheduled(false)
 {}
 
 CTaskScheduler::~CTaskScheduler()
@@ -51,7 +52,7 @@ void CTaskScheduler::scheduler_thread()
         std::list<CTask*> wait_task_queue;
         std::list<openflow::task_info*>* task_list = _job_tasks.front();
         for (std::list<openflow::task_info*>::iterator iter = task_list->begin()
-             ; iter != task_list->end();)
+             ; iter != task_list->end();++iter)
         {
             openflow::task_info* task_info = *iter;
             CTask *task = new CTask(task_info);

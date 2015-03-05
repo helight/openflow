@@ -10,6 +10,7 @@
 #include <sys/time.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
+#include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <main_template.h>
@@ -22,40 +23,22 @@ namespace openflow { namespace tools { namespace master_client{
 
 using namespace apache::thrift;
 
-void submit_job()
+void submit_job(const uint32_t job_id)
 {
-    openflow::job_info info;
-    info.job_name = "testor";
-
-    //get local time
-    boost::posix_time::ptime t(boost::posix_time::second_clock::local_time());
-    info.time = boost::posix_time::to_iso_extended_string(t);
-
-    tools::master_client::CJob job;
-
-    //store job into databse
-    job.set_xml("demo.xml");
-    int32_t ret = job.store("openflow.db", info);
-    if (ret < 0)
-    {
-        LOG(ERROR) << "Fail to store job into database.";
-        return;
-    }
-
     //submit job to master server
-    LOG(INFO) << "submit job...";
+    LOG(INFO) << "submit job... " << job_id;
     common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper =
         new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
     try
     {
         thrift_client_helper->connect();
-        ret = thrift_client_helper->get()->submit_job(info.job_id);
+        int32_t ret = thrift_client_helper->get()->submit_job(job_id);
         if (ret < 0) {
             LOG(ERROR) << "fail to submit job.";
         }
         else
         {
-            LOG(INFO) << "submit job(" << info.job_id << ") successfully.";
+            LOG(INFO) << "submit job(" << job_id << ") successfully.";
         }
     }
     catch (TException& exn)
@@ -121,8 +104,8 @@ extern "C" int main(int argc, char* argv[])
 {
     if (argc < 2)
     {
-        std::cout << "params not enought: ./master cmd" << std::endl;
-        std::cout << "./master submit_job/report_agent/get_agent" << std::endl;
+        std::cout << "params not enought: ./client cmd" << std::endl;
+        std::cout << "./client submit_job/report_agent/get_agent" << std::endl;
         return -1;
     }
     // init glog,gflags
@@ -137,7 +120,13 @@ extern "C" int main(int argc, char* argv[])
 
     if (0 == strcmp(cmd.c_str(), "submit_job"))
     {
-        submit_job();
+        if (argc < 3)
+        {
+            std::cout << "params not enought: ./client submit_job job_id" << std::endl;
+            return -1;
+        }
+        uint32_t job_id = boost::lexical_cast<uint32_t>(*argv[2]);
+        submit_job(job_id);
     }
     else if (0 == strcmp(cmd.c_str(), "report_agent"))
     {

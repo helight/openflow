@@ -8,6 +8,8 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <signal.h>
+
+#include <boost/format.hpp>
 #include <glog/logging.h>
 #include <thrift/TApplicationException.h>
 #include "task.h"
@@ -21,7 +23,7 @@ CTask::CTask(const openflow::task_info& task_info)
 void CTask::start()
 {
     LOG(INFO) << "start task task id: " << _task_info.task_id
-        << "task name: " << _task_info.task_name << "...";
+        << " task name: " << _task_info.task_name << "...";
 
     std::string excption_msg = "";
 
@@ -43,15 +45,18 @@ int32_t CTask::task_child_process()
 {
     int32_t fd;
 
-    /*将执行结果保存到以task_id命名的文件中*/
-    char id_src[255];
-    sprintf(id_src, "%d", _task_info.task_id);
-    /*文件路径*/
-    char id_des[255] = "../log/";
-    strcat(id_des, id_src);
-    if( (fd = creat(id_des, 0644)) == -1 )
+    // /*将执行结果保存到以task_id命名的文件中*/
+    // char id_src[255];
+    // sprintf(id_src, "%d", _task_info.task_id);
+    // /*文件路径*/
+    // char id_des[255] = "../log/";
+    // strcat(id_des, id_src);
+
+    std::string log_path = boost::str(boost::format("../log/%d_%d_%s")
+                                      % _task_info.job_id % _task_info.task_id % _task_info.uuid);
+    if( (fd = creat(log_path.c_str(), 0644)) == -1 )
     {
-        LOG(ERROR) << "create log file error: " << id_des;
+        LOG(ERROR) << "create log file error: " << log_path;
         return 1;
     }
 
