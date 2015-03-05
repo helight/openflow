@@ -6,131 +6,49 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <string>
 #include <exception>
-#include <openflow.h>
-#include "httpserver_common.h"
+#include <event.h>
+#include <evhttp.h>
 #include "httpserver.h"
-#include "transport/transport_exception.h"
+#include "http_handle.h"
+#include "http_common.h"
 
 namespace openflow { namespace httpserver {
 
-using namespace common;
-using namespace openflow::httpserver::transport;
-using namespace openflow::httpserver::application;
-
-void OHttpServer::setHttpserverPath()
-{
-	char path_buf[kHttpserverPathSize];		
-	if(getcwd(path_buf, kHttpserverPathSize) != NULL)
-	{
-		httpserver_path_.assign(path_buf);
-	}
-}
-
-std::string OHttpServer::getHttpserverPath() const 
-{
-	return httpserver_path_;	
-}
-
 void OHttpServer::serve()
 {
+    struct event_base *base;
+    struct evhttp *http_server;
 
-	setHttpserverPath();
-	int ret = sock_->listenClient(8080);
-	if (ret < 0)
-   	{
-		sock_->closeSockect();
-		exit(0)	;
-	}
+    base = event_base_new();
+    if (!base){
+        GlobalOutput.printf("OHttpServer::serve() can not create a base event");
+        return;
+    }
 
-	sock_->initializeSelect();
-	while(!stop_)
-	{
-		try{
-			if (-1 == (sock_->servPoll()))
-			{
-				GlobalOutput.printf("OHttpServer::serve()::serverPoll()return -1");
-				continue;	
-			}
+    http_server = evhttp_new(base);
+    if(!http_server){
+        GlobalOutput.printf("OHttpServer::serve() can not create a http event");
+        return; 
+    }
 
-			int connect_fd;
-			for(int i = 0; i < sock_->getMaxIndex(); i++) 
-			{
-				if( (connect_fd = (sock_->getClientId()).at(i) ) < 0) 
-				{
-					continue;	
-				}
+    evhttp_set_gencb(http_server, http_handle, NULL);
+    evhttp_set_timeout(http_server, kTimeOut);
+    int ret = evhttp_bind_socket(http_server, kHttpAddress.c_str(), kHttpPort);
+    if(0 != ret)
+    {
+        int32_t num = ret;
+        GlobalOutput.perror("OHttpServer::serve() can not bind a address to socket",num);
+        return;
+    }
 
-				if(sock_->fdIsset(connect_fd, sock_->getRset()))
-				{
-					ssize_t n;
-					char buf[kBufferSize];
-					if((n = read(connect_fd, buf, kBufferSize)) < 0)
-				   	{
-						GlobalOutput.printf("OHttpServer::serve()can not read message::");
-					} 
-					else 
-					{
-						request_->parseRequest(std::string(buf));
-						if(openflow::httpserver::application::HTTP_GET == request_->getRequestMethod()) 
-						{
-
-							std::string httpserver_path(getHttpserverPath());
-							std::string request_uri = request_->getRequestUri();
-
-							if(!httpserver_path.empty())
-							{
-								if(!request_uri.empty())
-								{
-									httpserver_path.append("/");
-									httpserver_path.append(request_uri);
-								}
-								httpserver_path.assign(strip(httpserver_path));
-							}
-
-							response_->setResourcePath(httpserver_path);
-
-							std::string send_message;
-							send_message.assign(response_->httpResponse());
-							ssize_t send_size = static_cast<ssize_t>(send_message.size());
-							send_size = write(connect_fd, send_message.c_str(), send_size);
-
-							close(connect_fd);
-							sock_->fdClear(connect_fd,sock_->getAllset());
-							(sock_->getClientId()).at(i) = -1;
-						} 
-						else
-						{
-							GlobalOutput.printf("OHttpServer::serve()::HTTP METHOD is't GET");
-							continue;
-						}
-					}
-
-					if (--(sock_->getNready()) <= 0 )
-				   	{
-						break;
-					}
-				}
-			}
-		} 
-		catch(OTransportException &e) 
-		{
-			std::string errStr = std::string("OHttpServer::serve()") + e.what();
-			GlobalOutput(errStr.c_str());
-		} 
-		catch(std::exception &e) 
-		{
-			std::string errStr = std::string("OHttpServer::serve()") + e.what();
-			GlobalOutput(errStr.c_str());
-		} 
-		catch (...) 
-		{
-			std::string errStr = "something unkown error";
-			GlobalOutput(errStr.c_str());
-		}
-	}
+    // event while
+    event_base_dispatch(base);
+    evhttp_free(http_server);
+    event_base_free(base);
 }
 
 }}// openflow::httpserver
