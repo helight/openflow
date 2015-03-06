@@ -30,7 +30,9 @@ void http_handle(struct evhttp_request *request, void *arg)
     if(0 == (fd = access(resource_path.c_str(),F_OK))){
         evbuffer_add_printf(buffer, "Task context = %s\n", 
                             get_http_resources(resource_path).c_str());
-    }else{
+    }
+    else
+    {
         std::string context = "The task file not exists";
         evbuffer_add_printf(buffer, "Task context = %s\n", context.c_str());
     }
