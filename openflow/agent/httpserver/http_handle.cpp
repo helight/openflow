@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-11-25
-// Description:httpserver implemetation of http request
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-11-25
+// Modified:    2014-01-25
+// Description: Implemetation of http handle
 //
 
 #include <string.h>
@@ -46,4 +47,4 @@ void http_handle(struct evhttp_request *request, void *arg)
     evbuffer_free(buffer);
 }
 
-}}//: end namespace openflow::httpserver::aplication
+}}//: end namespace openflow::httpserver ///:~

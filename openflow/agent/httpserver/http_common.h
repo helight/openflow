@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-11-25
-// Description:httpserver implemetation
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-11-25
+// Modified:    2015-01-25
+// Description: httpserver commone function
 //
 
 #ifndef	_OPENFLOW_HTTPSERVER_COMMON_H_
@@ -13,10 +14,10 @@
 
 namespace openflow{ namespace httpserver{
 
-// define the white space 
+/* Define the white space */
 const std::string kStrWhiteSpace = " \t\n\r\v\f";
 
-// Define the file type
+/* Define the file type */
 enum FileType
 {
     UNKNOWN = 0,
@@ -33,20 +34,20 @@ enum FileType
  * Get the file type
  * args: the file path
  * return: return file type
- */
+ **/
 int file_type(const char *file_path);
 
 /**
  * Removes white Spaces at the string of the fore and last 
  * args: 	the orignal string
  * return:	the result of string 
- */
+ **/
 std::string strip(const std::string &input_string);
 
 /**
  * Http server output message
  * Log modules
- */
+ **/
 class OOutput 
 {
 public:
@@ -76,16 +77,17 @@ private:
     void (*f_)(const char *);
 };
 
+/* Declare a global extern object */
 extern OOutput GlobalOutput;
 
 /**                                                     
-  * Define the openflow exception
-  */
+  * Define the  openflow own exception
+  * Inherit std::exception
+  **/
 class OException : public std::exception
 {
 public:
-    OException() throw():
-    message_(){}
+    OException() throw(): message_(){}
     OException(const std::string& message) throw():
     message_(message){}
     virtual ~OException() throw(){}
@@ -102,9 +104,9 @@ public:
         }
     }
 protected:
-    std::string message_;
+    std::string message_;       // Exception message
 };
 
-}}// end namespace openflow::httpserver
+}} // end namespace openflow::httpserver
 
 #endif //: #ifndef	_OPENFLOW_HTTPSERVER_COMMON_H_ ///:~

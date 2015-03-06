@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-12-25
-// Description:httpserver implemetation 
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-12-25
+// Modified:    2015-03-01
+// Description:  
 //
 
 #include <stdio.h>
@@ -19,12 +20,14 @@ namespace openflow{ namespace httpserver{
 std::string get_http_resource_path()
 {
     std::string httpserver_path;
+    // Check if it is assgined by default
     if(!httpserver_resource_path.empty())
     {
         httpserver_path.assign(httpserver_resource_path);
         return httpserver_path;
     }
 
+    // Get the http resource path from current dirctory
     char path_buf[kHttpserverPathSize];
     if(getcwd(path_buf, kHttpserverPathSize) != NULL)
     {
@@ -38,6 +41,7 @@ std::string get_http_resources(const std::string resource_path)
     std::string resource_contents;
     std::string http_resource_path = resource_path;
 
+    // Check if http resource path is empty
     if (http_resource_path.empty()) 
     {
         GlobalOutput.printf("get_http_resources() http_resource_path is empty");
@@ -45,7 +49,7 @@ std::string get_http_resources(const std::string resource_path)
     }
 
     int ret =  file_type(http_resource_path.c_str());
-
+    // Check if a normal file
     if(!((S_REG == ret) || (S_LNK == ret))) 
     {
         GlobalOutput.printf("get_http_resources(): resource file is not a regular or link file");
@@ -54,6 +58,7 @@ std::string get_http_resources(const std::string resource_path)
 
     if (0 == access(http_resource_path.c_str(), R_OK)) 
     {
+        //Get reousrse  from file
         std::ifstream in(http_resource_path.c_str(), std::ios::in);
         if(in) 
         {
@@ -75,4 +80,4 @@ std::string get_http_resources(const std::string resource_path)
     return resource_contents;
 }
 
-}} ///:~
+}} //: end namespace openflow::httpserver ///:~

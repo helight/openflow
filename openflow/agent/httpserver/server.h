@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-11-25
-// Description:httpserver implemetation of Oserver
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-11-25
+// Modifidd:    2015-02-25
+// Description: Oserver, base class
 //
 
 #ifndef _OPENFLOW_SERVER_H_
@@ -13,9 +14,8 @@
 namespace openflow { namespace httpserver{
 
 /**
- * 
- *
- */
+ * HttpServerBase class 
+ **/
 class OServer : boost::noncopyable
 {
 public:
@@ -35,6 +35,6 @@ protected:
   bool stop_;
 };
 
-}} //openflow::server
+}} // end namespace openflow::httpserver
 
 #endif //: #ifndef _OPENFLOW_SERVER_H_ ///:~

@@ -1,7 +1,8 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-11-25
-// Description:httpserver implemetation 
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-11-25
+// Modified:    2015-01-15
+// Description: Implemetation httpserver common function
 //
 
 #include <time.h>
@@ -75,7 +76,7 @@ std::string strip(const std::string &input_string)
     return output_string;
 }
 
-//
+// Define a Global object
 OOutput GlobalOutput;
 
 void OOutput::perror(const char *message, int error_copy)
@@ -128,4 +129,4 @@ void OOutput::printf(const char *message, ...)
     }
 }
 
-}}//: namespace
+}}//: end namespace openflow::httpserver ///:~

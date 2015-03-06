@@ -1,10 +1,11 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-12-25
-// Description:httpserver implemetation of http response 
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-12-25
+// Modified:    2014-01-25
+// Description: Define get http resource function
 
-#ifndef _OPENFLOW_HTTPRESPONSE_H_
-#define _OPENFLOW_HTTPRESPONSE_H_
+#ifndef _OPENFLOW_HTTPRESOURCE_H_
+#define _OPENFLOW_HTTPRESOURCE_H_
 
 #include <string>
 #include <cstring>
@@ -13,19 +14,21 @@
 
 namespace openflow{ namespace httpserver{
 
+/* Define http server resource path string max size */
 const int kHttpserverPathSize = 128;
-const std::string httpserver_resource_path = "";
 
 /**
  * The httpserver resource path.
  * We can assgin the path, for example /usr/local/httpserver
  */
-//std::string httpserver_resource_path = "";
+const std::string httpserver_resource_path = "";
 
+/* Return http resource path */
 std::string get_http_resource_path();
 
+/* Get http resource */
 std::string get_http_resources(const std::string resource_path);
 
 }} //:end namespace openflow httpserver
 
-#endif//: #ifndef _OPENFLOW_HTTPRESPONSE_H_ ///:~
+#endif//: #ifndef _OPENFLOW_HTTPRESOURCE_H_ ///:~

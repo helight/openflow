@@ -1,8 +1,9 @@
 // Copyright (c) 2014, OpenFlow, HTTP SERVER
-// Author:  David<daijinwei41@gmail.com>
-// Created: 2014-11-25
-// Description:httpserver implemetation of Oserver
-//
+// Author:      David<daijinwei41@gmail.com>
+// Created:     2014-11-25
+// Modified:    2015-01-25
+// Description: Define a OHttpServer class
+// 
 
 #ifndef _OPENFLOW_HTTPSERVER_H_
 #define _OPENFLOW_HTTPSERVER_H_
@@ -15,22 +16,19 @@
 
 namespace openflow { namespace httpserver{
 
-//using namespace openflow::httpserver::transport;
-//using namespace openflow::httpserver::application;
-
-// Define the the path length
+/* Define the the path length */
 const uint32_t kHttpserverPathSize = 128;
 
-// Recive the message, buffer Size
+/* Recive the message, buffer Size */
 const uint32_t kBufferSize = 4096;
 
-// Set the http recive timeout
+/* Set the http recive timeout */
 const uint32_t kTimeOut = 120;
 
-// Set the http server listening address
+/* Set the http server listening address */
 const std::string kHttpAddress = "0.0.0.0";
 
-// Set the http http listening port
+/* Set the http http listening port */
 const uint32_t kHttpPort = 8080;
 
 /**
@@ -38,26 +36,25 @@ const uint32_t kHttpPort = 8080;
  */
 class OHttpServer : public OServer 
 {
- public:
-  // Default constructor 
-  OHttpServer(){}
+public:
+    // Default constructor 
+    OHttpServer(){}
 
-  // Constructor
-  virtual ~OHttpServer()
-  {
-    stop(); 
-  }
+    // Constructor
+    virtual ~OHttpServer()
+    {
+        stop(); 
+    }
 
-  virtual void serve();
-  virtual void stop()
-  {
-	stop_ = true;	
-  }
-
+    virtual void serve();
+    virtual void stop()
+    {
+    stop_ = true;	
+    }
 protected:
-	bool stop_;
+	bool stop_;             // Mark http server stop
 };
 
-}}//openflow::httpserver
+}}// end namespace openflow::httpserver
 
 #endif //: #ifndef _OPENFLOW_HTTPSERVER_H_ ///:~
