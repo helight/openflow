@@ -14,7 +14,6 @@
 #define SERVER_INFO "http server test 0.1"
 namespace openflow{ namespace httpserver{
 
-
 void http_handle(struct evhttp_request *request, void *arg);
 
 }}//: end namespace openflow::httpserver
