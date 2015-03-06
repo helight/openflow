@@ -19,14 +19,14 @@ const std::string kStrWhiteSpace = " \t\n\r\v\f";
 // Define the file type
 enum FileType
 {
-	UNKNOWN = 0,
-	S_REG,
-	S_DIR,
-	S_CHR,
-	S_BLK,
-	S_FIFO,
-	S_LNK,
-	S_SOCK
+    UNKNOWN = 0,
+    S_REG,
+    S_DIR,
+    S_CHR,
+    S_BLK,
+    S_FIFO,
+    S_LNK,
+    S_SOCK
 }; 
 
 /**
@@ -50,33 +50,33 @@ std::string strip(const std::string &input_string);
 class OOutput 
 {
  public:
- OOutput() : f_(&errorTimeWrapper){}
+  OOutput() : f_(&errorTimeWrapper){}
    // Set the function ptr
-   inline void setOutputFunction(void (*function)(const char *)) 
-   {
-     f_ = function;
-   }
+    inline void setOutputFunction(void (*function)(const char *)) 
+    {
+        f_ = function;
+    }
 
-   // Set thr function prt arguments
-   inline void operator()(const char *message) 
-   {
-     f_(message);
-   }
+    // Set thr function prt arguments
+    inline void operator()(const char *message) 
+    {
+        f_(message);
+    }
 
-   void perror(const char *message, int error_copy);
-   inline void perror(const std::string &message, int error_copy)
-   {
-     perror(message.c_str(), error_copy)     ;
-   }
+    void perror(const char *message, int error_copy);
+    inline void perror(const std::string &message, int error_copy)
+    {
+        perror(message.c_str(), error_copy)     ;
+    }
 
-   void printf(const char *message, ...);
-   static void errorTimeWrapper(const char *msg);
-   static std::string strerror_s(int errno_copy);
+    void printf(const char *message, ...);
+    static void errorTimeWrapper(const char *msg);
+    static std::string strerror_s(int errno_copy);
  private:
-   void (*f_)(const char *);
- };
+    void (*f_)(const char *);
+};
 
- extern OOutput GlobalOutput;
+extern OOutput GlobalOutput;
 
 /**                                                     
   * Define the openflow exception
@@ -84,25 +84,25 @@ class OOutput
 class OException : public std::exception
 {
  public:
-   OException() throw():
-   message_(){}
-   OException(const std::string& message) throw():
-   message_(message){}
-   virtual ~OException() throw(){}
-   // Overwrite what function                                            
-   virtual const char *what()const throw()
-   {
-     if(message_.empty()) 
-	 {
-       return "Default OException";
-     } 
-	 else 
-	 {
-       return message_.c_str();
-     }
-   }
+    OException() throw():
+    message_(){}
+    OException(const std::string& message) throw():
+    message_(message){}
+    virtual ~OException() throw(){}
+    // Overwrite what function                                            
+    virtual const char *what()const throw()
+    {
+        if(message_.empty()) 
+        {
+            return "Default OException";
+        } 
+        else 
+        {
+            return message_.c_str();
+        }
+    }
  protected:
-   std::string message_;
+    std::string message_;
 };
 
 }}// end namespace openflow::httpserver
