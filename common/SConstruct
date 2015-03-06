@@ -34,11 +34,16 @@ env.Append(LINKFLAGS = ['-static'])
 env.Library(
     target = "common",
     source = [
-    "sqlite_table.cpp",
-    "sqlite_db.cpp",
-    "dataset.cpp",
     "main_template.cpp",
     "utils.cpp",
+    ],
+)
+
+env.Library(
+    target = "dbhelp",
+    source = [
+    "dbhelp_factory.cpp",
+    "sqlite_help.cpp"
     ],
 )
 

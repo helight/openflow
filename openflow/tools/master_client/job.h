@@ -17,6 +17,7 @@ class CJob
          * return: sucess with job id, otherwise -1.
          */
         int store(const std::string & db_name, openflow::job_info &info);
+	bool report_state();
 
     private:
         std::string _name; //job name

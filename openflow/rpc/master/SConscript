@@ -5,6 +5,7 @@ Import('env')
 thrift_bin="../../../thirdparty/thrift/bin/thrift"
 
 os.system(thrift_bin + " -r --gen cpp -out ./ master.thrift" )
+os.system(thrift_bin + " -r --gen php -out ../../web/application/thirdlib/ master.thrift" )
 os.system("rm *.skeleton.cpp")
 
 env.StaticLibrary(

@@ -1,5 +1,5 @@
 // Copyright (c) 2014, OpenFlow
-// Author: kobemiller<kobemiller@126.com>
+// Author: kobemiller<kobemiller@126.com> helight<helight@zhwen.org>
 // Created: 2014-07-03
 // Description:
 //
@@ -8,9 +8,12 @@
 #define OPENFLOW_AGENT_HANDLER_H
 #pragma once
 
+#include <unistd.h>
 #include <vector>
 #include <map>
 #include <string>
+#include <boost/shared_ptr.hpp>
+#include "blocking_queue.h"
 #include "rpc/agent/AgentService.h"
 
 // Set default value
@@ -19,12 +22,13 @@ const uint32_t kForkCnt = 0;
 
 namespace openflow { namespace agent {
 
-    class CAgentHandler : public AgentServiceIf
-    {
-        public:
-            CAgentHandler();
-            ~CAgentHandler();
+class CAgentHandler : public AgentServiceIf
+{
+public:
+    CAgentHandler();
+    ~CAgentHandler();
 
+<<<<<<< HEAD
             /* initialize function */
             void init();
 
@@ -37,15 +41,20 @@ namespace openflow { namespace agent {
             uint32_t get_fork_cnt() const;
 
             int32_t execute_task(const openflow::task_info &task);
+=======
+    int32_t execute_task(const openflow::task_info &task);
+>>>>>>> 60f691c0f8aa0dc826f563ea6368deb25a13c902
 
-            int32_t kill_task(const openflow::task_info &task);
+    /*agent测试用：显示当前执行的任务*/
+    int32_t show_running_task();
 
-            /*计算task执行时间*/
-            float track_time(struct timeval, struct timeval);
+    /*中止一个task*/
+    int32_t kill_task(const openflow::task_info &task);
 
-            /*跟踪子进程*/
-            int32_t parent_catch_sig(int32_t);
+    /*上报自身状态信息*/
+    int32_t report_status();
 
+<<<<<<< HEAD
             int32_t show_running_task();
 
             int32_t report_status();
@@ -82,6 +91,9 @@ namespace openflow { namespace agent {
                     task_status = "FAILED";
             }
     };
+=======
+};
+>>>>>>> 60f691c0f8aa0dc826f563ea6368deb25a13c902
 
 } }
 
