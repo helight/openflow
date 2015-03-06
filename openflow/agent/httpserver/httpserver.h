@@ -52,7 +52,7 @@ public:
     stop_ = true;	
     }
 protected:
-	bool stop_;             // Mark http server stop
+    bool stop_;         // Mark http server stop
 };
 
 }}// end namespace openflow::httpserver

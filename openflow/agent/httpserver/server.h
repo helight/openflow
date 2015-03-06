@@ -30,9 +30,6 @@ public:
   {
     serve();  
   }
-
-protected:
-  bool stop_;
 };
 
 }} // end namespace openflow::httpserver
