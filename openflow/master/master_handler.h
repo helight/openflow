@@ -9,7 +9,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include "rpc/master/MasterService.h"
-#include "blocking_queue.h"
+#include <map>
+#include <time.h>
+#include <string>
 
 namespace openflow { namespace master {
 
@@ -17,22 +19,16 @@ class CMasterHandler : public MasterServiceIf
 {
 public:
     CMasterHandler();
-    ~CMasterHandler();
 
-    int32_t submit_job(const  int32_t job_id);
+    int32_t submit_job(const int32_t job_id);
     int32_t stop_job(const int32_t id);
     int32_t kill_job(const int32_t id);
-    int32_t report_task_state(const int32_t state);
 
-    //threads function.
-    //fetch and parse job.
-    void process_job_func(void);
-    //distribute the tasks of an job to agents.
-    void dist_tasks_func(void);
+    int32_t report_task_state(const openflow::task_state &state);
+    int32_t report_agent_state(const openflow::agent_state &state);
 
-private:
-    common::CBlockingQueue<int32_t> _job_ids;  //job id queue.
-    boost::shared_ptr<boost::thread> process_job_thread;
+    void get_current_jobinfo(openflow::execute_jobinfo& _return);
+    void get_agent_info(std::vector<openflow::agent_state>& _return);
 };
 
 }} // end openflow::master
