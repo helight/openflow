@@ -49,9 +49,9 @@ std::string strip(const std::string &input_string);
  */
 class OOutput 
 {
- public:
-  OOutput() : f_(&errorTimeWrapper){}
-   // Set the function ptr
+public:
+    OOutput() : f_(&errorTimeWrapper){}
+    // Set the function ptr
     inline void setOutputFunction(void (*function)(const char *)) 
     {
         f_ = function;
@@ -72,7 +72,7 @@ class OOutput
     void printf(const char *message, ...);
     static void errorTimeWrapper(const char *msg);
     static std::string strerror_s(int errno_copy);
- private:
+private:
     void (*f_)(const char *);
 };
 
@@ -83,7 +83,7 @@ extern OOutput GlobalOutput;
   */
 class OException : public std::exception
 {
- public:
+public:
     OException() throw():
     message_(){}
     OException(const std::string& message) throw():
@@ -101,7 +101,7 @@ class OException : public std::exception
             return message_.c_str();
         }
     }
- protected:
+protected:
     std::string message_;
 };
 
