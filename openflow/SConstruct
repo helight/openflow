@@ -46,5 +46,6 @@ SConscript(['rpc/SConscript'], exports = 'env')
 
 SConscript(['master/SConscript'], exports = 'env')
 SConscript(['agent/SConscript'], exports = 'env')
+SConscript(['agent/httpserver/SConscript'], exports = 'env')
 
 SConscript(['tools/SConscript'], exports = 'env')
