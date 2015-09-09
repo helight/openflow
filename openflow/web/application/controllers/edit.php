@@ -21,13 +21,13 @@ class Edit extends CI_Controller {
 	{
         // ["mode"];//=1表示实例化,2表示查看,4=组件开发
         $data["mode"] = 2;
-		$this->load->view('editor', $data);
+		$this->load->view('flows/editor', $data);
 	}
 
     public function edit_flow()
     {
         $data["mode"] = 4;
-		$this->load->view('editor', $data);
+		$this->load->view('flows/editor', $data);
     }
 
     public function save_xml()
