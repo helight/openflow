@@ -10,6 +10,7 @@ env.Append(CPPPATH = [root_path, thirdparty,
            thirdparty + '/gflags/include/',
            thirdparty + '/gtest/include/',
            thirdparty + '/sqlite/include/',
+           thirdparty + '/libunwind/include/',
            ])
 
 env.Append(LIBPATH = [thirdparty + '/boost/lib/',
@@ -17,11 +18,17 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            thirdparty + '/gflags/lib',
            thirdparty + '/gtest/lib',
            thirdparty + '/sqlite/lib/',
+           thirdparty + '/libunwind/lib',
            ])
 
 env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'sqlite3'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
+<<<<<<< HEAD
            , 'pthread', 'rt'])
+=======
+           , 'pthread','dl', 'z', 'unwind', 'lzma'])
+
+>>>>>>> c92191afc34c3863895da097675a97f2c3c49ab3
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
            , '-Wno-unused-parameter', '-Wno-unused-local-typedefs'
            , '-Wno-missing-field-initializers'])
@@ -31,15 +38,33 @@ env.Append(LINKFLAGS = ['-static'])
 env.Library(
     target = "common",
     source = [
-    "db_help.cpp",
     "main_template.cpp",
     "utils.cpp",
     ],
 )
 
+<<<<<<< HEAD
 env.Program(
     target = "blocking_queue_test",
     source = [
     "blocking_queue_test.cpp"
     ]
+=======
+env.Library(
+    target = "dbhelp",
+    source = [
+    "dbhelp_factory.cpp",
+    "sqlite_help.cpp"
+    ],
+)
+
+env.Program(
+    target = "blocking_queue_test",
+    source = ['blocking_queue_test.cpp']
+    )
+
+env.Program(
+    target = "thread_pool_test",
+    source = ['thread_pool_test.cpp']
+>>>>>>> c92191afc34c3863895da097675a97f2c3c49ab3
     )

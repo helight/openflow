@@ -1,2 +1,4 @@
-1. install thirtdparty:
-> bash ./install_thritdparty.sh
+1.install g++ automake libtool build-essential libssl-dev bison flex scons liblzma-dev
+    g++ libstdc++ automake libtool
+2. install thirtdparty:
+    > bash ./install_thritdparty.sh

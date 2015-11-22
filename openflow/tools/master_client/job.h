@@ -4,7 +4,7 @@
 #include <iostream>
 #include "rpc/master/MasterService.h"
 
-namespace tools{ namespace master_client {
+namespace openflow { namespace tools{ namespace master_client {
 class CJob
 {
     public:
@@ -17,12 +17,13 @@ class CJob
          * return: sucess with job id, otherwise -1.
          */
         int store(const std::string & db_name, openflow::job_info &info);
+	bool report_state();
 
     private:
         std::string _name; //job name
         int _id; //job id
         std::string _xml; //xml name
 };
-} //end of namespace master_client
-} //end of namespace tools
+
+}}} //namespace openflow::tools::master_client
 #endif // JOB_H

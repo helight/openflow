@@ -1,58 +1,83 @@
-// Copyright (c) 2014, HelightXu
+// Copyright (c) 2014, OpenFlow
 // Author: RenZhen<renzhengeek@163.com>
 // Created: 2014-06-08
 // Description:
 //  Using rpc interface to process job.
+#include <time.h>
+#include <string>
+#include <map>
+#include <boost/format.hpp>
 #include <glog/logging.h>
+#include <boost/algorithm/string.hpp>
+#include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/serialization/singleton.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 #include "master_handler.h"
-#include "master_core.h"
+#include "job_scheduler.h"
+#include "../config.h"
 
 namespace openflow { namespace master {
 
-    CMasterHandler::CMasterHandler() {}
+CMasterHandler::CMasterHandler() {}
 
-    int32_t CMasterHandler::submit_job(const int32_t job_id) {
-        CMasterCore core;
+int32_t CMasterHandler::submit_job(const int32_t job_id)
+{
+    //push job id into blocking queue.
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
-        LOG(INFO) << "received a job.";
-        LOG(INFO) << "job id: " << job_id;
+    return job_scheduler.submit_job(job_id);
+}
 
-        //fetch job from database by job ID
-        if( false == core.fetch_job(job_id) )
-        {
-            LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-            return -1;
-        }
+int32_t CMasterHandler::stop_job(const int32_t id)
+{
+    // Your implementation goes here
+    return 0;
+}
 
-        LOG(INFO)  << "print job...";
-        core.print_job(job_id);
+int32_t CMasterHandler::kill_job(const int32_t id)
+{
+    // Your implementation goes here
+    return 0;
+}
 
-        //parse job into tasks
-        if( false == core.parse_job(job_id) )
-        {
-            LOG(ERROR) << "Fail to fectch job(" << job_id << ") from database.";
-            return -1;
-        }
-        LOG(INFO) << "print tasks...";
-        core.print_tasks(job_id);
+int32_t CMasterHandler::report_agent_state(const openflow::agent_state &state)
+{
+    LOG(INFO) << "get one agent state report: " << state.ipaddr;
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
-        return 0;
-    }
+    return job_scheduler.report_agent_state(state);
+}
 
-    int32_t CMasterHandler::stop_job(const int32_t id) {
-        // Your implementation goes here
-        return 0;
-    }
+int32_t CMasterHandler::report_task_state(const openflow::task_state &state)
+{
+    LOG(INFO) << "get one agent task state report: " << state.uuid;
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
 
-    int32_t CMasterHandler::kill_job(const int32_t id) {
-        // Your implementation goes here
-        return 0;
-    }
+    return job_scheduler.report_task_state(state);
+}
 
-    int32_t CMasterHandler::report_task_state(const int32_t state) {
-        // Your implementation goes here
-        return 0;
-    }
+void CMasterHandler::get_current_jobinfo(openflow::execute_jobinfo& _return)
+{
+    _return.current_jobnum = 1;
+    _return.failure_jobnum = 1;
+    _return.done_jobnum = 1;
+    _return.success_jobnum = 1;
+    LOG(INFO) << "exexute...............";
+}
+
+void CMasterHandler::get_agent_info(std::vector<openflow::agent_state>& _return)
+{
+    CJobScheduler& job_scheduler =
+        boost::serialization::singleton<CJobScheduler>::get_mutable_instance();
+    int32_t ret = job_scheduler.get_agent_state(_return);
+
+    LOG(INFO) << "agent num: " << ret;
+}
 
 }} // end openflow::master
 
