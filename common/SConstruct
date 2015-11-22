@@ -23,12 +23,9 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
 
 env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'sqlite3'
            , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
-<<<<<<< HEAD
            , 'pthread', 'rt'])
-=======
-           , 'pthread','dl', 'z', 'unwind', 'lzma'])
+#           // , 'pthread','dl', 'z', 'unwind', 'lzma'])
 
->>>>>>> c92191afc34c3863895da097675a97f2c3c49ab3
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
            , '-Wno-unused-parameter', '-Wno-unused-local-typedefs'
            , '-Wno-missing-field-initializers'])
@@ -43,13 +40,6 @@ env.Library(
     ],
 )
 
-<<<<<<< HEAD
-env.Program(
-    target = "blocking_queue_test",
-    source = [
-    "blocking_queue_test.cpp"
-    ]
-=======
 env.Library(
     target = "dbhelp",
     source = [
@@ -66,5 +56,4 @@ env.Program(
 env.Program(
     target = "thread_pool_test",
     source = ['thread_pool_test.cpp']
->>>>>>> c92191afc34c3863895da097675a97f2c3c49ab3
     )
