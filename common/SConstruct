@@ -19,8 +19,9 @@ env.Append(LIBPATH = [thirdparty + '/boost/lib/',
            thirdparty + '/sqlite/lib/',
            ])
 
-env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'sqlite3'
-           , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'])
+env.Append(LIBS = ['boost_system', 'glog', 'gflags', 'gtest', 'sqlite3'
+           , 'boost_filesystem', 'boost_thread', 'boost_system', 'boost_date_time'
+           , 'pthread', 'rt'])
 env.Append(CCFLAGS = ['-Wall', '-O2', '-g', '-Wno-unused-but-set-variable'
            , '-Wno-unused-parameter', '-Wno-unused-local-typedefs'
            , '-Wno-missing-field-initializers'])
@@ -36,3 +37,9 @@ env.Library(
     ],
 )
 
+env.Program(
+    target = "blocking_queue_test",
+    source = [
+    "blocking_queue_test.cpp"
+    ]
+    )
