@@ -1,5 +1,5 @@
 <?php
-    $this->load->view("admin/side.php");
+    $this->load->view("common/side.php");
 ?>
 	<div class="m-sidebar-collapsed">
 		<ul class="nav nav-pills">

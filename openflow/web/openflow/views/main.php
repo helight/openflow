@@ -1,5 +1,5 @@
 <?php
-	require_once("admin/side.php");
+	require_once("common/side.php");
 ?>
 
 <div class="main-container">
@@ -29,6 +29,6 @@
 				</div>
 			</section>
 		</div>
-	</div>
+</div>
 </body>
 </html>

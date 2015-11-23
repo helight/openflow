@@ -1,24 +1,19 @@
 <!doctype html>
 <html>
 <head>
-	<title>CLGT - Google Admin Theme</title>
+	<title>OpenFlow</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap-responsive.css" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/style.css" />
 
 	<script type='text/javascript' src='../content/js/admin/jsapi.js'></script>
-
-	<script type="text/javascript" src="../content/js/admin/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../content/js/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../content/js/admin/main.js"></script>
 	<script type="text/javascript" src="../content/js/admin/bootstrap.min.js"></script>
+</head>
 
-<!--	<script type="text/javascript" src="../content/js/admin/chart.js"></script> -->
-
-	<!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
 	<div class="navbar navbar-fixed-top m-header">
 		<div class="navbar-inner m-inner">
@@ -39,7 +34,7 @@
 
 					<div class="btn-group pull-right">
 				        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			          		<i class="icon-user"></i> 张义飞
+			          		<i class="icon-user"></i> openflow user
 			          		<span class="caret"></span>
 				        </a>
 				        <ul class="dropdown-menu">
@@ -64,6 +59,24 @@
 						</div>
 						<div class="title">
 							主页
+						</div>
+					</div>
+
+					<div class="arrow">
+						<div class="bubble-arrow-border"></div>
+						<div class="bubble-arrow"></div>
+					</div>
+				</a>
+			</li>
+
+			<li class="">
+				<a href="/flows">
+					<div>
+						<div class="ico">
+						<img src="../content/img/ico/ico-more.png" />
+						</div>
+						<div class="title">
+							流程信息
 						</div>
 					</div>
 

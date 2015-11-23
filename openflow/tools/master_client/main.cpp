@@ -52,6 +52,7 @@ void submit_job(const uint32_t job_id)
 
 void report_agent_state()
 {
+    std::cout << "report_agent_state" << std::endl;
     //AddMe ZhangYiFei 2014/10/30 test master side reporte_agent_sate interface
     openflow::agent_state state;
     state.remain_mem = "600MB";
@@ -82,6 +83,7 @@ void report_agent_state()
 
 void get_agent_state()
 {
+    std::cout << "get_agent_state" << std::endl;
     common::CThriftClientHelper<master::MasterServiceClient> *thrift_client_helper =
         new  common::CThriftClientHelper<master::MasterServiceClient>("127.0.0.1", 9080);
     try

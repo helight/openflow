@@ -30,6 +30,7 @@ if_ok "create database [fail].";
 create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_JOB}
                       (job_id INTEGER PRIMARY KEY AUTOINCREMENT,
                        job_name TEXT NOT NULL,
+                       creater TEXT NOT NULL,
                        xml_desc TEXT,
                        time TEXT);";
 echo "${create_table_job_sql}" | ${SQLITE} ${DBNAME};
@@ -42,9 +43,8 @@ create_table_agent_state_sql="create table IF NOT EXISTS ${TABLENAME_AGENTSTATE}
                        remain_mem TEXT NOT NULL,
                        mem_use_percent TEXT,
                        cpu_idle_percent TEXT,
-		       cpu_load TEXT,
-		       swap_use_percent TEXT
-			);";
+		               cpu_load TEXT,
+		               swap_use_percent TEXT);";
 
 echo "${create_table_agent_state_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create agent_state table [fail].";
@@ -52,15 +52,15 @@ if_ok "create agent_state table [fail].";
 #创建TASK_state表
 #FIXME ZhangYiFei
 create_table_task_state_sql="create table IF NOT EXISTS ${TABLENAME_TASKSTATE}
-                      (job_id INTEGER,
-                       task_id INTEGER  NOT NULL,
-                       task_name TEXT NOT NULL,
-                       cmd TEXT	NOT NULL,
-		       desc TEXT,
-		       task_status INTEGER,
-		       task_result TEXT,
-		       ipaddr TEXT
-			);";
+                            (job_id INTEGER,
+                             task_id INTEGER  NOT NULL,
+                             task_name TEXT NOT NULL,
+                             cmd TEXT	NOT NULL,
+                             desc TEXT,
+                             task_status INTEGER,
+                             task_result TEXT,
+                             ipaddr TEXT
+                            );";
 
 echo "${create_table_task_state_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create task_state table [fail].";

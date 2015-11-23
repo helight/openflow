@@ -1,33 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Edit extends CI_Controller {
+class Flows extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/main
-	 *	- or -
-	 * 		http://example.com/index.php/main/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
+    public function index()
+    {
+        $this->edit_flow();
+    }
+
 	public function show()
 	{
         // ["mode"];//=1表示实例化,2表示查看,4=组件开发
         $data["mode"] = 2;
-		$this->load->view('flows/editor', $data);
+		$this->load->view('flows/flows', $data);
 	}
 
     public function edit_flow()
     {
         $data["mode"] = 4;
-		$this->load->view('flows/editor', $data);
+		$this->load->view('flows/edit', $data);
     }
 
     public function save_xml()

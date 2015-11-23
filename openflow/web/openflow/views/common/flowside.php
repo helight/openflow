@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>OpenFlow</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=7,IE=8,IE=9" />
-    <title></title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="../content/css/admin/style.css" />
+    // flows
     <link rel="stylesheet" type="text/css" href="../content/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../content/easyui/themes/icon.css">
     <script src="../content/js/images.js"></script>
@@ -15,7 +19,12 @@
     <link href="../content/jm/css/jm.win.css?ver=<%= version%>" rel="stylesheet" />
     <link href="../content/jm/css/jm.codeHighLight.css?ver=<%= version%>" rel="stylesheet" />
 
-    <script src="../content/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../content/js/jquery.min.js"></script>
+	<script type='text/javascript' src='../content/js/admin/jsapi.js'></script>
+	<script type="text/javascript" src="../content/js/admin/main.js"></script>
+	<script type="text/javascript" src="../content/js/admin/bootstrap.min.js"></script>
+
+    // flows
     <script src="../content/jm/js/jm.core.js"></script>
     <script src="../content/jm/js/jm.paging.js?ver=<%= version%>"></script>
     <script src="../content/jm/js/jm.table.js?ver=<%= version%>"></script>
@@ -27,10 +36,7 @@
     <script src="../content/js/openflow.message.js?ver=<%= version%>"></script>
 
     <link href="../content/css/editor.css?ver=<%= version%>" rel="stylesheet" />
-
-
     <script type="text/javascript" src="../content/easyui/jquery.easyui.min.js"></script>
-
 
    <script src="../content/js/openflow.shapes.js?ver=<%= version%>"></script>
    <link href="../content/codemirror/lib/codemirror.css" rel="stylesheet" />
@@ -47,6 +53,7 @@
     <script src="../content/js/openflow.code.js"></script>
     <script src="../content/js/openflow.category.js"></script>
     <script src="../content/js/openflow.editor.property.js?ver=<%= version%>"></script>
+
     <script src="../content/js/openflow.instance.js?ver=<%= version%>"></script>
     <script src="../content/js/openflow.base.js?ver=<%= version%>"></script>
     <script src="../content/js/openflow.executor.js?ver=<%= version%>"></script>
@@ -61,6 +68,7 @@
         openflow.version = '<%= version%>';
         openflow.editable = openflow.flag == 0 || openflow.flag == 4;
     </script>
+
     <style type="text/css">
     .CodeMirror {
         height:auto;
@@ -79,28 +87,6 @@
     }
     </style>
 </head>
-
- <body>
-    <div id="editor-toolbar"></div>
-    <div id="editor-body">
-        <div id="editor-body-left">
-            <div class="right_shadow"></div>
-        </div>
-        <div id="editor-body-right">
-            <div id="editor-parent">
-                 <div id="editor" class="left"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="taskServerContainer" class="task-server-container" style="display:none;">
-        <ul class="statusMark">
-            <li class="stoped">被停止</li>
-            <li class="suspend">暂停中</li>
-            <li class="success">运行成功</li>
-            <li class="failed">运行失败</li>
-            <div class="clear"></div>
-        </ul>
-        <ul id="task-servers"></ul>
-    </div>
-</body>
+<?php
+    require_once("list.php");
+?>

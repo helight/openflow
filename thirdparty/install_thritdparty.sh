@@ -141,10 +141,10 @@ function install_thirft()
     if test $? -ne 0; then
         exit 1
     fi
-#    sed -i -e 's!#define HAVE_MALLOC 0!#define HAVE_MALLOC 1!' config.h
-#    sed -i -e 's!#define HAVE_REALLOC 0!#define HAVE_REALLOC 1!' config.h
-#    sed -i -e 's!#define malloc rpl_malloc!/*#define malloc rpl_malloc*/!' config.h
-#    sed -i -e 's!#define realloc rpl_realloc!/*#define realloc rpl_realloc*/!' config.h
+    sed -i -e 's!#define HAVE_MALLOC 0!#define HAVE_MALLOC 1!' config.h
+    sed -i -e 's!#define HAVE_REALLOC 0!#define HAVE_REALLOC 1!' config.h
+    sed -i -e 's!#define malloc rpl_malloc!/*#define malloc rpl_malloc*/!' config.h
+    sed -i -e 's!#define realloc rpl_realloc!/*#define realloc rpl_realloc*/!' config.h
     make
     if test $? -ne 0; then
         exit 1
