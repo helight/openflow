@@ -31,8 +31,9 @@ create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_JOB}
                       (job_id INTEGER PRIMARY KEY AUTOINCREMENT,
                        job_name TEXT NOT NULL,
                        creater TEXT NOT NULL,
-                       xml_desc TEXT,
-                       time TEXT);";
+                       flow_xml TEXT,
+                       desc TEXT,
+                       uptime TEXT);";
 echo "${create_table_job_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job table [fail].";
 

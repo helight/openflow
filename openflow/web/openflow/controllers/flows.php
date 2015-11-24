@@ -1,7 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Flows extends CI_Controller {
-
+    function _construct()
+    {
+        $this->load->model("job_manager");
+    }
     public function index()
     {
         $this->edit_flow();
@@ -22,7 +25,6 @@ class Flows extends CI_Controller {
 
     public function save_xml()
     {
-        echo "asdfasdf<br>";
         if (isset($_GET['cmd']))
         {
             echo "cmd: ".$_GET['cmd']."<br>";
@@ -46,6 +48,69 @@ class Flows extends CI_Controller {
         if (isset($_POST['url']))
         {
             echo "url: ".$_POST['url']."<br>";
+        }
+    }
+
+    public function template()
+    {
+        if (isset($_GET['cmd']))
+        {
+            $ret = 0;
+            $cmd = $_GET['cmd'];
+            // echo "cmd: ".$cmd."<br>";
+            switch ($cmd)
+            {
+            case "insert":
+                if (isset($_POST['EditorXml']))
+                {
+                    # echo "EditorXml: ".$_POST['EditorXml']."<br>";
+                    $sql = "insert into tbJobs(job_name, creater, xml_info, desc, time)VALUES(";
+                    $sql = $sql."'".$_POST['Name']."', 'helightxu', '".$_POST['EditorXml'];
+                    $sql = $sql."', '".$_POST['Description']."', '".date("Y-m-d H:i:s", time())."');";
+                    echo $sql;
+                    $this->job_manager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
+                                                 $_POST['Description'], date("Y-m-d H:i:s", time()));
+                }
+                break;
+            case "update":
+                break;
+            case "savedraft":
+                break;
+            case "inserttemplate":
+                break;
+            case "updatetemplate":
+                break;
+            case "updatepermission":
+                break;
+            default:
+                break;
+            }
+            return $ret;
+
+            if ($cmd == "insert")
+            {
+                return 0;
+            }
+            if ($cmd == "update")
+            {
+                return 0;
+            }
+            if ($cmd == "savedraft")
+            {
+                return 0;
+            }
+            if ($cmd == "updatetemplate")
+            {
+                return 0;
+            }
+            if ($cmd == "inserttemplate")
+            {
+                return 0;
+            }
+            if ($cmd == "updatepermission")
+            {
+                return 0;
+            }
         }
     }
 }

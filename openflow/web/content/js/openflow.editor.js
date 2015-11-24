@@ -969,7 +969,7 @@ openflow.editor = (function () {
             //data.Image =  this.editor.toImage();//获取图像
 
             if(openflow.flag == 4) {
-                data.url= '/edit/save_xml?cmd=' + (this.data && this.data.Id?'update':'insert');
+                data.url= '/flows/template?cmd=' + (this.data && this.data.Id?'update':'insert');
                 if(this.data && this.data.Id) data.Id = this.data.Id;
             }
             else {
@@ -980,7 +980,7 @@ openflow.editor = (function () {
                 else {
                     cmd = "inserttemplate";
                 }
-                data.url= '/servers/templateServer.js?cmd=' + cmd;
+                data.url= '/flows/templateServer.js?cmd=' + cmd;
             }
 
             //保存草稿
