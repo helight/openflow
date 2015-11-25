@@ -39,12 +39,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-// $db['default']['hostname'] = 'sqlite:'.APPPATH.'/../database/openflow.db';
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'root';
-$db['default']['database'] = 'openflow';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['hostname'] = 'sqlite:'.APPPATH.'/../database/openflow.db';
+$db['default']['username'] = '';
+$db['default']['password'] = '';
+$db['default']['database'] = '';
+$db['default']['dbdriver'] = 'pdo'; // 'sqlite3';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
@@ -55,3 +54,19 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+$db['mysql_server']['hostname'] = 'localhost';
+$db['mysql_server']['username'] = 'root';
+$db['mysql_server']['password'] = 'root';
+$db['mysql_server']['database'] = 'openflow';
+$db['mysql_server']['dbdriver'] = 'mysql';
+$db['mysql_server']['dbprefix'] = '';
+$db['mysql_server']['pconnect'] = TRUE;
+$db['mysql_server']['db_debug'] = TRUE;
+$db['mysql_server']['cache_on'] = FALSE;
+$db['mysql_server']['cachedir'] = '';
+$db['mysql_server']['char_set'] = 'utf8';
+$db['mysql_server']['dbcollat'] = 'utf8_general_ci';
+$db['mysql_server']['swap_pre'] = '';
+$db['mysql_server']['autoinit'] = TRUE;
+$db['mysql_server']['stricton'] = FALSE;

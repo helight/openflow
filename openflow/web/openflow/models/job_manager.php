@@ -1,15 +1,16 @@
 <?php
-// require_once "base_model.php"
-require_once "base_model.php";
 // class job_manager extends CI_Model
-class job_manager extends base_model
+class Job_manager extends CI_Model
 {
+    var $job_id = 0;
+    var $job_category = 0;
     var $job_name = "";
     var $creater = "";
     var $flow_xml = "";
     var $desc = "";
     var $uptime = "";
-    public function job_manager()
+
+    function __construct()
     {
         parent::__construct();
     }
@@ -30,6 +31,7 @@ class job_manager extends base_model
         $this->uptime  = $uptime;
 
         $this->db->insert('tbJobs', $this);
+        return $this->db->insert_id();
     }
 }
 

@@ -1,8 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Flows extends CI_Controller {
-    function _construct()
+    function __construct()
     {
+        parent::__construct();
         $this->load->model("job_manager");
     }
     public function index()
@@ -67,9 +68,9 @@ class Flows extends CI_Controller {
                     $sql = "insert into tbJobs(job_name, creater, xml_info, desc, time)VALUES(";
                     $sql = $sql."'".$_POST['Name']."', 'helightxu', '".$_POST['EditorXml'];
                     $sql = $sql."', '".$_POST['Description']."', '".date("Y-m-d H:i:s", time())."');";
-                    echo $sql;
-                    $this->job_manager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
-                                                 $_POST['Description'], date("Y-m-d H:i:s", time()));
+                    // echo $sql;
+                    $ret = $this->job_manager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
+                                                        $_POST['Description'], date("Y-m-d H:i:s", time()));
                 }
                 break;
             case "update":
@@ -85,32 +86,7 @@ class Flows extends CI_Controller {
             default:
                 break;
             }
-            return $ret;
-
-            if ($cmd == "insert")
-            {
-                return 0;
-            }
-            if ($cmd == "update")
-            {
-                return 0;
-            }
-            if ($cmd == "savedraft")
-            {
-                return 0;
-            }
-            if ($cmd == "updatetemplate")
-            {
-                return 0;
-            }
-            if ($cmd == "inserttemplate")
-            {
-                return 0;
-            }
-            if ($cmd == "updatepermission")
-            {
-                return 0;
-            }
+            echo $ret;
         }
     }
 }

@@ -9,8 +9,10 @@
 SQLITE="sqlite3"
 DBNAME="openflow.db"  #数据库名称
 TABLENAME_JOB="tbJobs"     #数据库中表的名称
-TABLENAME_AGENTSTATE="AgentState"
-TABLENAME_TASKSTATE="TaskState"
+TABLENAME_JOB_CATEGORY="tbJobCategory"
+TABLENAME_JOB_INSTANCE="tbJobInstance"
+TABLENAME_TASKSTATE="tbTaskState"
+TABLENAME_AGENTSTATE="tbAgentState"
 
 
 #测试命令是否执行成功
@@ -28,7 +30,8 @@ if_ok "create database [fail].";
 
 #创建数据表
 create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_JOB}
-                      (job_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                      (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                       job_category INTEGER NOT NULL,
                        job_name TEXT NOT NULL,
                        creater TEXT NOT NULL,
                        flow_xml TEXT,
@@ -36,6 +39,16 @@ create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_JOB}
                        uptime TEXT);";
 echo "${create_table_job_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job table [fail].";
+
+# job_category
+create_table_job_category_sql="create table IF NOT EXISTS ${TABLENAME_JOB_CATEGORY}
+                            (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                             name TEXT NOT NULL,
+                             creater TEXT NOT NULL,
+                             desc TEXT,
+                             uptime TEXT);";
+echo "${create_table_job_category_sql}" | ${SQLITE} ${DBNAME};
+if_ok "create job_category table [fail].";
 
 #创建agent_state表
 #FIXME ZhangYiFei
