@@ -24,6 +24,11 @@ class Flows extends CI_Controller {
 		$this->load->view('flows/edit', $data);
     }
 
+    public function test()
+    {
+        echo $this->job_manager->get_jobs_info();
+    }
+
     public function save_xml()
     {
         if (isset($_GET['cmd']))
