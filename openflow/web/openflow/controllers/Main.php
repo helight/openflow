@@ -14,7 +14,7 @@ class Main extends CI_Controller {
 
     public function admin()
     {
-        echo APPPATH;
+        // echo APPPATH;
 		$this->load->view('main');
     }
 }

@@ -1,4 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Flows extends CI_Controller {
     function __construct()
@@ -27,6 +28,7 @@ class Flows extends CI_Controller {
     public function test()
     {
         var_dump($this->JobManager->get_jobs_info());
+        $this->load->view("blogview");
     }
 
     public function save_xml()

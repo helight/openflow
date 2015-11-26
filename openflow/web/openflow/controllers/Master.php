@@ -4,7 +4,7 @@ class Master extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-        $this->load->model("job_manager");
+        $this->load->model("JobManager");
 	}
 
 	public function index()
@@ -14,6 +14,6 @@ class Master extends CI_Controller {
 
     public function get_jobs()
     {
-        echo json_encode($this->job_manager->get_jobs_info());
+        echo json_encode($this->JobManager->get_jobs_info());
     }
 }
