@@ -4,7 +4,7 @@ class Flows extends CI_Controller {
     function __construct()
     {
         parent::__construct();
-        $this->load->model("job_manager");
+        $this->load->model("JobManager");
     }
     public function index()
     {
@@ -26,7 +26,7 @@ class Flows extends CI_Controller {
 
     public function test()
     {
-        echo $this->job_manager->get_jobs_info();
+        var_dump($this->JobManager->get_jobs_info());
     }
 
     public function save_xml()
@@ -74,8 +74,8 @@ class Flows extends CI_Controller {
                     $sql = $sql."'".$_POST['Name']."', 'helightxu', '".$_POST['EditorXml'];
                     $sql = $sql."', '".$_POST['Description']."', '".date("Y-m-d H:i:s", time())."');";
                     // echo $sql;
-                    $ret = $this->job_manager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
-                                                        $_POST['Description'], date("Y-m-d H:i:s", time()));
+                    $ret = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
+                        $_POST['Description'], date("Y-m-d H:i:s", time()));
                 }
                 break;
             case "update":
