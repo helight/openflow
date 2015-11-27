@@ -15,8 +15,8 @@ class Flows extends CI_Controller {
 	public function show()
 	{
         // ["mode"];//=1表示实例化,2表示查看,4=组件开发
-        $data["mode"] = 2;
-		$this->load->view('flows/flows', $data);
+        $data["mode"] = 1;
+		$this->load->view('flows/edit', $data);
 	}
 
     public function edit_flow()
@@ -29,6 +29,27 @@ class Flows extends CI_Controller {
     {
         var_dump($this->JobManager->get_jobs_info());
         $this->load->view("blogview");
+    }
+
+    public function component()
+    {
+        if (isset($_GET['cmd']))
+        {
+            $ret = 0;
+            $cmd = $_GET['cmd'];
+            // echo "cmd: ".$cmd."<br>";
+            switch ($cmd)
+            {
+            case 'get':
+                if (isset($_GET['id']))
+                {
+                    echo json_encode($this->JobManager->get_job_info($_GET['id']));
+                }
+                break;
+            default:
+            break;
+            }
+        }
     }
 
     public function save_xml()
@@ -97,6 +118,3 @@ class Flows extends CI_Controller {
         }
     }
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */

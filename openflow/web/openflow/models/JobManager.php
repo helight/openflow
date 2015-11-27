@@ -2,7 +2,6 @@
 // class job_manager extends CI_Model
 class JobManager extends CI_Model
 {
-    var $id = 0;
     var $job_category = 0;
     var $job_name = "";
     var $creater = "";
@@ -21,6 +20,13 @@ class JobManager extends CI_Model
         $sql = "select id, job_name, creater, flow_xml, desc, uptime from tbjobs;";
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+
+    public function get_job_info($id)
+    {
+        $sql = "select id, job_name as Name, creater, flow_xml as EditorXml, desc, uptime from tbjobs where id=".$id.";";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     public function add_jobs($job_name, $creater, $xml_info, $desc, $uptime)

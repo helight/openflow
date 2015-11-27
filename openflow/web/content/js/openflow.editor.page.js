@@ -63,12 +63,12 @@ function loadopenflow(editor, id,callback) {
 
     if(openflow.flag == 4) {
         openflow.request('get', {
-            url:openflow.root + 'servers/componentServer.js?cmd=get&id='+ (id || 0) + '&rnd=' + Math.random()
+            url:openflow.root + 'flows/component?cmd=get&id='+ (id || 0) + '&rnd=' + Math.random()
         }, loadTemplateCallback);
     }
     else {
         openflow.request('get', {
-            url:openflow.root + 'servers/templateServer.js?cmd=getdraft&id='+ (id || 0) + '&user=' + openflow.user + '&rnd=' + Math.random()
+            url:openflow.root + 'flows/templateServer.js?cmd=getdraft&id='+ (id || 0) + '&user=' + openflow.user + '&rnd=' + Math.random()
         }, loadTemplateCallback);
     }
 
@@ -534,7 +534,7 @@ $(function () {
         }
         if (id && instance) {
             openflow.currentInstance = new openflow.instance();
-            openflow.currentInstance.loadInstance(editor, instance,uuid, loadcallback);
+            openflow.currentInstance.loadInstance(editor, instance, uuid, loadcallback);
         }
         else {
             loadopenflow(editor, id, loadcallback);
