@@ -43,7 +43,13 @@ class Flows extends CI_Controller {
             case 'get':
                 if (isset($_GET['id']))
                 {
-                    echo json_encode($this->JobManager->get_job_info($_GET['id']));
+                    $data["State"] = 0;
+                    $ret = $this->JobManager->get_job_info($_GET['id']);
+                    if (count($ret) > 0)
+                    {
+                        $data["Data"] = $ret[0];
+                        echo json_encode($data);
+                    }
                 }
                 break;
             default:
@@ -92,16 +98,14 @@ class Flows extends CI_Controller {
             case "insert":
                 if (isset($_POST['EditorXml']))
                 {
-                    # echo "EditorXml: ".$_POST['EditorXml']."<br>";
-                    $sql = "insert into tbJobs(job_name, creater, xml_info, desc, time)VALUES(";
-                    $sql = $sql."'".$_POST['Name']."', 'helightxu', '".$_POST['EditorXml'];
-                    $sql = $sql."', '".$_POST['Description']."', '".date("Y-m-d H:i:s", time())."');";
-                    // echo $sql;
-                    $ret = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml'],
-                        $_POST['Description'], date("Y-m-d H:i:s", time()));
+                    $ret = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml']
+                        , $_POST['TemplateXml'], $_POST['Description']);
                 }
                 break;
             case "update":
+                $sql = "update tbJobs";
+                $ret = $this->JobManager->update_job($_POST['Id'], $_POST['EditorXml'], $_POST['TemplateXml']
+                                                      , $_POST['Name'], $_POST['Description']);
                 break;
             case "savedraft":
                 break;

@@ -30,23 +30,24 @@ if_ok "create database [fail].";
 
 #创建数据表
 create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_JOB}
-                      (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                       job_category INTEGER NOT NULL,
-                       job_name TEXT NOT NULL,
-                       creater TEXT NOT NULL,
-                       flow_xml TEXT,
-                       desc TEXT,
-                       uptime TEXT);";
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                       Category INTEGER NOT NULL,
+                       Name TEXT NOT NULL,
+                       Creater TEXT NOT NULL,
+                       EditorXml TEXT,
+                       TemplateXml TEXT,
+                       Description TEXT,
+                       Uptime TEXT);";
 echo "${create_table_job_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job table [fail].";
 
 # job_category
 create_table_job_category_sql="create table IF NOT EXISTS ${TABLENAME_JOB_CATEGORY}
-                            (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                             name TEXT NOT NULL,
-                             creater TEXT NOT NULL,
-                             desc TEXT,
-                             uptime TEXT);";
+                            (Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                             Name TEXT NOT NULL,
+                             Creater TEXT NOT NULL,
+                             Desc TEXT,
+                             Uptime TEXT);";
 echo "${create_table_job_category_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_category table [fail].";
 

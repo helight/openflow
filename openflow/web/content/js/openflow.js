@@ -75,7 +75,7 @@ var openflow = (function ifow() {
 /**
 * 请求服务端
 */
-openflow.request = function (method,data, callback) {
+openflow.request = function (method, data, callback) {
     openflow.log(data);
     $.ajax({
         type: method || 'get',

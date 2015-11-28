@@ -954,7 +954,7 @@ openflow.editor = (function () {
                 }
                 return;
             }
-            var name=this.data ? this.data.Name : null;
+            var name = this.data ? this.data.Name : null;
             var des = this.data ? this.data.Name : null;
             if (!isdraft && (!name || !des)) {
                 openflow.message.warning('名称和描述不可为空');
@@ -998,7 +998,8 @@ openflow.editor = (function () {
             openflow.request('post', data, function (r) {
                 if(tip) tip.hide();
                 if (r && Number(r) > 0) {
-                    if (!data.Id && !isdraft) {
+                    // if (!data.Id && !isdraft) {
+                    if (!data.Id) {
                         data.Id = Number(r);
                         window.location = openflow.checkUrl('/editor?mode='+openflow.flag+'&id=' + data.Id);
                     }

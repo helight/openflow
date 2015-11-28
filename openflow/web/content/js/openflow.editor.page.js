@@ -57,7 +57,7 @@ function createEmptyEditor(callback) {
 
 
 //加载xml
-function loadopenflow(editor, id,callback) {
+function loadopenflow(editor, id, callback) {
     var tip = openflow.message.showWaiting('loading...');
     var isdraft = true;
 
