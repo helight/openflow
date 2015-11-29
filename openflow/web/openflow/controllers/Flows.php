@@ -9,13 +9,15 @@ class Flows extends CI_Controller {
     }
     public function index()
     {
-        $this->edit_flow();
+        $data["mode"] = 2;
+        $data["flowslist"] = $this->JobManager->get_jobs_info();
+        $this->load->view('flows/flowslist', $data);
     }
 
 	public function show()
 	{
         // ["mode"];//=1表示实例化,2表示查看,4=组件开发
-        $data["mode"] = 1;
+        $data["mode"] = 2;
 		$this->load->view('flows/edit', $data);
 	}
 
@@ -40,6 +42,7 @@ class Flows extends CI_Controller {
             // echo "cmd: ".$cmd."<br>";
             switch ($cmd)
             {
+            case 'getdraft':
             case 'get':
                 if (isset($_GET['id']))
                 {
@@ -58,36 +61,9 @@ class Flows extends CI_Controller {
         }
     }
 
-    public function save_xml()
-    {
-        if (isset($_GET['cmd']))
-        {
-            echo "cmd: ".$_GET['cmd']."<br>";
-        }
-        if (isset($_POST['EditorXml']))
-        {
-            echo "EditorXml: ".$_POST['EditorXml']."<br>";
-        }
-        if (isset($_POST['TemplateXml']))
-        {
-            echo "TemplateXml: ".$_POST['TemplateXml']."<br>";
-        }
-        if (isset($_POST['Name']))
-        {
-            echo "Name: ".$_POST['Name']."<br>";
-        }
-        if (isset($_POST['Description']))
-        {
-            echo "Description: ".$_POST['Description']."<br>";
-        }
-        if (isset($_POST['url']))
-        {
-            echo "url: ".$_POST['url']."<br>";
-        }
-    }
-
     public function template()
     {
+        $data["State"] = 0;
         if (isset($_GET['cmd']))
         {
             $ret = 0;
@@ -98,13 +74,12 @@ class Flows extends CI_Controller {
             case "insert":
                 if (isset($_POST['EditorXml']))
                 {
-                    $ret = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml']
+                    $data["Data"] = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml']
                         , $_POST['TemplateXml'], $_POST['Description']);
                 }
                 break;
             case "update":
-                $sql = "update tbJobs";
-                $ret = $this->JobManager->update_job($_POST['Id'], $_POST['EditorXml'], $_POST['TemplateXml']
+                $data["Data"] = $this->JobManager->update_job($_POST['Id'], $_POST['EditorXml'], $_POST['TemplateXml']
                                                       , $_POST['Name'], $_POST['Description']);
                 break;
             case "savedraft":
@@ -118,7 +93,7 @@ class Flows extends CI_Controller {
             default:
                 break;
             }
-            echo $ret;
+            echo json_encode($data);
         }
     }
 }

@@ -938,7 +938,7 @@ openflow.editor = (function () {
     /**
     * 保存当前模板
     */
-    __contructor.prototype.save = function (isdraft,callback) {
+    __contructor.prototype.save = function (isdraft, callback) {
         try
         {
             if(typeof isdraft == 'function') {
@@ -1001,7 +1001,7 @@ openflow.editor = (function () {
                     // if (!data.Id && !isdraft) {
                     if (!data.Id) {
                         data.Id = Number(r);
-                        window.location = openflow.checkUrl('/editor?mode='+openflow.flag+'&id=' + data.Id);
+                        window.location = openflow.checkUrl('/flows?mode='+openflow.flag+'&id=' + data.Id);
                     }
                     if(!isdraft) {
                         _this.data = data;

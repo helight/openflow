@@ -77,6 +77,7 @@ var openflow = (function ifow() {
 */
 openflow.request = function (method, data, callback) {
     openflow.log(data);
+    openflow.log(data.url);
     $.ajax({
         type: method || 'get',
         cache:false,

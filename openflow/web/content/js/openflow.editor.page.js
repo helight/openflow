@@ -68,7 +68,7 @@ function loadopenflow(editor, id, callback) {
     }
     else {
         openflow.request('get', {
-            url:openflow.root + 'flows/templateServer.js?cmd=getdraft&id='+ (id || 0) + '&user=' + openflow.user + '&rnd=' + Math.random()
+            url:openflow.root + 'flows/component?cmd=getdraft&id='+ (id || 0) + '&user=' + openflow.user + '&rnd=' + Math.random()
         }, loadTemplateCallback);
     }
 

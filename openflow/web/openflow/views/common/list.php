@@ -8,8 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/bootstrap-responsive.css" />
 	<link rel="stylesheet" type="text/css" href="../content/css/admin/style.css" />
 
+	<script type="text/javascript" src="../content/js/jquery.min.js"></script>
 	<script type='text/javascript' src='../content/js/admin/jsapi.js'></script>
-	<script type="text/javascript" src="../content/js/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../content/js/admin/main.js"></script>
 	<script type="text/javascript" src="../content/js/admin/bootstrap.min.js"></script>
 </head>
