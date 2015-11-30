@@ -1,9 +1,9 @@
-<%
-    master="../master/detail.html";
-%>
+<?php
+    $this->load->view("common/detail");
+?>
 
 <view1>
-    <script src="<%=rootUrl %>/content/js/openflow.instance.js?ver=<%= version%>"></script>
+    <script src="../content/js/openflow.instance.js?ver=<%= version%>"></script>
     <script type="text/javascript">
         $(function () {
             //var pageindex = 1;//当前页码
