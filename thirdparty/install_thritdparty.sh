@@ -129,15 +129,19 @@ function install_thirft()
     package_basename=`basename $package_name .tar.gz`
     cd $package_basename
     ./bootstrap.sh
-    ./configure --prefix=$THIRD_PARTY_HOME/thrift \
+
+    cmd="./configure --prefix=$THIRD_PARTY_HOME/thrift \
         --with-boost=$THIRD_PARTY_HOME/boost \
         --with-libevent=$THIRD_PARTY_HOME/libevent \
-        CPPFLAGS="-I$THIRD_PARTY_HOME/openssl/include" \
-        LDFLAGS="-ldl -L$THIRD_PARTY_HOME/openssl" \
+        --with-openssl=$THIRD_PARTY_HOME/openssl/ \
         --with-qt4=no --with-c_glib=no --with-csharp=no \
         --with-java=no --with-erlang=no --with-python=no \
         --with-perl=no --with-ruby=no --with-haskell=no \
-        --with-go=no --with-d=no
+        --with-go=no --with-d=no"
+        #CPPFLAGS=\"-I$THIRD_PARTY_HOME/openssl/include\"
+        #LDFLAGS=\"-ldl -L$THIRD_PARTY_HOME/openssl\" "
+    echo $cmd
+    $cmd
     if test $? -ne 0; then
         exit 1
     fi
@@ -176,13 +180,40 @@ function install_tinyxml()
     echo "StaticLibrary(" >> SConstruct;
     echo '    target = "tinyxml",' >> SConstruct;
     echo '    source = Glob("*.cpp"),' >> SConstruct;
-    echo "    "CPPFLAGS = \'-DTIXML_USE_STL\' >> SConstruct;
+    echo "    CPPFLAGS = \'-DTIXML_USE_STL\'" >> SConstruct;
     echo ")" >> SConstruct;
     scons;
     if test $? -ne 0; then
         exit 1
     fi
     rm -rf *.o
+    cd -
+}
+
+function install_libssh2()
+{
+    install_dir=$1
+    package_name=$2
+    #如果目录已经存在，而且不是全新安装
+    if [ -d $THIRD_PARTY_HOME/thrift -a "$INSTALL_ALL" = "" ];then
+        printf "\n\033[1;33m thrift is installed, no need to install again\033[m\n"
+        return
+    fi
+
+    printf "\n\033[1;33m installing $package_basename \033[m\n"
+    tar xzf $package_name
+    package_basename=`basename $package_name .tar.gz`
+    cd $package_basename
+
+    ./configure --prefix=$THIRD_PARTY_HOME/libssh2 CPPFLAGS="-I$THIRD_PARTY_HOME/openssl/include" LDFLAGS="-L$THIRD_PARTY_HOME/openssl/lib"
+    if test $? -ne 0; then
+        exit 1
+    fi
+    make
+    if test $? -ne 0; then
+        exit 1
+    fi
+    make install
     cd -
 }
 
@@ -193,12 +224,13 @@ function install_all()
     install_tar_gz_package libunwind libunwind-1.1.tar.gz
     install_tar_gz_package glog glog-0.3.3.tar.gz --with-gflags=$THIRD_PARTY_HOME/gflags
     install_tar_gz_package sqlite sqlite-autoconf-3080500.tar.gz CFLAGS='-DSQLITE_THREADSAFE=2'
-    install_tar_gz_package openssl openssl-1.0.1g.tar.gz "shared threads"
+    install_tar_gz_package openssl openssl-1.0.1p.tar.gz "shared threads"
     install_tar_gz_package libevent libevent-2.0.21-stable.tar.gz
     install_boost boost boost_1_55_0.tar.gz
-    install_thirft thirft thrift-0.9.3.tar.gz
+    install_thirft thirft thrift-0.9.1.tar.gz
     install_gtest
     install_tinyxml tinyxml tinyxml_2_6_2.zip
+    install_libssh2 libssh2 libssh2-1.6.0.tar.gz
 }
 
 install_all
