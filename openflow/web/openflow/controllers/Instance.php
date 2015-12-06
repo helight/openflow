@@ -5,7 +5,7 @@ class Instance extends CI_Controller {
     function __construct()
     {
         parent::__construct();
-        $this->load->model("JobManager");
+        $this->load->model("InstanceManager");
     }
     public function index()
     {
@@ -21,83 +21,21 @@ class Instance extends CI_Controller {
 		$this->load->view('flows/edit', $data);
 	}
 
-    public function edit_flow()
+    public function search()
     {
-        $data["mode"] = 4;
-		$this->load->view('flows/edit', $data);
+        // data={"State":1,"Message":err.toString()};
+         $data["State"] = 0;
+         $data["Data"] = 1;
+         $tbname = "tbInstance a left join tbTemplate c on c.Id=a.TemplateId";
+         $fields = "a.Id,a.Name,a.Description,a.TemplateId, c.Name as TemplateName, a.Uuid, a.State,a.Flag, a.Creater, a.Uptime";
+         $where = "1=1";
+         $order = 'order by a.Uptime desc,a.State';
+         $page = 0;
+
+         $ret = $this->InstanceManager->search($tbname, $fields, $where, $page, $order);
+         $data["Data"] = $ret;
+
+         echo json_encode($data);
     }
 
-    public function test()
-    {
-        $this->load->view("flows/default");
-    }
-
-    public function instance()
-    {
-        $this->load->view("flows/instance");
-    }
-
-    public function component()
-    {
-        if (isset($_GET['cmd']))
-        {
-            $ret = 0;
-            $cmd = $_GET['cmd'];
-            // echo "cmd: ".$cmd."<br>";
-            switch ($cmd)
-            {
-            case 'getdraft':
-            case 'get':
-                if (isset($_GET['id']))
-                {
-                    $data["State"] = 0;
-                    $ret = $this->JobManager->get_job_info($_GET['id']);
-                    if (count($ret) > 0)
-                    {
-                        $data["Data"] = $ret[0];
-                        echo json_encode($data);
-                    }
-                }
-                break;
-            default:
-            break;
-            }
-        }
-    }
-
-    public function template()
-    {
-        $data["State"] = 0;
-        if (isset($_GET['cmd']))
-        {
-            $ret = 0;
-            $cmd = $_GET['cmd'];
-            // echo "cmd: ".$cmd."<br>";
-            switch ($cmd)
-            {
-            case "insert":
-                if (isset($_POST['EditorXml']))
-                {
-                    $data["Data"] = $this->JobManager->add_jobs($_POST['Name'], 'helightxu', $_POST['EditorXml']
-                        , $_POST['TemplateXml'], $_POST['Description']);
-                }
-                break;
-            case "update":
-                $data["Data"] = $this->JobManager->update_job($_POST['Id'], $_POST['EditorXml'], $_POST['TemplateXml']
-                                                      , $_POST['Name'], $_POST['Description']);
-                break;
-            case "savedraft":
-                break;
-            case "inserttemplate":
-                break;
-            case "updatetemplate":
-                break;
-            case "updatepermission":
-                break;
-            default:
-                break;
-            }
-            echo json_encode($data);
-        }
-    }
 }

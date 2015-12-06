@@ -64,7 +64,7 @@
                     count: 20,
                     orderby:orderby,
                     des: key,
-                    url: openflow.root + 'servers/instanceServer.js?cmd=search'
+                    url: openflow.root + '/instance/search'
                 }, function (data,err) {
                     wait.close();
                     if (data) {

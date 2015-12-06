@@ -9,10 +9,6 @@
 SQLITE="sqlite3"
 DBNAME="openflow.db"  #数据库名称
 
-TABLENAME_TMP="tbTemplate"     #数据库中表的名称
-TABLENAME_JOB_INSTANCE="tbJobInstance"  #实例表
-TABLENAME_JOB_CATEGORY="tbJobCategory"
-
 TABLENAME_TASKSTATE="tbTaskState"
 TABLENAME_AGENTSTATE="tbAgentState"
 
@@ -31,82 +27,81 @@ echo ".exit" | ${SQLITE} ${DBNAME};
 if_ok "create database [fail].";
 
 #创建数据表
-create_table_job_sql="create table IF NOT EXISTS ${TABLENAME_TMP}
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                       
+create_table_job_sql="create table IF NOT EXISTS tbTemplate
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        Name TEXT NOT NULL,
                        EditorXml TEXT,
                        TemplateXml TEXT,
                        Description TEXT,
                        Flag INTEGER NOT NULL,
                        Category INTEGER NOT NULL,
-                       Manager TEXT NOT NULL,
+                       Creater TEXT NOT NULL,
                        Reader TEXT NOT NULL,
-                       Creater TEXT NOT NULL, 
                        Uptime TEXT);";
 echo "${create_table_job_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_job table [fail].";
 
-create_table_instance_sql="create table IF NOT EXISTS ${TABLENAME_JOB_INSTANCE}
+create_table_instance_sql="create table IF NOT EXISTS tbInstance
                       (Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                       Uuid TEXT NOT NULL,                       
+                       TemplateId INTEGER NOT NULL,
+                       Uuid TEXT NOT NULL,
                        Name TEXT NOT NULL,
                        InstanceXml TEXT,
                        Description TEXT,
                        State INTEGER NOT NULL,
                        Flag INTEGER NOT NULL,
-                       Manager TEXT NOT NULL,
+                       Creater TEXT NOT NULL,
                        Reader TEXT NOT NULL,
-                       Creater TEXT NOT NULL, 
                        Uptime TEXT);";
 echo "${create_table_instance_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_instance table [fail].";
 
 create_table_tempdraft_sql="create table IF NOT EXISTS tbTemplateDraft
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                  
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        Name TEXT NOT NULL,
                        EditorXml TEXT,
                        TemplateXml TEXT,
                        Description TEXT,
-                       Creater TEXT NOT NULL, 
+                       Creater TEXT NOT NULL,
                        Uptime TEXT);";
 echo "${create_table_tempdraft_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_tempdraft table [fail].";
 
 create_table_component_sql="create table IF NOT EXISTS tbComponent
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                  
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        Name TEXT NOT NULL,
                        EditorXml TEXT,
                        TemplateXml TEXT,
                        Description TEXT,
-                       Creater TEXT NOT NULL, 
+                       Creater TEXT NOT NULL,
                        Uptime TEXT);";
 echo "${create_table_component_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_component table [fail].";
 
 create_table_running_sql="create table IF NOT EXISTS tbRunning
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                  
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        InstanceId INTEGER NOT NULL,
                        Uuid TEXT,
                        StartTime TEXT,
                        EndTime TEXT,
-                       State TEXT NOT NULL, 
+                       State TEXT NOT NULL,
                        Uptime TEXT);";
 echo "${create_table_job_running_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_running table [fail].";
 
 create_table_runninghis_sql="create table IF NOT EXISTS tbRunningHistory
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                  
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        InstanceId INTEGER NOT NULL,
                        Uuid TEXT,
                        StartTime TEXT,
                        EndTime TEXT,
-                       State TEXT NOT NULL, 
+                       State TEXT NOT NULL,
                        Uptime TEXT);";
 echo "${create_table_job_runninghis_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_runninghis table [fail].";
 
 # job_category
-create_table_job_category_sql="create table IF NOT EXISTS ${TABLENAME_JOB_CATEGORY}
+create_table_job_category_sql="create table IF NOT EXISTS tbCategory
                             (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                              Parent INTEGER NOT NULL,
                              Name TEXT NOT NULL,
@@ -117,7 +112,7 @@ echo "${create_table_job_category_sql}" | ${SQLITE} ${DBNAME};
 if_ok "create job_category table [fail].";
 
 create_table_clock_sql="create table IF NOT EXISTS tbClock
-                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,                  
+                      (Id INTEGER PRIMARY KEY AUTOINCREMENT,
                        InstanceId INTEGER NOT NULL, #实例id'
                        RuleString TEXT,             #定时规则
                        StartTime TEXT,              #定时任务开始时间',

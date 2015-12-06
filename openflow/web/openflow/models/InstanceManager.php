@@ -1,23 +1,15 @@
 <?php
-class Instance extends CI_Model
+class InstanceManager extends CI_Model
 {
-    var $Category = 0;
-    var $Name = "";
-    var $Creater = "";
-    var $EditorXml= "";
-    var $TemplateXml = "";
-    var $Description = "";
-    var $Uptime = "";
-
     function __construct()
     {
         parent::__construct();
         $this->db = $this->load->database('default', TRUE);
     }
 
-    public function get_jobs_info()
+    public function search($tbname, $fields, $where, $page, $order)
     {
-        $sql = "select Id, Category, Name, Creater, EditorXml, TemplateXml, Description, Uptime from tbjobs;";
+        $sql = "select ".$fields." from ".$tbname." where ".$where." ".$order;
         $query = $this->db->query($sql);
         return $query->result_array();
     }

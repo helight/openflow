@@ -9,9 +9,18 @@ class Flows extends CI_Controller {
     }
     public function index()
     {
+        // $data["flowslist"] = $this->JobManager->get_jobs_info();
+        // $this->load->view('flows/flowslist', $data);
+        $this->load->view("flows/default");
+    }
+
+    public function editor()
+    {
         $data["mode"] = 2;
-        $data["flowslist"] = $this->JobManager->get_jobs_info();
-        $this->load->view('flows/flowslist', $data);
+        if (isset($_GET['cmd']))
+            $data["mode"] = $_GET['cmd'];
+
+        $this->load->view("flows/editor", $data);
     }
 
 	public function show()

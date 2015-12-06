@@ -66,7 +66,7 @@
 		<h3>流程管理</h3>
 		<ul class="toggle">
 			<li class="icn_create_template">
-                 <a href="/editor.js?mode=0" target="_blank">创建模板</a>
+                 <a href="/flows/editor?mode=0" target="_blank">创建模板</a>
             </li>
 			<li class="icn_template"><a href="<%=rootUrl %>/template.js" id="lnkTemplate" target="mainframe">模板</a></li>
 			<li class="icn_instance"><a href="<%=rootUrl %>/instance.js" id="lnkInstance" target="mainframe">实例</a></li>
