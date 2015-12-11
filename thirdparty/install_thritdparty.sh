@@ -178,7 +178,7 @@ function install_tinyxml()
     echo "StaticLibrary(" >> SConstruct;
     echo '    target = "tinyxml",' >> SConstruct;
     echo '    source = Glob("*.cpp"),' >> SConstruct;
-    echo "    CPPFLAGS = \'-DTIXML_USE_STL\'" >> SConstruct;
+    echo "    CPPFLAGS = '-DTIXML_USE_STL'" >> SConstruct;
     echo ")" >> SConstruct;
     scons;
     if test $? -ne 0; then
