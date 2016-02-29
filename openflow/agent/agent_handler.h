@@ -16,6 +16,10 @@
 #include "blocking_queue.h"
 #include "rpc/agent/AgentService.h"
 
+// Set default value
+const uint32_t kForkMax = 10;
+const uint32_t kForkCnt = 0;
+
 namespace openflow { namespace agent {
 
 class CAgentHandler : public AgentServiceIf
